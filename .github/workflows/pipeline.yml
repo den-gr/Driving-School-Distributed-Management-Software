@@ -1,0 +1,13 @@
+name: main workflow
+
+on: 
+    push:
+        branches:
+            - main
+            - develop
+
+jobs: 
+    firstJob:
+        steps:
+            - name: Hello
+                uses: echo "Hello World"
