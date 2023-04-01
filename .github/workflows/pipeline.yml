@@ -8,6 +8,9 @@ on:
 
 jobs: 
     firstJob:
+        strategy:
+            matrix:
+                os: [ ubuntu-latest ] #windows-latest
+        runs-on: ${{ matrix.os }} # Operating system selection
         steps:
-            - name: Hello
-                uses: echo "Hello World"
+            - run: echo "Hello World"
