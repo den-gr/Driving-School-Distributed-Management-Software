@@ -1,0 +1,48 @@
+import "./DrivingSlotsBookingContext.cml"
+import "./ExamManagementContext.cml"
+import "./DossierManagementContext.cml"
+
+ContextMap {
+  type = SYSTEM_LANDSCAPE
+  state = TO_BE // AS_IS
+
+  contains DrivingSlotsBookingContext
+  contains ExamManagementContext
+  contains DossierManagementContext
+  
+  DrivingSlotsBookingContext <-> ExamManagementContext : name{
+    implementationTechnology = "RESTful HTTP"
+  }
+  
+  DossierManagementContext -> DrivingSlotsBookingContext
+
+  DossierManagementContext -> ExamManagementContext
+}
+
+Domain Dom{
+  domainVisionStatement = "This domain is responsible for ..."
+
+  Subdomain A
+  Subdomain B{
+    domainVisionStatement = "This subdomain is responsible for ..."
+    type = CORE_DOMAIN
+
+    Entity Dossier{
+      aggregateRoot
+
+      int id
+      String name
+      String surname
+      Date birthdate
+      - List<ProvisionalLicense> list
+
+
+    }
+
+    Entity ProvisionalLicense
+  }
+}
+
+
+
+
