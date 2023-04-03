@@ -5,6 +5,11 @@ on:
         branches:
             - main
             - develop
+        paths-ignore:
+            - "report/*"
+            - 'README.md'
+            - 'CHANGELOG.md'
+            - 'LICENSE'
 
 jobs: 
     firstJob:
