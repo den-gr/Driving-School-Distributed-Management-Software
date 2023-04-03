@@ -1,22 +1,20 @@
-import "./DrivingSlotsBookingContext.cml"
-import "./ExamManagementContext.cml"
-import "./DossierManagementContext.cml"
+import "./DrivingContext.cml"
+import "./ExamContext.cml"
+import "./DossierContext.cml"
 
 ContextMap {
   type = SYSTEM_LANDSCAPE
   state = TO_BE // AS_IS
 
-  contains DrivingSlotsBookingContext
-  contains ExamManagementContext
-  contains DossierManagementContext
+  contains DrivingContext
+  contains ExamContext
+  contains DossierContext
   
-  DrivingSlotsBookingContext <-> ExamManagementContext : name{
+  DrivingContext [P]<->[P] ExamContext : name{
     implementationTechnology = "RESTful HTTP"
   }
-  
-  DossierManagementContext -> DrivingSlotsBookingContext
 
-  DossierManagementContext -> ExamManagementContext
+  DossierContext [U]->[D, ACL] ExamContext
 }
 
 Domain Dom{
