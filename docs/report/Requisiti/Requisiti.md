@@ -74,4 +74,5 @@ I requisiti implementativi previsti dal Driving School Management Software, che 
 - il testing del sistema dovrà avvenire mediante Acceptance Testing;
 
 ---
+
 [Ritorna all'indice](../../index.md)
