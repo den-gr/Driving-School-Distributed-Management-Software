@@ -21,5 +21,6 @@ Questo ha permesso di ottenere il seguente dizionario dei termini (successivamen
 |Exam appeal|Un appello per un Theoretical Exam, associato a più Dossier.|
 |Practical/Theoretical exam status|Un flag, che consenta di determinare con certezza lo stato del Dossier di un Subscriber|
 |Theoretical exam pass|Assegnato ad un Subscriber che abbia completato la visita col dottore, necessario per conseguire il Theoretical Exam.|
+
 ---
 [Ritorna all'indice](../../index.md)
