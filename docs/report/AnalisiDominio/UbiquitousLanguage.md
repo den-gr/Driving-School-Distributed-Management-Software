@@ -21,14 +21,5 @@ Questo ha permesso di ottenere il seguente dizionario dei termini (successivamen
 |Exam appeal|Un appello per un Theoretical Exam, associato a più Dossier.|
 |Practical/Theoretical exam status|Un flag, che consenta di determinare con certezza lo stato del Dossier di un Subscriber|
 |Theoretical exam pass|Assegnato ad un Subscriber che abbia completato la visita col dottore, necessario per conseguire il Theoretical Exam.|
-
-
-
-
-
-
-
-
-Valid for 1 year, max 3 attempts at the practical exam within the year of validity, then a new Theoretical exam is required. If the second Provisional License expires, a new Dossier is required.
-
-Provides 2 attempts, within 6 months, to take the Theoretical exam. After 6 months or after the second failure, the pass will be invalid and it will be necessary to redo the visit with the Doctor
+---
+[Ritorna all'indice](../../index.md)
