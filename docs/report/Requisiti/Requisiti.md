@@ -24,6 +24,7 @@ Dalla precedente analisi del dominio che è stata effettuata possiamo rilevare i
 - registrare un Dossier valido ed esistente, all'interno di un Exam Appeal;
 - aggiornare o creare Theoretical Exam Pass o Provisional License;
 - registrare e leggere Doctor Slot;
+- selezionare e leggere Practical Exam Day;
 
 ## Requisiti funzionali
 I requisiti funzionali riguardano le funzionalità che il sistema deve mettere a disposizione all’utente. Per la loro definizione è necessario basarsi sui requisiti utente estratti in precedenza.
@@ -35,6 +36,7 @@ Sono stati identificati i seguenti requisiti funzionali, per i diversi Bounded C
 - un dossier invalidato non deve essere utilizzabile su alcun processo effettuato dall'utente, ma viene mantenuto col solo scopo di condurre analisi future;
 - un subscriber può avere più dossier a lui collegati, ma solamente uno valido in un dato momento;
 - deve essere possibile aggiornare Theoretical Exam e Practical Exam Status;
+- è possibile inserire un Driving Slot relativo a Practical Exam, solo in un Practical Exam Day;
 
 Optional: un dossier può essere invalidato manualmente, tramite una chiamata ad API
 
@@ -74,5 +76,5 @@ I requisiti implementativi previsti dal Driving School Management Software, che 
 - il testing del sistema dovrà avvenire mediante Acceptance Testing;
 
 ---
-
-[Ritorna all'indice](../../index.md)
+Altri contenuti:
+- [Ritorna all'indice](../../Index.md)
