@@ -16,11 +16,16 @@ Questo ha permesso di ottenere il seguente dizionario dei termini (successivamen
 |Driving Slot|Fascia oraria occupata ad una Driving Lesson o da un Practical Exam. Univocamente associato con un Subscriber, un Instructor ed un Vehicle.|
 |Doctor Slot|Fascia oraria occupata per eseguire la visita col dottore, da parte di un Subscriber.|
 |Dossier|Insieme di informazioni riguardanti un singolo Subscriber.|
-|Provisional License|Documento assegnato ad un Subscriber dopo il passaggio del Theoretical Exam.|
-|Driving lessons scheduling|Insieme di Driving Slots  in una certa data.|
+|Provisional License|Documento assegnato ad un Subscriber dopo il passaggio del Theoretical Exam, necessario per iscriversi al Practical Exam.|
+|Driving lessons scheduling|Insieme di Driving Slots in una certa data.|
+|Doctor scheduling|Insieme di Doctor Slots in una certa data e fascia oraria (che coincide con gli orari di disponibilità del dottore).|
 |Exam appeal|Un appello per un Theoretical Exam, associato a più Dossier.|
 |Practical/Theoretical exam status|Un flag, che consenta di determinare con certezza lo stato del Dossier di un Subscriber|
 |Theoretical exam pass|Assegnato ad un Subscriber che abbia completato la visita col dottore, necessario per conseguire il Theoretical Exam.|
+|Practical Exam Day|Identificativo dei giorni in cui è possibile inserire dei Driving Slots per effettuare Practical Exams.|
 
 ---
-[Ritorna all'indice](../../index.md)
+Altri contenuti:
+- [Analisi del dominio](AnalisiDominio.md)
+- [Knowledge Crunching](KnowledgeCrunching.md)
+- [Ritorna all'indice](../../Index.md)
