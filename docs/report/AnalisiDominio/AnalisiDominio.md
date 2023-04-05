@@ -8,4 +8,4 @@ Nelle prossime sezioni verranno descritti i dettagli relativi al processo di kno
 Altri contenuti:
 - [Knowledge Crunching](KnowledgeCrunching.md)
 - [Ubiquitous Language](UbiquitousLanguage.md)
-- [Ritorna all'indice](../../Index.md)
+- [Ritorna all'indice](../../index.md)

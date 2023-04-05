@@ -37,4 +37,4 @@ Questo caso d'uso (<a href="#fig4"> Figura 4 </a>)
 Altri contenuti:
 - [Analisi del dominio](AnalisiDominio.md)
 - [Ubiquitous Language](UbiquitousLanguage.md)
-- [Ritorna all'indice](../../Index.md)
+- [Ritorna all'indice](../../index.md)

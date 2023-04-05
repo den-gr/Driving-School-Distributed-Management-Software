@@ -28,4 +28,4 @@ Questo ha permesso di ottenere il seguente dizionario dei termini (successivamen
 Altri contenuti:
 - [Analisi del dominio](AnalisiDominio.md)
 - [Knowledge Crunching](KnowledgeCrunching.md)
-- [Ritorna all'indice](../../Index.md)
+- [Ritorna all'indice](../../index.md)

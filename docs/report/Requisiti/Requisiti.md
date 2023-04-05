@@ -77,4 +77,4 @@ I requisiti implementativi previsti dal Driving School Management Software, che 
 
 ---
 Altri contenuti:
-- [Ritorna all'indice](../../Index.md)
+- [Ritorna all'indice](../../index.md)
