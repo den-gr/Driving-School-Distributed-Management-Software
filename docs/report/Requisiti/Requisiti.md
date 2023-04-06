@@ -10,7 +10,7 @@ I requisiti di business specificano le caratteristiche che il sistema dovrà pos
 I requisiti di business previsti dal Driving School Management Software, che sono stati individuati, sono i seguenti:
 - digitalizzare i processi di business attualmente cartacei;
 - ridurre i tempi di ogni operazione;
-- consentire l'utilizzo di alcuni applicativi (es. prenotazione di Driving Lessons) da remoto;
+- consentire l'utilizzo di alcuni applicativi (es. prenotazione di guide pratiche) da remoto;
 
 ## Requisiti utente
 I requisiti utente esprimono i bisogni degli utenti e descrivono quali sono le azioni che l’utente deve poter effettuare interagendo con il sistema.

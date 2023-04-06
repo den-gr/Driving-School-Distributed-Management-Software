@@ -7,5 +7,6 @@ Nelle prossime sezioni verranno descritti i dettagli relativi al processo di kno
 ---
 Altri contenuti:
 - [Knowledge Crunching](KnowledgeCrunching.md)
+- [Casi d'uso](UseCases.md)
 - [Ubiquitous Language](UbiquitousLanguage.md)
 - [Ritorna all'indice](../../index.md)
