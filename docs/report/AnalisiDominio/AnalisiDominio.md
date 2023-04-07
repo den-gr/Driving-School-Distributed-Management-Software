@@ -1,5 +1,5 @@
 ---
-title: Analisi del Dominio
+title: Analisi del dominio
 has_children: true
 nav_order: 2
 ---
