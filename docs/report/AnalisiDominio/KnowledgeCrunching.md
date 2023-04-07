@@ -1,3 +1,11 @@
+---
+title: Knowledge crunching
+parent: Analisi del dominio
+has_children: false
+nav_order: 1
+---
+
+
 # Knowledge crunching
 
 Dopo aver analizzato la richiesta che è stata effettuata e prodotto l’impact map si è tenuto la prima intervista con il committente, riportata di seguito.

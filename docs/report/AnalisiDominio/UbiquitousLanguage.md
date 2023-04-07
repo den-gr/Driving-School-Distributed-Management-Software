@@ -1,3 +1,11 @@
+---
+title: Ubiquitous Language
+parent: Analisi del dominio
+has_children: false
+nav_order: 2
+---
+
+
 # Ubiquitous Language
 Durante le fasi iniziali di sviluppo, per favorire la comunicazione tra esperti del dominio (cliente e stakeholders) e il team di sviluppo, l'obiettivo è stato quello di accordarsi sul significato dei termini utilizzati, evitando ambiguità ed incomprensioni.
 

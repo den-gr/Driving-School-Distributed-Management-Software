@@ -1,3 +1,10 @@
+---
+title: Requisiti
+has_children: false
+nav_order: 3
+---
+
+
 # Requisiti
 
 Questa sezione della relazione, viene dedicata alla descrizione approfondita dei requisiti di progetto, raccolti durante le fasi di analisi del dominio e perfezionati durante le fasi di Knowledge Crunching.
