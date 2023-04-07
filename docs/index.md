@@ -4,7 +4,7 @@ has_children: false
 nav_order: 1
 ---
 
-# Driving School Distributed Management Software
+# Driving School Distributed Management Software (DSDMS)
 
 # Index
 - [Analisi del Dominio](report/AnalisiDominio/AnalisiDominio.md)
