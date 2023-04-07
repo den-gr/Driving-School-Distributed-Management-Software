@@ -124,10 +124,3 @@ Verificati questi fattori, si ricerca il primo slot di guida disponibile per eff
       domain story telling Practical Exam" >
       <p align="center" id="fig4">[Fig 4] Domain story telling: gestione di un esame pratico</p>
 </div>
-
----
-Altri contenuti:
-- [Analisi del dominio](AnalisiDominio.md)
-- [Casi d'uso](UseCases.md)
-- [Ubiquitous Language](UbiquitousLanguage.md)
-- [Ritorna all'indice](../../index.md)

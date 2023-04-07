@@ -81,7 +81,3 @@ I requisiti implementativi previsti dal Driving School Management Software, che 
 - le API (Application Programming Interface) fornite da ciascun microservizio, dovranno essere di tipo REST;
 - il deployment di ciascun microservizio, dovrà avvenire mediante l'utilizzo di Container Docker;
 - il testing del sistema dovrà avvenire mediante Acceptance Testing;
-
----
-Altri contenuti:
-- [Ritorna all'indice](../../index.md)

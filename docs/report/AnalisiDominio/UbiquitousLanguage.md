@@ -31,10 +31,3 @@ Questo ha permesso di ottenere il seguente dizionario dei termini (successivamen
 |Completamento di esame Pratico/Teorico|Practical/Theoretical exam status|Un flag, che consenta di determinare con certezza lo stato del Dossier di un Subscriber|
 |Registro esame teorico|Theoretical exam pass|Assegnato ad un Subscriber che abbia completato la visita col dottore, necessario per conseguire il Theoretical Exam.|
 |Giorno d'esame pratico|Practical Exam Day|Identificativo dei giorni in cui è possibile inserire dei Driving Slots per effettuare Practical Exams.|
-
----
-Altri contenuti:
-- [Analisi del dominio](AnalisiDominio.md)
-- [Knowledge Crunching](KnowledgeCrunching.md)
-- [Casi d'uso](UseCases.md)
-- [Ritorna all'indice](../../index.md)
