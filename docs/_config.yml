@@ -1,3 +1,6 @@
 title: "Driving School Distributed Management Software"
-remote_theme: pages-themes/slate@v0.2.0
+#remote_theme: pages-themes/slate@v0.2.0
+remote_theme: pmarsceill/just-the-docs
+color_scheme: "light"
+
 show_downloads: false
