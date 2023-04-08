@@ -2,10 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "it.unibo.dsdms"
 
 plugins {
-    kotlin("jvm") version "1.8.20"
+    kotlin("jvm")
+    id("io.vertx.vertx-plugin")
     application
-    java
 }
+vertx.mainVerticle="dsdms.dossier.Server"
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
@@ -13,6 +14,7 @@ tasks.withType<KotlinCompile> {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("io.vertx:vertx-web:4.4.1")
 }
 
 repositories {
@@ -23,4 +25,8 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "it.unibo.dsdms.dossier.MyClass"
     }
+}
+
+application {
+    mainClass.set("dsdms.dossier.MainClass")
 }

@@ -1,3 +1,3 @@
 rootProject.name = "DSDMS"
 
-include("Dossier")
+include("DossierService")
