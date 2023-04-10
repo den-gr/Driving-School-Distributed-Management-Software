@@ -25,7 +25,7 @@ class Server(val port: Int) : AbstractVerticle() {
         val id = routingContext.request().getParam("id").toIntOrNull()
         val response =  routingContext.response()
         if(id != null){
-            response.setStatusCode(200).end(id.toString())
+            response.setStatusCode(200).end((id).toString())
         }else{
             response.setStatusCode(401).end("wrong input")
 
