@@ -25,5 +25,6 @@ jobs:
               uses: fwilhe2/setup-kotlin@main
             - name: run tests
               run: | 
-                  gradle DossierService:run &
-                  gradle cucumber
+                  ./gradlew DossierService:run &
+                  sleep 5 &&
+                  ./gradlew cucumber
