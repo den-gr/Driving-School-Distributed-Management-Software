@@ -10,6 +10,7 @@ Feature: test feature
       | 3   |
       | 1010|
 
+    //prova
   @vertx
   Scenario: So I want an error
       Given an incorrect input as aa
