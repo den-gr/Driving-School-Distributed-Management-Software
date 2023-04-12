@@ -19,3 +19,11 @@ jobs:
         runs-on: ${{ matrix.os }} # Operating system selection
         steps:
             - run: echo "Hello World"
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Setup kotlin
+              uses: fwilhe2/setup-kotlin@main
+            - name: run tests
+              run: | 
+                  gradle DossierService:run &
+                  gradle cucumber
