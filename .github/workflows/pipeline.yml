@@ -26,6 +26,8 @@ jobs:
                 java-version: "16"
             - name: Setup kotlin
               uses: fwilhe2/setup-kotlin@main
+              with:
+                version: 1.7.10
             - name: run tests
               run: | 
                   ./gradlew DossierService:run &
