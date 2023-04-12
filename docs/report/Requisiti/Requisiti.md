@@ -43,7 +43,6 @@ Sono stati identificati i seguenti requisiti funzionali, per i diversi Bounded C
 - un dossier invalidato non deve essere utilizzabile su alcun processo effettuato dall'utente, ma viene mantenuto col solo scopo di condurre analisi future;
 - un subscriber può avere più dossier a lui collegati, ma solamente uno valido in un dato momento;
 - deve essere possibile aggiornare Theoretical Exam e Practical Exam Status;
-- è possibile inserire un Driving Slot relativo a Practical Exam, solo in un Practical Exam Day;
 
 Optional: un dossier può essere invalidato manualmente, tramite una chiamata ad API
 
@@ -62,6 +61,7 @@ Optional: un dossier può essere invalidato manualmente, tramite una chiamata ad
 - ciascun Driving Slot può rappresentare un Practical Exam o una Driving Lesson;
 - ciascun Dossier può riservare un Driving slot alla volta;
 - per poter inserire un Driving Slot, è necessario verificare la validità della Provisiona License
+- è possibile inserire un Driving Slot relativo a Practical Exam, solo in un Practical Exam Day;
 
 Optional: un Vehicle dopo un certo numero di Driving Slot a lui associati, dovrà procedere ad un controllo.
 
