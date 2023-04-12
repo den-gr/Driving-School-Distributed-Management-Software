@@ -9,5 +9,4 @@ import org.junit.runner.RunWith
     features = ["src/test/resources/"],
     plugin = ["pretty", "summary"]
 )
-class MainCucumberRunner {
-}
+class MainCucumberRunner
