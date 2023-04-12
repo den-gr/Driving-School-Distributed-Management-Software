@@ -29,7 +29,6 @@ fun after(){
     vertx.close()
 }
 
-
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/test/resources/features"],
@@ -54,7 +53,6 @@ class TestCucumber: En {
         Then("I receive {int} that is equal to input"){ id: Int ->
             assertEquals(value,id)
         }
-
         But("an error") {}
 
         Given("an incorrect input as {word}") {aa: String ->
