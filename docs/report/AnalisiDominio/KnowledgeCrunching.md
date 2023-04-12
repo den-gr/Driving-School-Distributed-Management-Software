@@ -2,7 +2,7 @@
 title: Knowledge crunching
 parent: Analisi del dominio
 has_children: false
-nav_order: 1
+nav_order: 2
 ---
 
 

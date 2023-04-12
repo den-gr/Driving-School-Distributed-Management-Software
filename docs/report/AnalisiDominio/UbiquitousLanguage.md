@@ -2,7 +2,7 @@
 title: Ubiquitous Language
 parent: Analisi del dominio
 has_children: false
-nav_order: 2
+nav_order: 3
 ---
 
 
