@@ -13,14 +13,13 @@ class Server(val port: Int) : AbstractVerticle() {
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
-        router.get("/api/:id").handler(handlersImpl::handleDossierRegistration)
-        router.post("/dossiers").handler(::handle)
+        router.get("/api/:id").handler(::handle)
+        router.post("/dossiers").handler(handlersImpl::handleDossierRegistration)
         router.get("/dossiers/:id").handler(::handle)
 
         vertx.createHttpServer()
             .requestHandler(router)
             .listen(port)
-
     }
 
     private fun handle(routingContext: RoutingContext){
