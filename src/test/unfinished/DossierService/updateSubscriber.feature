@@ -1,33 +1,21 @@
 Feature: Update subscriber informations
     @vertx
-    Scenario Outline: updating theoretical exam status
+    Scenario Outline: updating <Type>
         Given a new registered dossier
-        When i read his theoretical exam status
-        Then his theoretical exam status is <unpassed>
-        And when trying to update theoretical exam status = <passed>
-        Then I receive <passed>
+        When i read his <Type>
+        Then his <Type> is <Status before>
+        And when trying to update <Type> <Status after>
+        Then it become <Status after>
 
-    Examples: basic information
-    | passed | unpassed |
-    | PASSED | UNPASSED |
+    Example: examples
+        | Type | Status before | Status after |
+        | Theoretical_exam_status | UNPASSED | PASSED |
+        | Practical_exam_status | UNPASSED | PASSED |
 
     @vertx
-    Scenario Outline: updating practical exam status
-        Given a new registered dossier
-        When i read his theoretical exam status
-        Then his theoretical exam status is <unpassed>
-        And when trying to update theoretical exam status = <passed>
-        Then I receive <passed>
-
-    Examples: basic information
-    | passed | unpassed |
-    | PASSED | UNPASSED |
-
-    @vertx
-    Scenario Outline: reading dossier status
-        Given a new registered dossier
+    Scenario: reading inactive dossier and attempting to modify its Practical_exam_status
+        Given Id of a registered dossier
         When i read his dossier status
-        And his dossier status is inactive
-        Then I receive PASSED
-
-        
+        And his dossier status is INACTIVE
+        When attempting to modify Practical_exam_status to ACTIVE
+        Then i receive Bad request error message
