@@ -6,10 +6,7 @@ import org.junit.runner.RunWith
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
-    features = [
-        "src/test/resources/features/test_feature.feature",
-        //"src/test/resources/features/DossierService/*.feature"
-   ],
+    features = ["src/test/resources/"],
     plugin = ["pretty", "summary"]
 )
 class MainCucumberRunner
