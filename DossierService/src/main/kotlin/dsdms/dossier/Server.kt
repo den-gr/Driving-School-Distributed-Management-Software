@@ -8,17 +8,18 @@ import io.vertx.ext.web.handler.StaticHandler
 
 class Server(val port: Int) : AbstractVerticle() {
 
+    private val handlersImpl: RouteHandlers = RouteHandlersImpl()
     override fun start() {
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
+
         router.get("/api/:id").handler(::handle)
-        //Static handler
-//        router.route("/static/*").handler(StaticHandler.create("res/client/"))
+        router.post("/dossiers").handler(handlersImpl::handleDossierRegistration)
+        router.get("/dossiers/:id").handler(::handle)
 
         vertx.createHttpServer()
             .requestHandler(router)
             .listen(port)
-
     }
 
     private fun handle(routingContext: RoutingContext){
@@ -28,7 +29,6 @@ class Server(val port: Int) : AbstractVerticle() {
             response.setStatusCode(200).end((id).toString())
         }else{
             response.setStatusCode(401).end("wrong input")
-
         }
     }
 
