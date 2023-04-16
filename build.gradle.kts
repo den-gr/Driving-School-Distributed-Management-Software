@@ -2,6 +2,20 @@ group = "dsdms"
 version = "1.0-SNAPSHOT"
 
 
+plugins {
+    val kotlinVersion: String by System.getProperties()
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
+    id("io.vertx.vertx-plugin") version System.getProperty("vertxVersion")
+    id("com.github.johnrengelman.shadow") version "7.0.0"
+}
+vertx.mainVerticle="dsdms.dossier.Main" //TODO
+
+repositories {
+    mavenCentral()
+}
+
+
 tasks.register<Exec>("myRun") {//inline function with reified type!
     //Configuration action is of type T.() -> Unit, in this case Exec.T() -> Unit
     val javaExecutable = org.gradle.internal.jvm.Jvm.current().javaExecutable.absolutePath

@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  dossier_service:
+    build:
+      context: ./DossierService
+      dockerfile: Dockerfile
+    image: dossier_service
+    ports:
+      - "8000:8000"
+#    networks:
+#      - dsdmsNet
+#networks:
+#  dsdmsNet:
+#    driver: bridge
+#    driver_opts:
+#      com.docker.network.bridge.name: "NetworkName"

@@ -5,8 +5,10 @@ import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.handler.StaticHandler
+import java.io.ObjectInputFilter
+import kotlin.system.exitProcess
 
-class Server(val port: Int) : AbstractVerticle() {
+class Server(private val port: Int) : AbstractVerticle() {
 
     private val handlersImpl: RouteHandlers = RouteHandlersImpl()
     override fun start() {
@@ -20,6 +22,10 @@ class Server(val port: Int) : AbstractVerticle() {
         vertx.createHttpServer()
             .requestHandler(router)
             .listen(port)
+            .onFailure{
+                println("Vertx failure: ${it.message}")
+                exitProcess(1)
+            }
     }
 
     private fun handle(routingContext: RoutingContext){
