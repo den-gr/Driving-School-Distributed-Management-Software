@@ -1,13 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.8.20"
     kotlin("plugin.serialization") version "1.7.10"
     id("io.vertx.vertx-plugin") version "1.4.0"
-    application
+//    application
     id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("se.thinkcode.cucumber-runner") version "0.0.11"
-    id("org.danilopianini.gradle-kotlin-qa") version "0.19.1"
 }
 
 vertx.mainVerticle="dsdms.client.Client"
@@ -44,10 +42,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-
-application {
-    mainClass.set("dsdms.client.Main")
-}
 
 tasks.register<Exec>("myRun") {//inline function with reified type!
     //Configuration action is of type T.() -> Unit, in this case Exec.T() -> Unit
