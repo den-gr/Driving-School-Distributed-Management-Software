@@ -2,11 +2,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val cucumberVersion = "7.11.2"
 
+
 plugins {
-    kotlin("jvm") // version "1.7.10"
-    kotlin("plugin.serialization") // version "1.7.10"
-    id("io.vertx.vertx-plugin") // version "1.4.0"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    val kotlinVersion: String by System.getProperties()
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
+    id("io.vertx.vertx-plugin") version System.getProperty("vertxVersion")
+
+    //service plugins
     id("se.thinkcode.cucumber-runner") version "0.0.11"
 }
 vertx.mainVerticle="dsdms.client.Server"
@@ -21,17 +24,16 @@ allprojects{
 
 }
 
-subprojects{
 
-}
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "16"
 }
 
 dependencies {
+    val vertxImplVersion: String by System.getProperties()
     testImplementation(kotlin("test"))
-    implementation("io.vertx:vertx-web:4.4.1")
-    implementation("io.vertx:vertx-web-client:4.4.1")
+    implementation("io.vertx:vertx-web:$vertxImplVersion")
+    implementation("io.vertx:vertx-web-client:$vertxImplVersion")
     testImplementation("io.cucumber:cucumber-java:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-java8:$cucumberVersion")

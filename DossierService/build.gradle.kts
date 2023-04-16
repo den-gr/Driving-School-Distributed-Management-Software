@@ -2,10 +2,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "it.unibo.dsdms"
 
+val kotlinxVersion = "1.5.0"
+
+
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.serialization")
-    id("io.vertx.vertx-plugin")
+    val kotlinVersion: String by System.getProperties()
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
+    id("io.vertx.vertx-plugin") version System.getProperty("vertxVersion")
     application
 }
 vertx.mainVerticle="dsdms.dossier.Server"
@@ -15,10 +19,10 @@ tasks.withType<KotlinCompile> {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("io.vertx:vertx-web:4.4.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation(kotlin("test"))
+    implementation("io.vertx:vertx-web:${System.getProperty("vertxImplVersion")}")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion")
 }
 
 repositories {
