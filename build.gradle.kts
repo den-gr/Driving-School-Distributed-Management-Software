@@ -7,6 +7,7 @@ plugins {
     application
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("se.thinkcode.cucumber-runner") version "0.0.11"
+    id("org.danilopianini.gradle-kotlin-qa") version "0.19.1"
 }
 
 vertx.mainVerticle="dsdms.client.Client"

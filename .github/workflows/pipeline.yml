@@ -3,6 +3,7 @@ name: main workflow
 on: 
     push:
         branches:
+            - core
             - main
             - develop
         paths-ignore:
