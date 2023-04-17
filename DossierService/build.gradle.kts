@@ -37,6 +37,14 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "dsdms.dossier.Main"
     }
+
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
+    destinationDirectory.set(file("$buildDir/outputJar"))
 }
 
 application {
@@ -44,6 +52,7 @@ application {
 }
 
 tasks.register<Jar>("uberJar") {
+
     archiveClassifier.set("uber")
 
     from(sourceSets.main.get().output)
@@ -52,4 +61,5 @@ tasks.register<Jar>("uberJar") {
     from({
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
+    destinationDirectory.set(file("$buildDir/outputJar"))
 }
