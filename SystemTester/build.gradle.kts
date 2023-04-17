@@ -4,6 +4,7 @@ group = "dsdms.client"
 version = "1.0-SNAPSHOT"
 
 val cucumberVersion = "7.11.2"
+val kotlinxVersion = "1.5.0"
 
 plugins {
     kotlin("jvm")
@@ -34,6 +35,9 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-java8:$cucumberVersion")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion")
+    implementation("io.netty:netty-all:4.1.90.Final")
 }
 
 tasks.test {
