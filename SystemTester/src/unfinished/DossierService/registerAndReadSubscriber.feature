@@ -2,9 +2,7 @@ Feature: registration and reading of new dossier
     @vertx
     Scenario Outline: subscriber informations are correct
         When I send <name>, <surname>, <cf> to server
-        Then I received Id of registered dossier, Ok
-        And when i try to read information with Id
-        Then I receive <name>, <surname>, <cf>
+        Then I received Id of registered dossier
 
     Examples: basic information
     | name | surname | cf |

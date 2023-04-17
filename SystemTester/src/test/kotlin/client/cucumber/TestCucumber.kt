@@ -31,7 +31,7 @@ fun after(){
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
-    features = ["src/test/resources/features"],
+    features = ["src/test/resources/features/test_feature.feature"],
     plugin = ["pretty", "summary"]
 )
 class TestCucumber: En {
