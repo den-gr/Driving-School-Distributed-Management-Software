@@ -17,7 +17,6 @@ class Server(private val port: Int) : AbstractVerticle() {
 
         router.get("/api/:id").handler(::handle)
         router.post("/dossiers").handler(handlersImpl::handleDossierRegistration)
-        router.get("/dossiers/:id").handler(::handle)
 
         vertx.createHttpServer()
             .requestHandler(router)

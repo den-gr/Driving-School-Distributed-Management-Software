@@ -1,18 +1,20 @@
 package dsdms.dossier
 
+import dsdms.dossier.businessModel.dossier.*
 import io.vertx.ext.web.RoutingContext
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.*
-
-@Serializable
-data class MyDossier(val name: String, val surname: String, val fiscal_code: String)
 
 class RouteHandlersImpl : RouteHandlers {
     override fun handleDossierRegistration(routingContext: RoutingContext) {
-        val data = MyDossier("riccardo", "bacca", "BCCRCR99C07C573X")
-        val string = Json.encodeToString(data)
-        routingContext.response().setStatusCode(200).end(string)
+        println(routingContext.body().asString())
+        val documents: SubscriberDocuments = Json.decodeFromString(routingContext.body().asString())
+        println("documents: $documents")
+        val id = saveDossier(documents)
+        println("id: $id")
+        if (id != null) {
+            routingContext.response().setStatusCode(200).end(id.toString())
+        } else routingContext.response().statusCode = 404
     }
 
     override fun handleDossierReading(routingContext: RoutingContext) {
