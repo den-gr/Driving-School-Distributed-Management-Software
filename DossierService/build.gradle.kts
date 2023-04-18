@@ -10,8 +10,9 @@ plugins {
     kotlin("plugin.serialization")
     id("io.vertx.vertx-plugin")
     id("com.github.johnrengelman.shadow")
-
     application
+
+    id("java-test-fixtures")
 }
 vertx.mainVerticle="dsdms.dossier.Main" //TODO
 
