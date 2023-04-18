@@ -1,10 +1,10 @@
 package dsdms.dossier.database
-import dsdms.dossier.businessModel.dossier.Dossier
+import dsdms.dossier.serialization.Dossier
 
 interface Repository {
     fun createDossier(newDossier: Dossier): Int
 
-    fun readDossierFromId(id: Int): Dossier
+    fun readDossierFromId(id: Int): Dossier?
 
     fun readDossierFromCf(cf: String): List<Dossier>
 }

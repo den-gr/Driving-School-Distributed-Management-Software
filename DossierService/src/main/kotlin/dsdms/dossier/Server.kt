@@ -1,11 +1,11 @@
 package dsdms.dossier
 
+import dsdms.dossier.routeHandler.RouteHandlers
+import dsdms.dossier.routeHandler.RouteHandlersImpl
 import io.vertx.core.AbstractVerticle
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
-import io.vertx.ext.web.handler.StaticHandler
-import java.io.ObjectInputFilter
 import kotlin.system.exitProcess
 
 class Server(private val port: Int) : AbstractVerticle() {
@@ -17,6 +17,7 @@ class Server(private val port: Int) : AbstractVerticle() {
 
         router.get("/api/:id").handler(::handle)
         router.post("/dossiers").handler(handlersImpl::handleDossierRegistration)
+        router.get("/dossiers/:id").handler(handlersImpl::handleDossierIdReading)
 
         vertx.createHttpServer()
             .requestHandler(router)
