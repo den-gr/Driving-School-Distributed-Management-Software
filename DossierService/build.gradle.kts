@@ -1,15 +1,12 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "dsdms.dossier"
 version = "0.0.1"
 
-val kotlinxVersion = "1.5.0"
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.serialization")
-    id("io.vertx.vertx-plugin")
-    id("com.github.johnrengelman.shadow")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.vertx)
+    alias(libs.plugins.johnrengelman.shadow)
     application
 
     //allows export module classes as test dependencies
@@ -20,14 +17,8 @@ vertx.mainVerticle="dsdms.dossier.Main" //TODO
 dependencies {
     implementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
-
-    //Vertx
-    implementation("io.vertx:vertx-web:${System.getProperty("vertxImplVersion")}")
-    implementation("io.netty:netty-all:4.1.90.Final")
-
-    //Kotlin utils
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion")
+    implementation(libs.bundles.vertx.server)
+    implementation(libs.bundles.kotlinx)
 }
 
 repositories {

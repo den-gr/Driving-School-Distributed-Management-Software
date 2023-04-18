@@ -1,14 +1,12 @@
 group = "dsdms"
 version = "1.0-SNAPSHOT"
 
-val kotlinxVersion = "1.5.0"
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    val kotlinVersion: String by System.getProperties()
-    kotlin("jvm") version kotlinVersion
-    kotlin("plugin.serialization") version kotlinVersion
-    id("io.vertx.vertx-plugin") version System.getProperty("vertxVersion")
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.vertx)
+    alias(libs.plugins.johnrengelman.shadow)
 }
 vertx.mainVerticle="dsdms.dossier.Main" //TODO
 
@@ -21,8 +19,6 @@ subprojects{
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
     }
-
-
 }
 
 tasks.register<Exec>("myRun") {//inline function with reified type!

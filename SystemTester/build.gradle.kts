@@ -1,19 +1,16 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "dsdms.client"
 version = "1.0-SNAPSHOT"
 
-val cucumberVersion = "7.11.2"
-val kotlinxVersion = "1.5.0"
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.serialization")
-    id("io.vertx.vertx-plugin")
-    id("com.github.johnrengelman.shadow")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.vertx)
+    alias(libs.plugins.johnrengelman.shadow)
 
     //service plugins
-    id("se.thinkcode.cucumber-runner") version "0.0.11" //add gradle task for running cucumber
+    alias(libs.plugins.cucumber.runner)
 }
 vertx.mainVerticle="dsdms.client.Server"
 
@@ -23,24 +20,18 @@ repositories {
 
 
 dependencies {
-    val vertxImplVersion: String by System.getProperties()
     testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
 
+    //Kotlin utils
+    implementation(libs.bundles.kotlinx)
+
     //Vertx
-    implementation("io.vertx:vertx-web:$vertxImplVersion")
-    implementation("io.vertx:vertx-web-client:$vertxImplVersion")
-    implementation("io.netty:netty-all:4.1.90.Final") // fix macOS vertx warning
+    implementation(libs.bundles.vertx.full)
 
     //Cucumber
-    testImplementation("io.cucumber:cucumber-java:$cucumberVersion")
-    testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
-    testImplementation("io.cucumber:cucumber-java8:$cucumberVersion")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.2")
-
-    //Kotlin utils
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion")
+    testImplementation(libs.bundles.cucumber)
+    testRuntimeOnly(libs.junit.vintage)
 
     //Allows to add external module classes as dependencies for testing
     testImplementation(testFixtures(project(":DossierService")))
