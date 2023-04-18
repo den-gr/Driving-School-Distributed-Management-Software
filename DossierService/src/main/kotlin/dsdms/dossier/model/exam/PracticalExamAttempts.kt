@@ -1,4 +1,4 @@
-package dsdms.dossier.serialization.examAttempts
+package dsdms.dossier.model.exam
 
 import kotlinx.serialization.Serializable
 

@@ -1,10 +1,8 @@
-package dsdms.dossier.model.dossier
+package dsdms.dossier.model
 
 import dsdms.dossier.database.FakeDB
 import dsdms.dossier.database.Repository
-import dsdms.dossier.serialization.Dossier
-import dsdms.dossier.serialization.SubscriberDocuments
-import dsdms.dossier.serialization.examAttempts.PracticalExamAttemptsImpl
+import dsdms.dossier.model.exam.PracticalExamAttemptsImpl
 
 
 class DossierModel {

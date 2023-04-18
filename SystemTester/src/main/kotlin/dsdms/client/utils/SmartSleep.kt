@@ -1,4 +1,4 @@
-package dsdms.client
+package dsdms.client.utils
 
 import io.vertx.core.Future
 import io.vertx.core.buffer.Buffer

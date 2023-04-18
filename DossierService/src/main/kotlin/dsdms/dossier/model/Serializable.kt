@@ -1,6 +1,6 @@
-package dsdms.dossier.serialization
+package dsdms.dossier.model
 
-import dsdms.dossier.serialization.examAttempts.PracticalExamAttemptsImpl
+import dsdms.dossier.model.exam.PracticalExamAttemptsImpl
 import kotlinx.serialization.Serializable
 
 /**

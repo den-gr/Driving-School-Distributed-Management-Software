@@ -1,4 +1,4 @@
-package dsdms.dossier.routeHandler
+package dsdms.dossier.handlers
 
 import io.vertx.ext.web.RoutingContext
 

@@ -1,4 +1,4 @@
 rootProject.name = "DSDMS"
 
-include("DossierService")
+include(":DossierService")
 include(":SystemTester")

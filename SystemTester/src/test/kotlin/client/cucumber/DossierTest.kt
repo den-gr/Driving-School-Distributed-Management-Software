@@ -1,9 +1,9 @@
 package client.cucumber
 
 import client.utils.createJson
-import dsdms.client.SmartSleep
-import dsdms.dossier.serialization.Dossier
-import dsdms.dossier.serialization.SubscriberDocuments
+import dsdms.client.utils.SmartSleep
+import dsdms.dossier.model.Dossier
+import dsdms.dossier.model.SubscriberDocuments
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions

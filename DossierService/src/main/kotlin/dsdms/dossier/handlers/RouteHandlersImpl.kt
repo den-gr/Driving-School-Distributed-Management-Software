@@ -1,8 +1,8 @@
-package dsdms.dossier.routeHandler
+package dsdms.dossier.handlers
 
-import dsdms.dossier.model.dossier.DossierModel
-import dsdms.dossier.serialization.Dossier
-import dsdms.dossier.serialization.SubscriberDocuments
+import dsdms.dossier.model.DossierModel
+import dsdms.dossier.model.Dossier
+import dsdms.dossier.model.SubscriberDocuments
 import java.net.HttpURLConnection.*
 import io.vertx.ext.web.RoutingContext
 import kotlinx.serialization.SerializationException

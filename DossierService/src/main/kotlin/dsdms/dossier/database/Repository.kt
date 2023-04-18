@@ -1,5 +1,5 @@
 package dsdms.dossier.database
-import dsdms.dossier.serialization.Dossier
+import dsdms.dossier.model.Dossier
 
 interface Repository {
     fun createDossier(newDossier: Dossier): Int

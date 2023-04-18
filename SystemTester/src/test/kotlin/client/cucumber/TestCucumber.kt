@@ -1,6 +1,6 @@
 package client.cucumber
 
-import dsdms.client.SmartSleep
+import dsdms.client.utils.SmartSleep
 import io.cucumber.java.*
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber

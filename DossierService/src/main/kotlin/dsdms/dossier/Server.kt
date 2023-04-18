@@ -1,7 +1,7 @@
 package dsdms.dossier
 
-import dsdms.dossier.routeHandler.RouteHandlers
-import dsdms.dossier.routeHandler.RouteHandlersImpl
+import dsdms.dossier.handlers.RouteHandlers
+import dsdms.dossier.handlers.RouteHandlersImpl
 import io.vertx.core.AbstractVerticle
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext

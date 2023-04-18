@@ -1,6 +1,6 @@
 package dsdms.dossier.database
 
-import dsdms.dossier.serialization.Dossier
+import dsdms.dossier.model.Dossier
 
 /**
  * The ID of the dossier is equal to the index of the actual list

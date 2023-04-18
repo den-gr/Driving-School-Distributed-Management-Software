@@ -18,6 +18,7 @@ class Main{
                 .onSuccess { println("Response: " + it.body()) }
                 .onFailure { println("Karaul") }
             vertx.close()
+
         }
     }
 

@@ -12,21 +12,22 @@ plugins {
     id("com.github.johnrengelman.shadow")
     application
 
+    //allows export module classes as test dependencies
     id("java-test-fixtures")
 }
 vertx.mainVerticle="dsdms.dossier.Main" //TODO
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "16"
-}
-
 dependencies {
     implementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
+
+    //Vertx
     implementation("io.vertx:vertx-web:${System.getProperty("vertxImplVersion")}")
+    implementation("io.netty:netty-all:4.1.90.Final")
+
+    //Kotlin utils
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion")
-    implementation("io.netty:netty-all:4.1.90.Final")
 }
 
 repositories {
@@ -50,17 +51,4 @@ tasks.withType<Jar> {
 
 application {
     mainClass.set("dsdms.dossier.Main")
-}
-
-tasks.register<Jar>("uberJar") {
-
-    archiveClassifier.set("uber")
-
-    from(sourceSets.main.get().output)
-
-    dependsOn(configurations.runtimeClasspath)
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
-    destinationDirectory.set(file("$buildDir/outputJar"))
 }

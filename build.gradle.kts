@@ -1,6 +1,7 @@
 group = "dsdms"
 version = "1.0-SNAPSHOT"
 
+val kotlinxVersion = "1.5.0"
 
 plugins {
     val kotlinVersion: String by System.getProperties()
@@ -15,6 +16,14 @@ repositories {
     mavenCentral()
 }
 
+
+subprojects{
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions.jvmTarget = "16"
+    }
+
+
+}
 
 tasks.register<Exec>("myRun") {//inline function with reified type!
     //Configuration action is of type T.() -> Unit, in this case Exec.T() -> Unit
