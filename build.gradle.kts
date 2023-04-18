@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "dsdms"
 version = "1.0-SNAPSHOT"
 
@@ -16,7 +17,7 @@ repositories {
 
 
 subprojects{
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
     }
 }

@@ -4,6 +4,7 @@ kotlinx = "1.5.0"
 cucumber = "7.11.2"
 vertxImpl = "4.4.1"
 vertx = "1.4.0"
+kmongo = "4.9.0"
 
 [libraries]
 kotlinx-ser-core = {module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref="kotlinx"}
@@ -15,12 +16,17 @@ junit-vintage = "org.junit.vintage:junit-vintage-engine:5.9.2"
 vertx-web = {module = "io.vertx:vertx-web", version.ref="vertxImpl"}
 vertx-web-client = {module = "io.vertx:vertx-web-client", version.ref="vertxImpl"}
 netty = "io.netty:netty-all:4.1.90.Final"
+kmongo-base = {module = "org.litote.kmongo:kmongo", version.ref="kmongo"} #probably not all dependencies are needed (to check)
+kmongo-coroutine = {module = "org.litote.kmongo:kmongo-coroutine", version.ref="kmongo"}
+kmongo-async = {module = "org.litote.kmongo:kmongo-async", version.ref="kmongo"}
+kmongo-reactor = {module = "org.litote.kmongo:kmongo-reactor", version.ref="kmongo"}
 
 [bundles]
 kotlinx = ["kotlinx-ser-core", "kotlinx-ser-json"]
 cucumber = ["cucumber-java", "cucumber-junit", "cucumber-java8"]
 vertx-server = ["vertx-web", "netty"]
 vertx-full = ["vertx-web", "vertx-web-client", "netty"]
+kmongo = ["kmongo-base", "kmongo-coroutine", "kmongo-async", "kmongo-reactor"]
 
 
 [plugins]

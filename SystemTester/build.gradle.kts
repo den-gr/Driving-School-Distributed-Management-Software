@@ -22,11 +22,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
-
-    //Kotlin utils
     implementation(libs.bundles.kotlinx)
-
-    //Vertx
     implementation(libs.bundles.vertx.full)
 
     //Cucumber

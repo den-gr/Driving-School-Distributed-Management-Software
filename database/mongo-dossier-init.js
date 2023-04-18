@@ -1,8 +1,8 @@
 db = db.getSiblingDB('dsdms');
 
-db.createCollection('dossier');
+db.createCollection('Dossier');
 
-db.dossier.insertMany( [
+db.Dossier.insertMany( [
 {
   name: "one",
   number: 44

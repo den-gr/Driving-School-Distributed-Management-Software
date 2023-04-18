@@ -19,6 +19,9 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(libs.bundles.vertx.server)
     implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.kmongo)
+
+//    implementation("ch.qos.logback:logback-classic:1.2.11")
 }
 
 repositories {
