@@ -1,6 +1,6 @@
 package dsdms.dossier.database
 
-import dsdms.dossier.businessModel.dossier.Dossier
+import dsdms.dossier.serialization.Dossier
 
 /**
  * The ID of the dossier is equal to the index of the actual list
@@ -13,8 +13,8 @@ class FakeDB : Repository {
         return dossiers.indexOf(newDossier)
     }
 
-    override fun readDossierFromId(id: Int): Dossier {
-        return dossiers[id]
+    override fun readDossierFromId(id: Int): Dossier? {
+        return dossiers.getOrNull(id)
     }
 
     override fun readDossierFromCf(cf: String): List<Dossier> {
