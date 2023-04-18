@@ -1,17 +1,31 @@
 version: '3.1'
 
 services:
+  mongo_dossier:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "admin"
+    ports:
+      - "27017:27017"
+    networks:
+      - dsdmsNet
+
   dossier_service:
+    depends_on:
+      - mongo_dossier
     build:
       context: ./DossierService
       dockerfile: Dockerfile
     image: dossier_service
     ports:
       - "8000:8000"
-#    networks:
-#      - dsdmsNet
-#networks:
-#  dsdmsNet:
-#    driver: bridge
-#    driver_opts:
-#      com.docker.network.bridge.name: "NetworkName"
+    networks:
+      - dsdmsNet
+  
+networks:
+  dsdmsNet:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: "NetworkName"
