@@ -38,6 +38,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion")
     implementation("io.netty:netty-all:4.1.90.Final")
+
+    testImplementation(testFixtures(project(":DossierService")))
 }
 
 tasks.test {
