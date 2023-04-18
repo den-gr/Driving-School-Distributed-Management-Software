@@ -9,6 +9,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: "admin"
     ports:
       - "27017:27017"
+    volumes:
+      - ./database/mongo-dossier-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     networks:
       - dsdmsNet
 
