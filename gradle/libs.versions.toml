@@ -15,8 +15,10 @@ cucumber-java8 = {module = "io.cucumber:cucumber-java8",  version.ref="cucumber"
 junit-vintage = "org.junit.vintage:junit-vintage-engine:5.9.2"
 vertx-web = {module = "io.vertx:vertx-web", version.ref="vertxImpl"}
 vertx-web-client = {module = "io.vertx:vertx-web-client", version.ref="vertxImpl"}
-netty = "io.netty:netty-all:4.1.90.Final"
-kmongo-base = {module = "org.litote.kmongo:kmongo", version.ref="kmongo"} #probably not all dependencies are needed (to check)
+netty = "io.netty:netty-all:4.1.90.Final" # remove vertx warning on MacOS
+
+#probably not all dependencies are needed (to check)
+kmongo-base = {module = "org.litote.kmongo:kmongo", version.ref="kmongo"}
 kmongo-coroutine = {module = "org.litote.kmongo:kmongo-coroutine", version.ref="kmongo"}
 kmongo-async = {module = "org.litote.kmongo:kmongo-async", version.ref="kmongo"}
 kmongo-reactor = {module = "org.litote.kmongo:kmongo-reactor", version.ref="kmongo"}
@@ -25,7 +27,7 @@ kmongo-reactor = {module = "org.litote.kmongo:kmongo-reactor", version.ref="kmon
 kotlinx = ["kotlinx-ser-core", "kotlinx-ser-json"]
 cucumber = ["cucumber-java", "cucumber-junit", "cucumber-java8"]
 vertx-server = ["vertx-web", "netty"]
-vertx-full = ["vertx-web", "vertx-web-client", "netty"]
+vertx-full = ["vertx-web", "vertx-web-client", "netty"] # server + client
 kmongo = ["kmongo-base", "kmongo-coroutine", "kmongo-async", "kmongo-reactor"]
 
 
