@@ -1,4 +1,4 @@
-package client.utils
+package dsdms.client.utils
 
 import io.vertx.core.buffer.Buffer
 import kotlinx.serialization.encodeToString

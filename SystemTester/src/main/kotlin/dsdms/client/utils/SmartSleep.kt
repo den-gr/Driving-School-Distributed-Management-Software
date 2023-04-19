@@ -16,14 +16,14 @@ class SmartSleep(private val timeout: Long = 5000) {
             }
         }
         for(i in iterable){
-            println("i = $i | toWait = $toWait")
+            print(".")
             if(toWait < i){
                 Thread.sleep(toWait)
                 return feature.result()
             }
             Thread.sleep(i)
             if(feature.isComplete){
-                println("is complete on $i")
+                println(" is complete on $i")
                 return feature.result()
             }
             toWait -= i

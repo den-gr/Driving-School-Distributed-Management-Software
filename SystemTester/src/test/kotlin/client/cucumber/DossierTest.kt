@@ -1,6 +1,7 @@
 package client.cucumber
 
-import client.utils.createJson
+import client.getWebClient
+import dsdms.client.utils.createJson
 import dsdms.client.utils.SmartSleep
 import dsdms.dossier.model.Dossier
 import dsdms.dossier.model.SubscriberDocuments
@@ -27,7 +28,7 @@ class DossierTest : En {
     init {
         val sleeper = SmartSleep()
         When("I send {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
-            val request = client
+            val request = getWebClient()
                 .post(8000, "localhost", "/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
             val response = sleeper.waitResult(request)
@@ -41,7 +42,7 @@ class DossierTest : En {
         }
 
         When("I send {int} to server") { id: Int ->
-            val request = client
+            val request = getWebClient()
                 .get(8000, "localhost", "/dossiers/$id")
                 .send()
             val response = sleeper.waitResult(request)
@@ -58,7 +59,7 @@ class DossierTest : En {
         }
 
         When("I send bad informations {word}, {int}, {word} to server") {name: String, surname: Int, fiscal_code: String ->
-            val request = client
+            val request = getWebClient()
                 .post(8000, "localhost", "/dossiers")
                 .sendJson(JsonObject.of(
                     "name", name,
@@ -76,7 +77,7 @@ class DossierTest : En {
         }
 
         When("I send duplicated informations {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
-            val request = client
+            val request = getWebClient()
                 .post(8000, "localhost", "/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
             val response = sleeper.waitResult(request)

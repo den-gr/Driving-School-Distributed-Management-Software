@@ -1,33 +1,16 @@
 package client.cucumber
 
+import client.getWebClient
 import dsdms.client.utils.SmartSleep
 import io.cucumber.java.*
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
-import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
-import io.vertx.ext.web.client.WebClient
 import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-
-lateinit var vertx: Vertx
-lateinit var client: WebClient
-
-@Before("@vertx")
-fun before(){
-    println("dsdms.client.cucumber.before")
-    vertx = Vertx.vertx()
-    client = WebClient.create(vertx)
-}
-
-@After("@vertx")
-fun after(){
-    println("dsdms.client.cucumber.after\n")
-    vertx.close()
-}
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
@@ -43,7 +26,7 @@ class TestCucumber: En {
 
         Given("I ask {int} id" ){ id: Int ->
             println("given $id")
-            val request = client
+            val request = getWebClient()
                 .get(8000, "localhost", "/api/$id")
                 .send()
             val response = sleeper.waitResult(request)
@@ -56,7 +39,7 @@ class TestCucumber: En {
         But("an error") {}
 
         Given("an incorrect input as {word}") {aa: String ->
-            val request = client
+            val request = getWebClient()
                 .get(8000, "localhost", "/api/$aa")
                 .send()
             response = sleeper.waitResult(request)
