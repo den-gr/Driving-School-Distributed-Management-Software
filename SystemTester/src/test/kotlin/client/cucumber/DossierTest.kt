@@ -24,6 +24,8 @@ class DossierTest : En {
     private var value: String = ""
     private var retrievedDossier: Dossier? = null
 
+    private var statusCode: Int? = null
+
     init {
         val sleeper = SmartSleep()
         When("I send {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
@@ -33,9 +35,12 @@ class DossierTest : En {
             val response = sleeper.waitResult(request)
 
             assertNotNull(response)
+            statusCode = response.statusCode()
             value = response.body().toString()
         }
         Then("I received id of registered dossier") {
+            println("Status code: $statusCode")
+            assertEquals(HTTP_OK, statusCode)
             println("Value: $value")
         }
         When("I send id to server") {
@@ -57,36 +62,36 @@ class DossierTest : En {
         }
 
         When("I send bad informations {word}, {int}, {word} to server") {name: String, surname: Int, fiscal_code: String ->
-//            val request = client
-//                .post(8000, "localhost", "/dossiers")
-//                .sendJson(JsonObject.of(
-//                    "name", name,
-//                    "surname", surname,
-//                    "fiscal_code", fiscal_code))
-//            val response = sleeper.waitResult(request)
-//
-//            assertNotNull(response)
-//            value = response.statusCode()
+            val request = client
+                .post(8000, "localhost", "/dossiers")
+                .sendJson(JsonObject.of(
+                    "name", name,
+                    "surname", surname,
+                    "fiscal_code", fiscal_code))
+            val response = sleeper.waitResult(request)
+
+            assertNotNull(response)
+            statusCode = response.statusCode()
         }
 
         Then("I received Bad request error message") {
-//            assertNotNull(value)
-//            assertEquals(HTTP_BAD_REQUEST, value)
+            assertNotNull(statusCode)
+            assertEquals(HTTP_BAD_REQUEST, statusCode)
         }
 
         When("I send duplicated informations {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
-//            val request = client
-//                .post(8000, "localhost", "/dossiers")
-//                .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
-//            val response = sleeper.waitResult(request)
-//
-//            assertNotNull(response)
-//            value = response.statusCode()
+            val request = client
+                .post(8000, "localhost", "/dossiers")
+                .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
+            val response = sleeper.waitResult(request)
+
+            assertNotNull(response)
+            statusCode = response.statusCode()
         }
 
         Then("I received Conflict error message") {
-//            assertNotNull(value)
-//            assertEquals(HTTP_CONFLICT, value)
+            assertNotNull(statusCode)
+            assertEquals(HTTP_CONFLICT, statusCode)
         }
     }
 }
