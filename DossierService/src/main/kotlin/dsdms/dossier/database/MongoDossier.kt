@@ -2,6 +2,7 @@ package dsdms.dossier.database
 
 import com.mongodb.client.MongoDatabase
 import dsdms.dossier.model.Dossier
+import org.litote.kmongo.eq
 import org.litote.kmongo.findOneById
 import org.litote.kmongo.getCollection
 
@@ -17,7 +18,7 @@ class MongoDossier(dossierServiceDb: MongoDatabase): Repository {
     }
 
     override fun readDossierFromCf(cf: String): List<Dossier> {
-        TODO("Not yet implemented")
+        return dossiers.find(Dossier::fiscal_code eq cf).toList()
     }
 
     override fun changeTheoreticalExamStatus(newStatus: Boolean, id: Int): Boolean? {
