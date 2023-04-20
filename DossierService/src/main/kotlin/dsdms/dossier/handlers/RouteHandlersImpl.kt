@@ -16,10 +16,14 @@ class RouteHandlersImpl(dossierServiceDb: MongoDatabase) : RouteHandlers {
     override fun handleDossierRegistration(routingContext: RoutingContext) {
         try {
             val documents: SubscriberDocuments = Json.decodeFromString(routingContext.body().asString())
-            val id = dossierModel.saveNewDossier(documents)
-            if (id != null) {
+
+            val verifyResult = dossierModel.verifyDocuments(documents)
+            if (verifyResult == HTTP_ACCEPTED) {
+                val id = dossierModel.saveNewDossier(documents)
                 routingContext.response().setStatusCode(HTTP_OK).end(id)
-            } else routingContext.response().setStatusCode(HTTP_CONFLICT).end("Server error !")
+            } else {
+                routingContext.response().setStatusCode(verifyResult).end()
+            }
         } catch (ex: SerializationException) {
             routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end(ex.message)
         }

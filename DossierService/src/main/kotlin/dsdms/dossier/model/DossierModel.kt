@@ -3,26 +3,25 @@ package dsdms.dossier.model
 import com.mongodb.client.MongoDatabase
 import dsdms.dossier.database.MongoDossier
 import dsdms.dossier.database.Repository
-import dsdms.dossier.model.examAttempts.PracticalExamAttemptsImpl
-import dsdms.dossier.model.examStatus.ExamStatusImpl
+import java.net.HttpURLConnection.*
 
 
 class DossierModel(dossierServiceDb: MongoDatabase) {
     private val newRepo: Repository = MongoDossier(dossierServiceDb)
-    private fun validateNewDossier(newDossier: Dossier): Boolean {
-//        val alreadyExistingDossiers: List<Dossier> = repository.readDossierFromCf(newDossier.fiscal_code)
-//        return alreadyExistingDossiers.count { el -> el.validity } == 0
-        return true
+    private fun validateNewDossier(givenDocuments: SubscriberDocuments): Boolean {
+        val alreadyExistingDossiers: List<Dossier> = newRepo.readDossierFromCf(givenDocuments.fiscal_code)
+        return alreadyExistingDossiers.count { el -> el.validity } == 0
     }
 
-    fun saveNewDossier(documents: SubscriberDocuments): String? {
-        val dossier = Dossier(documents.name, documents.surname, documents.fiscal_code,
-            true,
-            examAttempts = PracticalExamAttemptsImpl(), examStatus = ExamStatusImpl()
-        )
-        return if (validateNewDossier(dossier)) {
-            newRepo.createDossier(dossier)
-        } else null
+    fun saveNewDossier(givenDocument: SubscriberDocuments): String? {
+        return newRepo.createDossier(Dossier(givenDocument.name, givenDocument.surname, givenDocument.fiscal_code))
+    }
+
+    fun verifyDocuments(documents: SubscriberDocuments): Int {
+        return if (validateNewDossier(documents))
+            HTTP_ACCEPTED
+        else
+            HTTP_CONFLICT
     }
 
     fun readDossierFromId(id: String): Dossier? {
