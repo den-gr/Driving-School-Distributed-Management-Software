@@ -7,5 +7,5 @@ interface RouteHandlers {
 
     fun handleDossierIdReading(routingContext: RoutingContext)
 
-    fun testHandler(routingContext: RoutingContext)
+    fun handleDossierExamStatusUpdate(routingContext: RoutingContext)
 }
