@@ -1,10 +1,10 @@
 package dsdms.dossier.database
 
 import com.mongodb.client.MongoDatabase
+import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.model.Dossier
 import dsdms.dossier.model.examStatus.ExamStatus
-import dsdms.dossier.model.examStatus.ExamStatusImpl
 import org.litote.kmongo.*
 
 class MongoDossier(dossierServiceDb: MongoDatabase): Repository {
@@ -23,6 +23,10 @@ class MongoDossier(dossierServiceDb: MongoDatabase): Repository {
     }
 
     override fun updateExamStatus(newStatus: ExamStatus?, id: String): UpdateResult {
-        return dossiers.updateMany((Dossier::_id eq id), Dossier::examStatus.setTo(newStatus))
+        return dossiers.updateOne((Dossier::_id eq id), Dossier::examStatus.setTo(newStatus))
+    }
+
+    override fun deleteDossier(id: String): DeleteResult {
+        return dossiers.deleteOne(Dossier::_id eq id)
     }
 }
