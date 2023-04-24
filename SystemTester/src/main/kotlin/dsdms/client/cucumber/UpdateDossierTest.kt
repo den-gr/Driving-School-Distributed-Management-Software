@@ -35,6 +35,7 @@ class UpdateDossierTest : En {
 
     init {
         val sleeper = SmartSleep()
+        println(client)
 
         Given("a new registered dossier: {word}, {word}, {word}") { name: String, surname: String, fc: String ->
             val request = client

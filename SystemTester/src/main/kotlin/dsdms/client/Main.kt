@@ -7,7 +7,7 @@ class Main{
         @JvmStatic
         fun main(args: Array<String>) {
             Main.main(
-//                "-p", "pretty",
+                "-p", "pretty",
                 "--glue", "dsdms.client.cucumber",
                 "--plugin", "html:build/reports/cucumber",
                 "classpath:features")

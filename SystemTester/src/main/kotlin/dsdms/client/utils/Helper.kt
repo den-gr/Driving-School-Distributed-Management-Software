@@ -14,7 +14,5 @@ inline fun<reified T> createJson(docs: T): Buffer? {
 
 fun checkResponse(res: HttpResponse<Buffer>?){
     assertNotNull(res)
-    Assume.assumeNotNull(res)
     assertNotNull(res.body())
-    Assume.assumeNotNull(res.body())
 }

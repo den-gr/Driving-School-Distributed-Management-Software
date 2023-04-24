@@ -3,6 +3,7 @@ package dsdms.client.cucumber
 import dsdms.client.utils.createJson
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
+import dsdms.client.utils.checkResponse
 import dsdms.dossier.model.Dossier
 import dsdms.dossier.model.SubscriberDocuments
 import io.cucumber.java8.En
@@ -38,8 +39,7 @@ class DossierTest : En {
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
             val response = sleeper.waitResult(request)
 
-            Assume.assumeNotNull(response)
-            Assume.assumeNotNull(response?.body())
+            checkResponse(response)
 
             statusCode = response?.statusCode()
             value = response?.body().toString()
@@ -49,6 +49,7 @@ class DossierTest : En {
             assertEquals(HTTP_OK, statusCode)
             println("Value: $value")
         }
+
         When("I send id to server") {
             println("the id: $value")
             val request = client
@@ -56,8 +57,10 @@ class DossierTest : En {
                 .send()
             val response = sleeper.waitResult(request)
 
-            Assume.assumeNotNull(response)
-            Assume.assumeNotNull(response?.body())
+            checkResponse(response)
+            println("body: " + response?.body())
+            assertEquals(HTTP_OK, response?.statusCode())
+            println("body: " + response?.body())
 
             retrievedDossier = Json.decodeFromString(response?.body().toString())
         }
