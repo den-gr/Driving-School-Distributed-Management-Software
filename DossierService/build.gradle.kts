@@ -40,7 +40,7 @@ tasks.withType<Jar> {
     from({
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
-    destinationDirectory.set(file("$buildDir/outputJar"))
+    destinationDirectory.set(file("$buildDir/output"))
 }
 
 application {
