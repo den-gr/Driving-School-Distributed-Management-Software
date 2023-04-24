@@ -33,5 +33,3 @@ tasks.register<Exec>("myRun") {//inline function with reified type!
     doLast { println("$javaExecutable invocation complete") }
     doFirst { println("Ready to invoke $javaExecutable") }
 }
-
-

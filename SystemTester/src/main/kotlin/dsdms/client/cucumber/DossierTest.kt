@@ -1,14 +1,16 @@
-package client.cucumber
+package dsdms.client.cucumber
 
-import client.getWebClient
 import dsdms.client.utils.createJson
 import dsdms.client.utils.SmartSleep
+import dsdms.client.utils.VertxProvider
+import dsdms.client.utils.VertxProviderImpl
 import dsdms.dossier.model.Dossier
 import dsdms.dossier.model.SubscriberDocuments
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import io.vertx.core.json.JsonObject
+import io.vertx.ext.web.client.WebClient
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
@@ -18,17 +20,18 @@ import kotlin.test.assertNotNull
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
-    features = ["src/test/resources/features/registerAndReadSubscriber.feature"],
+    features = ["src/main/resources/features/registerAndReadSubscriber.feature"],
     plugin = ["pretty", "summary"]
 )
 class DossierTest : En {
+    private val client: WebClient = VertxProviderImpl().getNewClient()
     private var value: Int = -1
     private var retrievedDossier: Dossier? = null
 
     init {
         val sleeper = SmartSleep()
         When("I send {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
-            val request = getWebClient()
+            val request = client
                 .post(8000, "localhost", "/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
             val response = sleeper.waitResult(request)
@@ -42,7 +45,7 @@ class DossierTest : En {
         }
 
         When("I send {int} to server") { id: Int ->
-            val request = getWebClient()
+            val request = client
                 .get(8000, "localhost", "/dossiers/$id")
                 .send()
             val response = sleeper.waitResult(request)
@@ -59,7 +62,7 @@ class DossierTest : En {
         }
 
         When("I send bad informations {word}, {int}, {word} to server") {name: String, surname: Int, fiscal_code: String ->
-            val request = getWebClient()
+            val request = client
                 .post(8000, "localhost", "/dossiers")
                 .sendJson(JsonObject.of(
                     "name", name,
@@ -77,7 +80,7 @@ class DossierTest : En {
         }
 
         When("I send duplicated informations {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
-            val request = getWebClient()
+            val request = client
                 .post(8000, "localhost", "/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
             val response = sleeper.waitResult(request)

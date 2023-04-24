@@ -12,6 +12,9 @@ kotlinx-ser-json = {module = "org.jetbrains.kotlinx:kotlinx-serialization-json",
 cucumber-java = {module = "io.cucumber:cucumber-java",  version.ref="cucumber"}
 cucumber-junit = {module = "io.cucumber:cucumber-junit",  version.ref="cucumber"}
 cucumber-java8 = {module = "io.cucumber:cucumber-java8",  version.ref="cucumber"}
+cucumber-core = {module = "io.cucumber:cucumber-core",  version.ref="cucumber"}
+cucumber-testing = {module = "io.cucumber:cucumber-testing",  version.ref="cucumber"}
+cucumber-engine = {module = "io.cucumber:cucumber-junit-platform-engine",  version.ref="cucumber"}
 junit-vintage = "org.junit.vintage:junit-vintage-engine:5.9.2"
 vertx-web = {module = "io.vertx:vertx-web", version.ref="vertxImpl"}
 vertx-web-client = {module = "io.vertx:vertx-web-client", version.ref="vertxImpl"}
