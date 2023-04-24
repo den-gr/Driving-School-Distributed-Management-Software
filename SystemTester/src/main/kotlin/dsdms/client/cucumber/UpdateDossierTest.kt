@@ -3,6 +3,7 @@ package dsdms.client.cucumber
 import dsdms.client.utils.createJson
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
+import dsdms.client.utils.checkResponse
 import dsdms.dossier.model.Dossier
 import dsdms.dossier.model.ExamStatusUpdate
 import dsdms.dossier.model.SubscriberDocuments
@@ -32,18 +33,13 @@ class UpdateDossierTest : En {
     private var retrievedDossier: Dossier? = null
     private var result: HttpResponse<Buffer>? = null
 
-    fun checkResponse(res: HttpResponse<Buffer>?){
-        assertNotNull(res)
-        assumeNotNull(res)
-        assertNotNull(res.body())
-        assumeNotNull(res.body())
-    }
     init {
         val sleeper = SmartSleep()
+        println(client)
 
         Given("a new registered dossier: {word}, {word}, {word}") { name: String, surname: String, fc: String ->
             val request = client
-                .post(8000, "localhost", "/dossiers")
+                .post("/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fc)))
             val response = sleeper.waitResult(request)
 
@@ -53,7 +49,7 @@ class UpdateDossierTest : En {
 
         Then("i request the dossier from server with obtained id") {
             val request = client
-                .get(8000, "localhost", "/dossiers/$value")
+                .get("/dossiers/$value")
                 .send()
             val response = sleeper.waitResult(request)
             checkResponse(response)
@@ -70,7 +66,7 @@ class UpdateDossierTest : En {
 
         Then("trying to update {word} exam status to true") { type: String  ->
             val request = client
-                .put(8000, "localhost", "/dossiers/$value")
+                .put( "/dossiers/$value")
                 .sendBuffer(createJson(ExamStatusUpdate(type, true)))
             val response = sleeper.waitResult(request)
 
