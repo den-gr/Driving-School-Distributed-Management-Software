@@ -25,6 +25,15 @@ services:
       - "8000:8000"
     networks:
       - dsdmsNet
+  system_tester:
+    depends_on:
+      - dossier_service
+    build:
+      context: ./SystemTester
+      dockerfile: Dockerfile
+    image: system_tester
+    networks:
+      - dsdmsNet
   
 networks:
   dsdmsNet:
