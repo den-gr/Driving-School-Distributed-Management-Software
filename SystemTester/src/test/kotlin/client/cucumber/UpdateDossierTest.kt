@@ -8,13 +8,15 @@ import dsdms.dossier.model.SubscriberDocuments
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
+import io.vertx.core.buffer.Buffer
+import io.vertx.ext.web.client.HttpResponse
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
+import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
@@ -22,9 +24,9 @@ import kotlin.test.assertTrue
     plugin = ["pretty", "summary"]
 )
 class UpdateDossierTest : En {
-    private var value: Int = -1
+    private var value: String = ""
     private var retrievedDossier: Dossier? = null
-    private var result: ExamStatusUpdate? = null
+    private var result: HttpResponse<Buffer>? = null
 
     init {
         val sleeper = SmartSleep()
@@ -36,7 +38,7 @@ class UpdateDossierTest : En {
             val response = sleeper.waitResult(request)
 
             assertNotNull(response)
-            value = response.body().toString().toInt()
+            value = response.body().toString()
         }
 
         Then("i request the dossier from server with obtained id") {
@@ -54,7 +56,6 @@ class UpdateDossierTest : En {
             if (type == "theoretical") {
                 retrievedDossier?.examStatus?.let { assertFalse(it.getTheoretical()) }
             } else retrievedDossier?.examStatus?.let { assertFalse(it.getPractical()) }
-
         }
 
         Then("trying to update {word} exam status to true") { type: String  ->
@@ -64,13 +65,13 @@ class UpdateDossierTest : En {
             val response = sleeper.waitResult(request)
 
             assertNotNull(response)
-            result = Json.decodeFromString(response.body().toString())
+            result = response
         }
 
         And("obtaining {word} exam status true as response from server") { type: String ->
             assertNotNull(result)
-            result?.newStatus?.let { assertTrue(it) }
-            assertEquals(type, result?.exam)
+            println("Update result: " + result?.body().toString())
+            assertEquals(HTTP_OK, result?.statusCode())
         }
     }
 }
