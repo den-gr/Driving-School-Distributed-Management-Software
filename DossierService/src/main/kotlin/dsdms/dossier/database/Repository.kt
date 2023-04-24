@@ -1,5 +1,7 @@
 package dsdms.dossier.database
+import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.model.Dossier
+import dsdms.dossier.model.examStatus.ExamStatus
 
 interface Repository {
     fun createDossier(newDossier: Dossier): String?
@@ -8,7 +10,5 @@ interface Repository {
 
     fun readDossierFromCf(cf: String): List<Dossier>
 
-    fun changeTheoreticalExamStatus(newStatus: Boolean, id: Int): Boolean?
-
-    fun changePracticalExamStatus(newStatus: Boolean, id: Int): Boolean?
+    fun updateExamStatus(newStatus: ExamStatus?, id: String): UpdateResult
 }

@@ -1,8 +1,10 @@
 package dsdms.dossier.model
 
 import com.mongodb.client.MongoDatabase
+import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.database.MongoDossier
 import dsdms.dossier.database.Repository
+import dsdms.dossier.model.examStatus.ExamStatus
 import java.net.HttpURLConnection.*
 
 
@@ -28,10 +30,11 @@ class DossierModel(dossierServiceDb: MongoDatabase) {
         return newRepo.readDossierFromId(id)
     }
 
-    fun updateExamStatus(data: ExamStatusUpdate, id: Int) {
-//        return if (data.exam == "theoretical")
-//            this.repository.changeTheoreticalExamStatus(data.newStatus, id)
-//        else
-//            this.repository.changePracticalExamStatus(data.newStatus, id)
+    fun updateExamStatus(data: ExamStatusUpdate, id: String): UpdateResult {
+        val newStatus: ExamStatus? = readDossierFromId(id)?.examStatus
+        if (data.exam == "theoretical")
+            newStatus?.modifyTheoretical(data.newStatus)
+        else newStatus?.modifyPractical(data.newStatus)
+        return newRepo.updateExamStatus(newStatus, id)
     }
 }

@@ -1,9 +1,12 @@
 package dsdms.dossier.handlers
 
 import com.mongodb.client.MongoDatabase
+import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.model.DossierModel
 import dsdms.dossier.model.Dossier
+import dsdms.dossier.model.ExamStatusUpdate
 import dsdms.dossier.model.SubscriberDocuments
+import dsdms.dossier.model.examStatus.ExamStatus
 import java.net.HttpURLConnection.*
 import io.vertx.ext.web.RoutingContext
 import kotlinx.serialization.SerializationException
@@ -38,12 +41,15 @@ class RouteHandlersImpl(dossierServiceDb: MongoDatabase) : RouteHandlers {
     }
 
     override fun handleDossierExamStatusUpdate(routingContext: RoutingContext) {
-//        val id = routingContext.request().getParam("id").toIntOrNull()
-//        val data: ExamStatusUpdate = Json.decodeFromString(routingContext.body().asString())
-//        if (id?.let { dossierModel.readDossierFromId(it) } != null) {
-//            val result = dossierModel.updateExamStatus(data, id)?.let { ExamStatusUpdate(data.exam, it) }
-//            routingContext.response().setStatusCode(HTTP_OK).end(Json.encodeToString(result))
-//        }
-//        else routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end("Given Id is not present")
+        val id = routingContext.request().getParam("id").toString()
+        val data: ExamStatusUpdate = Json.decodeFromString(routingContext.body().asString())
+
+        if (dossierModel.readDossierFromId(id) != null) {
+            val result: UpdateResult = dossierModel.updateExamStatus(data, id)
+            if (result.wasAcknowledged())
+                routingContext.response().setStatusCode(HTTP_OK).end(result.toString())
+            else
+                routingContext.response().setStatusCode(HTTP_BAD_METHOD).end(result.toString())
+        } else routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end("Given Id is not present")
     }
 }

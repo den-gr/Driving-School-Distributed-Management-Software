@@ -1,10 +1,11 @@
 package dsdms.dossier.database
 
 import com.mongodb.client.MongoDatabase
+import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.model.Dossier
-import org.litote.kmongo.eq
-import org.litote.kmongo.findOneById
-import org.litote.kmongo.getCollection
+import dsdms.dossier.model.examStatus.ExamStatus
+import dsdms.dossier.model.examStatus.ExamStatusImpl
+import org.litote.kmongo.*
 
 class MongoDossier(dossierServiceDb: MongoDatabase): Repository {
     private val dossiers = dossierServiceDb.getCollection<Dossier>("Dossier")
@@ -21,12 +22,7 @@ class MongoDossier(dossierServiceDb: MongoDatabase): Repository {
         return dossiers.find(Dossier::fiscal_code eq cf).toList()
     }
 
-    override fun changeTheoreticalExamStatus(newStatus: Boolean, id: Int): Boolean? {
-        TODO("Not yet implemented")
+    override fun updateExamStatus(newStatus: ExamStatus?, id: String): UpdateResult {
+        return dossiers.updateMany((Dossier::_id eq id), Dossier::examStatus.setTo(newStatus))
     }
-
-    override fun changePracticalExamStatus(newStatus: Boolean, id: Int): Boolean? {
-        TODO("Not yet implemented")
-    }
-
 }
