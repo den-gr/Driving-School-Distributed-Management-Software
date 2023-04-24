@@ -8,4 +8,6 @@ interface RouteHandlers {
     fun handleDossierIdReading(routingContext: RoutingContext)
 
     fun handleDossierExamStatusUpdate(routingContext: RoutingContext)
+
+    fun deleteDossier(routingContext: RoutingContext)
 }

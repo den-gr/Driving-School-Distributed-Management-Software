@@ -20,6 +20,7 @@ class Server(private val port: Int, dossierServiceDb: MongoDatabase) : AbstractV
         router.post("/dossiers").handler(handlersImpl::handleDossierRegistration)
         router.get("/dossiers/:id").handler(handlersImpl::handleDossierIdReading)
         router.put("/dossiers/:id").handler(handlersImpl::handleDossierExamStatusUpdate)
+        router.delete("/dossiers/:id").handler(handlersImpl::deleteDossier)
 
         vertx.createHttpServer()
             .requestHandler(router)

@@ -2,11 +2,12 @@ package dsdms.dossier.handlers
 
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.result.UpdateResult
-import dsdms.dossier.model.DossierModel
-import dsdms.dossier.model.Dossier
+import dsdms.dossier.service.DossierService
 import dsdms.dossier.model.ExamStatusUpdate
 import dsdms.dossier.model.SubscriberDocuments
-import dsdms.dossier.model.examStatus.ExamStatus
+import dsdms.dossier.service.Errors
+import dsdms.dossier.service.conversionTable
+import dsdms.dossier.service.getHttpCode
 import java.net.HttpURLConnection.*
 import io.vertx.ext.web.RoutingContext
 import kotlinx.serialization.SerializationException
@@ -15,17 +16,17 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 
 class RouteHandlersImpl(dossierServiceDb: MongoDatabase) : RouteHandlers {
-    private val dossierModel: DossierModel = DossierModel(dossierServiceDb)
+    private val dossierService: DossierService = DossierService(dossierServiceDb)
     override fun handleDossierRegistration(routingContext: RoutingContext) {
         try {
             val documents: SubscriberDocuments = Json.decodeFromString(routingContext.body().asString())
 
-            val verifyResult = dossierModel.verifyDocuments(documents)
-            if (verifyResult == HTTP_ACCEPTED) {
-                val id = dossierModel.saveNewDossier(documents)
-                routingContext.response().setStatusCode(HTTP_OK).end(id)
+            val verifyResult = dossierService.verifyDocuments(documents)
+            if (verifyResult == Errors.OK) {
+                val id = dossierService.saveNewDossier(documents)
+                routingContext.response().setStatusCode(conversionTable.getHttpCode(verifyResult)).end(id)
             } else {
-                routingContext.response().setStatusCode(verifyResult).end()
+                routingContext.response().setStatusCode(conversionTable.getHttpCode(verifyResult)).end(verifyResult.name)
             }
         } catch (ex: SerializationException) {
             routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end(ex.message)
@@ -33,23 +34,27 @@ class RouteHandlersImpl(dossierServiceDb: MongoDatabase) : RouteHandlers {
     }
 
     override fun handleDossierIdReading(routingContext: RoutingContext) {
-        val id = routingContext.request().getParam("id").toString()
-        val retrievedDossier: Dossier? = dossierModel.readDossierFromId(id)
+        val retrievedDossier = dossierService.readDossierFromId(routingContext.request().getParam("id").toString())
         if (retrievedDossier == null) {
-            routingContext.response().setStatusCode(HTTP_BAD_GATEWAY).end("Given Id is not present")
+            routingContext.response().setStatusCode(conversionTable.getHttpCode(Errors.ID_NOT_FOUND)).end(Errors.ID_NOT_FOUND.name)
         } else routingContext.response().setStatusCode(HTTP_OK).end(Json.encodeToString(retrievedDossier))
     }
 
     override fun handleDossierExamStatusUpdate(routingContext: RoutingContext) {
-        val id = routingContext.request().getParam("id").toString()
         val data: ExamStatusUpdate = Json.decodeFromString(routingContext.body().asString())
-
-        if (dossierModel.readDossierFromId(id) != null) {
-            val result: UpdateResult = dossierModel.updateExamStatus(data, id)
+        val result: UpdateResult? = dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
+        if (result == null) {
+            routingContext.response().setStatusCode(conversionTable.getHttpCode(Errors.ID_NOT_FOUND)).end(Errors.ID_NOT_FOUND.name)
+        } else {
             if (result.wasAcknowledged())
                 routingContext.response().setStatusCode(HTTP_OK).end(result.toString())
             else
-                routingContext.response().setStatusCode(HTTP_BAD_METHOD).end(result.toString())
-        } else routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end("Given Id is not present")
+                routingContext.response().setStatusCode(HTTP_INTERNAL_ERROR).end(result.toString())
+        }
+    }
+
+    override fun deleteDossier(routingContext: RoutingContext) {
+        val result = dossierService.deleteDossier(routingContext.request().getParam("id").toString())
+        routingContext.response().setStatusCode(conversionTable.getHttpCode(result)).end(result.name)
     }
 }
