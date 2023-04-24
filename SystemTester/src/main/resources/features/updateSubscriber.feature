@@ -1,5 +1,4 @@
 Feature: Update subscriber informations
-  @vertx
   Scenario Outline: updating examStatus
     Given a new registered dossier: <name>, <surname>, <fc>
     Then i request the dossier from server with obtained id
