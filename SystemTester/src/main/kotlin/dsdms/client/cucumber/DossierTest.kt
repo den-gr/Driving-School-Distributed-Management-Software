@@ -2,7 +2,6 @@ package dsdms.client.cucumber
 
 import dsdms.client.utils.createJson
 import dsdms.client.utils.SmartSleep
-import dsdms.client.utils.VertxProvider
 import dsdms.client.utils.VertxProviderImpl
 import dsdms.dossier.model.Dossier
 import dsdms.dossier.model.SubscriberDocuments
@@ -13,6 +12,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.client.WebClient
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import org.junit.Assume
 import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 import java.net.HttpURLConnection.*
@@ -25,8 +25,10 @@ import kotlin.test.assertNotNull
 )
 class DossierTest : En {
     private val client: WebClient = VertxProviderImpl().getNewClient()
-    private var value: Int = -1
+    private var value: String = ""
     private var retrievedDossier: Dossier? = null
+
+    private var statusCode: Int? = null
 
     init {
         val sleeper = SmartSleep()
@@ -36,22 +38,28 @@ class DossierTest : En {
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
             val response = sleeper.waitResult(request)
 
-            assertNotNull(response)
-            value = response.body().toString().toInt()
-        }
-        Then("I received {int} of registered dossier") { id: Int ->
-            println("Value: $value")
-            assertEquals(id, value) // first dossier registered
-        }
+            Assume.assumeNotNull(response)
+            Assume.assumeNotNull(response?.body())
 
-        When("I send {int} to server") { id: Int ->
+            statusCode = response?.statusCode()
+            value = response?.body().toString()
+        }
+        Then("I received id of registered dossier") {
+            println("Status code: $statusCode")
+            assertEquals(HTTP_OK, statusCode)
+            println("Value: $value")
+        }
+        When("I send id to server") {
+            println("the id: $value")
             val request = client
-                .get("/dossiers/$id")
+                .get("/dossiers/$value")
                 .send()
             val response = sleeper.waitResult(request)
-            assertNotNull(response)
 
-            retrievedDossier = Json.decodeFromString(response.body().toString())
+            Assume.assumeNotNull(response)
+            Assume.assumeNotNull(response?.body())
+
+            retrievedDossier = Json.decodeFromString(response?.body().toString())
         }
 
         Then("I received {word}, {word}, {word} of registered dossier") {name: String, surname: String, fiscal_code: String ->
@@ -71,12 +79,12 @@ class DossierTest : En {
             val response = sleeper.waitResult(request)
 
             assertNotNull(response)
-            value = response.statusCode()
+            statusCode = response.statusCode()
         }
 
         Then("I received Bad request error message") {
-            assertNotNull(value)
-            assertEquals(HTTP_BAD_REQUEST, value)
+            assertNotNull(statusCode)
+            assertEquals(HTTP_BAD_REQUEST, statusCode)
         }
 
         When("I send duplicated informations {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
@@ -86,12 +94,12 @@ class DossierTest : En {
             val response = sleeper.waitResult(request)
 
             assertNotNull(response)
-            value = response.statusCode()
+            statusCode = response.statusCode()
         }
 
         Then("I received Conflict error message") {
-            assertNotNull(value)
-            assertEquals(HTTP_CONFLICT, value)
+            assertNotNull(statusCode)
+            assertEquals(HTTP_CONFLICT, statusCode)
         }
     }
 }

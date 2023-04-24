@@ -1,28 +1,40 @@
 package dsdms.dossier.model
 
-import dsdms.dossier.database.FakeDB
+import com.mongodb.client.MongoDatabase
+import com.mongodb.client.result.UpdateResult
+import dsdms.dossier.database.MongoDossier
 import dsdms.dossier.database.Repository
-import dsdms.dossier.model.exam.PracticalExamAttemptsImpl
+import dsdms.dossier.model.examStatus.ExamStatus
+import java.net.HttpURLConnection.*
 
 
-class DossierModel {
-    private val repository: Repository = FakeDB()
-    private fun validateNewDossier(newDossier: Dossier): Boolean {
-        val alreadyExistingDossiers: List<Dossier> = repository.readDossierFromCf(newDossier.fiscal_code)
+class DossierModel(dossierServiceDb: MongoDatabase) {
+    private val newRepo: Repository = MongoDossier(dossierServiceDb)
+    private fun validateNewDossier(givenDocuments: SubscriberDocuments): Boolean {
+        val alreadyExistingDossiers: List<Dossier> = newRepo.readDossierFromCf(givenDocuments.fiscal_code)
         return alreadyExistingDossiers.count { el -> el.validity } == 0
     }
 
-    fun saveNewDossier(documents: SubscriberDocuments): Int? {
-        val dossier = Dossier(documents.name, documents.surname, documents.fiscal_code,
-            true, null,
-            examAttempts = PracticalExamAttemptsImpl()
-        )
-        return if (validateNewDossier(dossier)) {
-            repository.createDossier(dossier)
-        } else null
+    fun saveNewDossier(givenDocument: SubscriberDocuments): String? {
+        return newRepo.createDossier(Dossier(givenDocument.name, givenDocument.surname, givenDocument.fiscal_code))
     }
 
-    fun readDossierFromId(id: Int): Dossier? {
-        return repository.readDossierFromId(id)
+    fun verifyDocuments(documents: SubscriberDocuments): Int {
+        return if (validateNewDossier(documents))
+            HTTP_ACCEPTED
+        else
+            HTTP_CONFLICT
+    }
+
+    fun readDossierFromId(id: String): Dossier? {
+        return newRepo.readDossierFromId(id)
+    }
+
+    fun updateExamStatus(data: ExamStatusUpdate, id: String): UpdateResult {
+        val newStatus: ExamStatus? = readDossierFromId(id)?.examStatus
+        if (data.exam == "theoretical")
+            newStatus?.modifyTheoretical(data.newStatus)
+        else newStatus?.modifyPractical(data.newStatus)
+        return newRepo.updateExamStatus(newStatus, id)
     }
 }

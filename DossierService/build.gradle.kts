@@ -11,6 +11,7 @@ plugins {
 
     //allows export module classes as test dependencies
     id("java-test-fixtures")
+    id("io.kotest.multiplatform") version "5.0.2"
 }
 vertx.mainVerticle="dsdms.dossier.Main" //TODO
 
@@ -20,6 +21,12 @@ dependencies {
     implementation(libs.bundles.vertx.server)
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.kmongo)
+
+    implementation("io.kotest:kotest-framework-engine:5.5.5")
+    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
+    testImplementation("io.kotest:kotest-property:5.5.5")
+
+    implementation("org.litote.kmongo:kmongo-id-serialization:4.9.0")
 
 //    implementation("ch.qos.logback:logback-classic:1.2.11")
 }

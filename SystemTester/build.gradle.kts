@@ -38,6 +38,7 @@ tasks.test {
 }
 
 tasks.withType<Jar> {
+    isZip64  = true
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
         attributes["Main-Class"] = "dsdms.client.Main"

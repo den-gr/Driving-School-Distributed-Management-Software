@@ -1,11 +1,12 @@
-package dsdms.dossier.model.exam
+package dsdms.dossier.model.examAttempts
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("Exam attempts")
+@SerialName("examAttempts")
 class PracticalExamAttemptsImpl : PracticalExamAttempts {
+
     private val maxAttempts = 3
     override var attempts: Int = 0
         set(value) {

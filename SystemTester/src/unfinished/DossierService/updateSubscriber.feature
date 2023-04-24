@@ -7,7 +7,7 @@ Feature: Update subscriber informations
         And when trying to update <Type> <Status after>
         Then it become <Status after>
 
-    Example: examples
+    Examples: examples
         | Type | Status before | Status after |
         | Theoretical_exam_status | UNPASSED | PASSED |
         | Practical_exam_status | UNPASSED | PASSED |
