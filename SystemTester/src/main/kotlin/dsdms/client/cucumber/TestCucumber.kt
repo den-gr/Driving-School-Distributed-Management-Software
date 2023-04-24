@@ -29,7 +29,7 @@ class TestCucumber: En {
         Given("I ask {int} id" ){ id: Int ->
             println("given $id")
             val request = client
-                .get(8000, "localhost", "/api/$id")
+                .get("/api/$id")
                 .send()
             val response = sleeper.waitResult(request)
             assertNotNull(response)
@@ -42,9 +42,10 @@ class TestCucumber: En {
 
         Given("an incorrect input as {word}") {aa: String ->
             val request = client
-                .get(8000, "localhost", "/api/$aa")
+                .get("/api/$aa")
                 .send()
             response = sleeper.waitResult(request)
+            assertNotNull(response)
         }
         Then("I have an error") {
             assertEquals(response?.statusCode(), 401)

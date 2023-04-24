@@ -32,7 +32,7 @@ class DossierTest : En {
         val sleeper = SmartSleep()
         When("I send {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
             val request = client
-                .post(8000, "localhost", "/dossiers")
+                .post( "/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
             val response = sleeper.waitResult(request)
 
@@ -46,7 +46,7 @@ class DossierTest : En {
 
         When("I send {int} to server") { id: Int ->
             val request = client
-                .get(8000, "localhost", "/dossiers/$id")
+                .get("/dossiers/$id")
                 .send()
             val response = sleeper.waitResult(request)
             assertNotNull(response)
@@ -63,7 +63,7 @@ class DossierTest : En {
 
         When("I send bad informations {word}, {int}, {word} to server") {name: String, surname: Int, fiscal_code: String ->
             val request = client
-                .post(8000, "localhost", "/dossiers")
+                .post("/dossiers")
                 .sendJson(JsonObject.of(
                     "name", name,
                     "surname", surname,
@@ -81,7 +81,7 @@ class DossierTest : En {
 
         When("I send duplicated informations {word}, {word}, {word} to server") {name: String, surname: String, fiscal_code: String ->
             val request = client
-                .post(8000, "localhost", "/dossiers")
+                .post( "/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
             val response = sleeper.waitResult(request)
 
