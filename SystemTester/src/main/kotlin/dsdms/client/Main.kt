@@ -10,8 +10,6 @@ class Main{
                 "--glue", "dsdms.client.cucumber",
                 "--plugin", "html:build/reports/cucumber",
                 "classpath:features")
-            println("Hello Worldddd2!")
-
         }
     }
 }
