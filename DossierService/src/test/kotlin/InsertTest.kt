@@ -3,9 +3,9 @@ import dsdms.dossier.model.Dossier
 import dsdms.dossier.model.examStatus.ExamStatus
 import dsdms.dossier.model.examStatus.ExamStatusImpl
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.string.shouldHaveLength
 import org.litote.kmongo.*
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class InsertTest: FunSpec({
     lateinit var dossiers: MongoCollection<Dossier>
@@ -16,12 +16,11 @@ class InsertTest: FunSpec({
         dossiers = database.getCollection<Dossier>("Dossier")
     }
 
-    test("assert 0 equals 0") {
+    test("assert insert test") {
         val den = Dossier("den", "grush", "DNFG123")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
-        println(result.toString())
-        "sam".shouldHaveLength(3)
+        assertNotNull(result)
     }
 
     test("update test") {
