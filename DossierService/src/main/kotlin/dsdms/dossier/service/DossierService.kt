@@ -31,7 +31,6 @@ class DossierService(dossierServiceDb: MongoDatabase) {
     }
 
     fun updateExamStatus(data: ExamStatusUpdate, id: String): Errors {
-        println("id: $id")
         val newStatus = readDossierFromId(id)?.examStatus
         if (data.exam == "theoretical")
             newStatus?.modifyTheoretical(data.newStatus)
@@ -40,7 +39,6 @@ class DossierService(dossierServiceDb: MongoDatabase) {
     }
 
     private fun handleUpdateResults(updateResult: UpdateResult): Errors {
-        println("Update Result: $updateResult")
         return if (updateResult.matchedCount.toInt() != 1)
             Errors.MULTIPLE_EQUAL_IDS
         else if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged())
