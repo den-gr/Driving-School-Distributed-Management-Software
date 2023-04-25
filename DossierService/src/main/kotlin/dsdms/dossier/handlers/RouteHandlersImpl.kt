@@ -1,7 +1,6 @@
 package dsdms.dossier.handlers
 
 import com.mongodb.client.MongoDatabase
-import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.service.DossierService
 import dsdms.dossier.model.ExamStatusUpdate
 import dsdms.dossier.model.SubscriberDocuments
@@ -42,19 +41,13 @@ class RouteHandlersImpl(dossierServiceDb: MongoDatabase) : RouteHandlers {
 
     override fun handleDossierExamStatusUpdate(routingContext: RoutingContext) {
         val data: ExamStatusUpdate = Json.decodeFromString(routingContext.body().asString())
-        val result: UpdateResult? = dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
-        if (result == null) {
-            routingContext.response().setStatusCode(conversionTable.getHttpCode(Errors.ID_NOT_FOUND)).end(Errors.ID_NOT_FOUND.name)
-        } else {
-            if (result.wasAcknowledged())
-                routingContext.response().setStatusCode(HTTP_OK).end(result.toString())
-            else
-                routingContext.response().setStatusCode(HTTP_INTERNAL_ERROR).end(result.toString())
-        }
+        val updateResult: Errors = dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
+
+        routingContext.response().setStatusCode(conversionTable.getHttpCode(updateResult)).end(updateResult.name)
     }
 
     override fun deleteDossier(routingContext: RoutingContext) {
-        val result = dossierService.deleteDossier(routingContext.request().getParam("id").toString())
-        routingContext.response().setStatusCode(conversionTable.getHttpCode(result)).end(result.name)
+        val deleteResult = dossierService.deleteDossier(routingContext.request().getParam("id").toString())
+        routingContext.response().setStatusCode(conversionTable.getHttpCode(deleteResult)).end(deleteResult.name)
     }
 }

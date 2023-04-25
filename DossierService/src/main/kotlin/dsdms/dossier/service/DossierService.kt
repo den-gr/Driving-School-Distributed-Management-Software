@@ -30,23 +30,29 @@ class DossierService(dossierServiceDb: MongoDatabase) {
         return newRepo.readDossierFromId(id)
     }
 
-    fun updateExamStatus(data: ExamStatusUpdate, id: String): UpdateResult? {
-        val dossier: Dossier? = readDossierFromId(id)
-        return if (dossier == null) null
-        else {
-            val newStatus = dossier.examStatus
-            if (data.exam == "theoretical")
-                newStatus.modifyTheoretical(data.newStatus)
-            else newStatus.modifyPractical(data.newStatus)
-            newRepo.updateExamStatus(newStatus, id)
-        }
+    fun updateExamStatus(data: ExamStatusUpdate, id: String): Errors {
+        println("id: $id")
+        val newStatus = readDossierFromId(id)?.examStatus
+        if (data.exam == "theoretical")
+            newStatus?.modifyTheoretical(data.newStatus)
+        else newStatus?.modifyPractical(data.newStatus)
+        return handleUpdateResults(newRepo.updateExamStatus(newStatus, id))
+    }
+
+    private fun handleUpdateResults(updateResult: UpdateResult): Errors {
+        println("Update Result: $updateResult")
+        return if (updateResult.matchedCount.toInt() != 1)
+            Errors.MULTIPLE_EQUAL_IDS
+        else if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged())
+            Errors.UPDATE_ERROR
+        else Errors.OK
     }
 
     fun deleteDossier(id: String): Errors {
-        return if (this.readDossierFromId(id) != null) {
-            if (newRepo.deleteDossier(id).wasAcknowledged()) {
-                Errors.OK
-            } else Errors.DELETE_ERROR
-        } else Errors.ID_NOT_FOUND
+        val deleteResult = newRepo.deleteDossier(id)
+        return if (!deleteResult.wasAcknowledged() || deleteResult.deletedCount.toInt() == 0)
+            Errors.DELETE_ERROR
+        else
+            Errors.OK
     }
 }
