@@ -35,6 +35,9 @@ jobs:
               uses: isbang/compose-action@v1.4.1
               with:
                 down-flags: "--volumes"
+                services: dossier_service
+            - name: run tests
+              run: ./gradlew SystemTester:run
 
 #            - name: run tests
 #              run: |
