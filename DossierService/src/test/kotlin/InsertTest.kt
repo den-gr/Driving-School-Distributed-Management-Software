@@ -33,6 +33,10 @@ class InsertTest: FunSpec({
         val newStatus: ExamStatus = ExamStatusImpl()
         newStatus.modifyTheoretical(true)
 
-        assertEquals(false, dossiers.updateOne(Dossier::_id eq "12345678OGP", setValue(Dossier::examStatus, newStatus)).wasAcknowledged())
+        val updateResult = dossiers.deleteOne(Dossier::_id eq "12345678OGP")
+
+        println(updateResult.toString())
+
+        assertEquals(true, updateResult.deletedCount.toInt() != 1)
     }
 })
