@@ -6,14 +6,15 @@ version = "0.0.1"
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.vertx)
     alias(libs.plugins.johnrengelman.shadow)
 
     application
-}
-application.mainClass.set("dsdms.client.Main")
 
-vertx.mainVerticle = "dsdms.client.Server"
+    id("io.ktor.plugin") version "2.3.0"
+}
+
+
+application.mainClass.set("dsdms.client.Main")
 
 repositories {
     mavenCentral()
@@ -24,31 +25,27 @@ dependencies {
     implementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(libs.bundles.kotlinx)
-    implementation(libs.bundles.vertx.full)
+    implementation(libs.bundles.vertx.client)
 
     //Cucumber
     implementation(libs.bundles.cucumber)
 
     //Allows to add external module classes as dependencies for testing
-    implementation(testFixtures(project(":DossierService")))
+    implementation(project(":DossierService"))
+
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<Jar> {
-    isZip64  = true
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    mergeServiceFiles()
     manifest {
         attributes["Main-Class"] = "dsdms.client.Main"
     }
-
-    dependsOn(configurations.runtimeClasspath)
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
-
+    archiveFileName.set("${project.name}-${project.version}.jar")
     destinationDirectory.set(file("$buildDir/output"))
 }
 

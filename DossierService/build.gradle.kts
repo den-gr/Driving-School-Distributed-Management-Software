@@ -10,7 +10,8 @@ plugins {
     application
 
     //allows export module classes as test dependencies
-    id("java-test-fixtures")
+//    id("java-test-fixtures")
+    id("java-library")
     id("io.kotest.multiplatform") version "5.0.2"
 }
 vertx.mainVerticle="dsdms.dossier.Main" //TODO
