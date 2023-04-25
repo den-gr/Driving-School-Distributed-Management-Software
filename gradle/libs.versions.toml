@@ -26,7 +26,7 @@ kmongo-reactor = {module = "org.litote.kmongo:kmongo-reactor", version.ref="kmon
 kotlinx = ["kotlinx-ser-core", "kotlinx-ser-json"]
 cucumber = ["cucumber-java", "cucumber-junit", "cucumber-java8"]
 vertx-server = ["vertx-web", "netty"]
-vertx-full = ["vertx-web", "vertx-web-client", "netty"] # server + client
+vertx-client = ["vertx-web-client", "netty"]
 kmongo = ["kmongo-base", "kmongo-coroutine", "kmongo-async", "kmongo-reactor"]
 
 

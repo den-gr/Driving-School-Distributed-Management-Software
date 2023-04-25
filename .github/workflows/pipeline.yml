@@ -29,8 +29,15 @@ jobs:
               uses: fwilhe2/setup-kotlin@main
               with:
                 version: 1.7.10
-            - name: run tests
-              run: | 
-                  ./gradlew DossierService:run &
-                  sleep 5 &&
-                  ./gradlew cucumber
+            - name: gradle build
+              run: ./gradlew build
+            - name: docker compose
+              uses: isbang/compose-action@v1.4.1
+              with:
+                down-flags: "--volumes"
+
+#            - name: run tests
+#              run: |
+#                  ./gradlew DossierService:run &
+#                  sleep 5 &&
+#                  ./gradlew cucumber
