@@ -11,7 +11,7 @@ class Main {
             val port = 8000
             println("wow")
 
-            val dossierServiceDb = KMongo.createClient("mongodb://admin:admin@localhost:27017").getDatabase("dossier_service")
+            val dossierServiceDb = KMongo.createClient("mongodb://admin:admin@mongo:27017").getDatabase("dossier_service")
             val server = Server(port, dossierServiceDb)
             Vertx.vertx().deployVerticle(server)
         }

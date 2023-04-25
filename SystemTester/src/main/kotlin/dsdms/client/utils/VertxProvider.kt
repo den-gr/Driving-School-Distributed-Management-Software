@@ -15,7 +15,7 @@ class VertxProviderImpl : VertxProvider {
     override fun getNewClient(): WebClient{
         val options: WebClientOptions = WebClientOptions()
             .setDefaultPort(8000)
-            .setDefaultHost("localhost")
+            .setDefaultHost("dossier_service")
         return WebClient.create(vertx, options)
     }
 }

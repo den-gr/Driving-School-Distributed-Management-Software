@@ -25,6 +25,7 @@ services:
       - "8000:8000"
     networks:
       - dsdmsNet
+
   system_tester:
     depends_on:
       - dossier_service
@@ -39,4 +40,4 @@ networks:
   dsdmsNet:
     driver: bridge
     driver_opts:
-      com.docker.network.bridge.name: "NetworkName"
+      com.docker.network.bridge.name: "Networkk"
