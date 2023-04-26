@@ -17,7 +17,7 @@ plugins {
 vertx.mainVerticle="dsdms.dossier.Main" //TODO
 
 dependencies {
-    implementation(kotlin("test"))
+    testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(libs.bundles.vertx.server)
     implementation(libs.bundles.kotlinx)
@@ -27,9 +27,6 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:5.5.5")
     testImplementation("io.kotest:kotest-property:5.5.5")
 
-    implementation("org.litote.kmongo:kmongo-id-serialization:4.9.0")
-
-//    implementation("ch.qos.logback:logback-classic:1.2.11")
 }
 
 repositories {
