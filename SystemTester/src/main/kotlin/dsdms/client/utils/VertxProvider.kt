@@ -13,9 +13,14 @@ class VertxProviderImpl : VertxProvider {
     private val vertx: Vertx = Vertx.vertx()
 
     override fun getNewClient(): WebClient{
+        var host = "localhost"
+        if(System.getProperty("docker") != null){
+            host = "dossier_service"
+        }
+        println("Host is: $host || while docker property = ${System.getProperty("docker")}")
         val options: WebClientOptions = WebClientOptions()
             .setDefaultPort(8000)
-            .setDefaultHost("dossier_service")
+            .setDefaultHost(host)
         return WebClient.create(vertx, options)
     }
 }
