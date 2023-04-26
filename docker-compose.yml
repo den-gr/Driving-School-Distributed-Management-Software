@@ -31,6 +31,8 @@ services:
       - dossier_service
     build:
       context: ./SystemTester
+      args:
+        - DOSSIER_HOST=dossier_service
       dockerfile: Dockerfile
     image: system_tester
     networks:
