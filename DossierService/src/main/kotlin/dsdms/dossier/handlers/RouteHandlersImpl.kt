@@ -23,7 +23,7 @@ class RouteHandlersImpl(dossierServiceDb: MongoDatabase) : RouteHandlers {
             val verifyResult = dossierService.verifyDocuments(documents)
             if (verifyResult == Errors.OK) {
                 val id = dossierService.saveNewDossier(documents)
-                routingContext.response().setStatusCode(conversionTable.getHttpCode(verifyResult)).end("ciao")
+                routingContext.response().setStatusCode(conversionTable.getHttpCode(verifyResult)).end(id)
             } else {
                 routingContext.response().setStatusCode(conversionTable.getHttpCode(verifyResult)).end(verifyResult.name)
             }
