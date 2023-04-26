@@ -1,4 +1,4 @@
-package dsdms.dossier.model.examStatus
+package dsdms.dossier.model.valueObjects.examStatus
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

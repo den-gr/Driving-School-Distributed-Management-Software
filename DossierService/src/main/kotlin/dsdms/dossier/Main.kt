@@ -1,7 +1,6 @@
 package dsdms.dossier
 
 import io.vertx.core.Vertx
-
 import org.litote.kmongo.*
 
 class Main {
@@ -9,10 +8,10 @@ class Main {
         @JvmStatic
         fun main(args : Array<String>){
             val port = 8000
-            println("wow")
+            println("Started")
 
-            val dossierServiceDb = KMongo.createClient("mongodb://admin:admin@mongo:27017").getDatabase("dossier_service")
-            val server = Server(port, dossierServiceDb)
+            val dbConnection = KMongo.createClient("mongodb://admin:admin@mongo:27017").getDatabase("dossier_service")
+            val server = Server(port, dbConnection)
             Vertx.vertx().deployVerticle(server)
         }
     }

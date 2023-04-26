@@ -1,4 +1,4 @@
-package dsdms.dossier.model.examAttempts
+package dsdms.dossier.model.valueObjects.examAttempts
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

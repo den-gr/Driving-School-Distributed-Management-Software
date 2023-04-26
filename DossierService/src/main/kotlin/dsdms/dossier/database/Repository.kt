@@ -1,8 +1,7 @@
 package dsdms.dossier.database
-import com.mongodb.client.result.DeleteResult
-import com.mongodb.client.result.UpdateResult
-import dsdms.dossier.model.Dossier
-import dsdms.dossier.model.examStatus.ExamStatus
+import dsdms.dossier.database.utils.RepositoryResponseStatus
+import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 
 interface Repository {
     fun createDossier(newDossier: Dossier): String?
@@ -11,7 +10,7 @@ interface Repository {
 
     fun readDossierFromCf(cf: String): List<Dossier>
 
-    fun updateExamStatus(newStatus: ExamStatus?, id: String): UpdateResult
+    fun updateExamStatus(newStatus: ExamStatus?, id: String): RepositoryResponseStatus
 
-    fun deleteDossier(id: String): DeleteResult
+    fun deleteDossier(id: String): RepositoryResponseStatus
 }

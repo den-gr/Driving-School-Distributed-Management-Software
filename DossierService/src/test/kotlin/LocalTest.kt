@@ -1,13 +1,13 @@
 import com.mongodb.client.MongoCollection
-import dsdms.dossier.model.Dossier
-import dsdms.dossier.model.examStatus.ExamStatus
-import dsdms.dossier.model.examStatus.ExamStatusImpl
+import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
+import dsdms.dossier.model.valueObjects.examStatus.ExamStatusImpl
 import io.kotest.core.spec.style.FunSpec
 import org.litote.kmongo.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class InsertTest: FunSpec({
+class LocalTest: FunSpec({
     lateinit var dossiers: MongoCollection<Dossier>
 
     beforeEach {

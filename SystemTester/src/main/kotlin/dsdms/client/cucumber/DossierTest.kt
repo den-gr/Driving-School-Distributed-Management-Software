@@ -4,8 +4,8 @@ import dsdms.client.utils.createJson
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
-import dsdms.dossier.model.Dossier
-import dsdms.dossier.model.SubscriberDocuments
+import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.valueObjects.SubscriberDocuments
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
@@ -13,7 +13,6 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.client.WebClient
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.junit.Assume
 import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 import java.net.HttpURLConnection.*

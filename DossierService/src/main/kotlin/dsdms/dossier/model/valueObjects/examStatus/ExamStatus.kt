@@ -1,4 +1,4 @@
-package dsdms.dossier.model.examStatus
+package dsdms.dossier.model.valueObjects.examStatus
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import kotlinx.serialization.Serializable
