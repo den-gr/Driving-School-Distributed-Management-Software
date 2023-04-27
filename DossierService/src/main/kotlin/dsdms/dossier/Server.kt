@@ -15,8 +15,9 @@ import kotlin.system.exitProcess
 class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
-    private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
+    private var handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
     override fun start() {
+        handlersImpl.setVerticle(vertx)
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
