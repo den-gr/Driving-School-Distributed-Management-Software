@@ -1,6 +1,5 @@
 package dsdms.dossier
 
-import com.mongodb.client.MongoDatabase
 import dsdms.dossier.database.Repository
 import dsdms.dossier.database.RepositoryImpl
 import dsdms.dossier.handlers.RouteHandlers
@@ -10,9 +9,10 @@ import io.vertx.core.AbstractVerticle
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
+import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
-class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerticle() {
+class Server(private val port: Int, dbConnection: CoroutineDatabase) : AbstractVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
     private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
