@@ -9,8 +9,6 @@ plugins {
     alias(libs.plugins.johnrengelman.shadow)
     application
 
-    //allows export module classes as test dependencies
-//    id("java-test-fixtures")
     id("java-library")
     id("io.kotest.multiplatform") version "5.0.2"
 }
@@ -26,7 +24,6 @@ dependencies {
     implementation("io.kotest:kotest-framework-engine:5.5.5")
     testImplementation("io.kotest:kotest-assertions-core:5.5.5")
     testImplementation("io.kotest:kotest-property:5.5.5")
-
 }
 
 repositories {
