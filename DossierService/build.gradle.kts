@@ -17,9 +17,9 @@ vertx.mainVerticle="dsdms.dossier.Main" //TODO
 dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
-    implementation(libs.bundles.vertx.server)
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.kmongo)
+    implementation(libs.bundles.vertx.server)
 
     implementation("io.kotest:kotest-framework-engine:5.5.5")
     testImplementation("io.kotest:kotest-assertions-core:5.5.5")
