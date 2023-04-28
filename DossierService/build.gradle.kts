@@ -7,23 +7,20 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.vertx)
     alias(libs.plugins.johnrengelman.shadow)
+    alias(libs.plugins.kotest.multiplatform)
     application
 
     id("java-library")
-    id("io.kotest.multiplatform") version "5.0.2"
 }
 vertx.mainVerticle="dsdms.dossier.Main" //TODO
 
 dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
-    implementation(libs.bundles.vertx.server)
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.kmongo)
-
-    implementation("io.kotest:kotest-framework-engine:5.5.5")
-    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
-    testImplementation("io.kotest:kotest-property:5.5.5")
+    implementation(libs.bundles.vertx.server)
+    implementation(libs.bundles.kotest)
 }
 
 repositories {

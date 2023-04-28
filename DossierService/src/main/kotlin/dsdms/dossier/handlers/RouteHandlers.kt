@@ -1,16 +1,15 @@
 package dsdms.dossier.handlers
 
-import io.vertx.core.Vertx
 import io.vertx.ext.web.RoutingContext
+import kotlinx.coroutines.DelicateCoroutinesApi
 
+@DelicateCoroutinesApi
 interface RouteHandlers {
-    fun handleDossierRegistration(routingContext: RoutingContext)
+    suspend fun handleDossierRegistration(routingContext: RoutingContext)
 
-    fun handleDossierIdReading(routingContext: RoutingContext)
+    suspend fun handleDossierIdReading(routingContext: RoutingContext)
 
-    fun handleDossierExamStatusUpdate(routingContext: RoutingContext)
+    suspend fun handleDossierExamStatusUpdate(routingContext: RoutingContext)
 
-    fun deleteDossier(routingContext: RoutingContext)
-
-    fun setVerticle(vertx: Vertx)
+    suspend fun deleteDossier(routingContext: RoutingContext)
 }

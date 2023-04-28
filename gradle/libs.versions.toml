@@ -5,6 +5,7 @@ cucumber = "7.11.2"
 vertxImpl = "4.4.1"
 vertx = "1.4.0"
 kmongo = "4.9.0"
+kotest = "5.5.5"
 
 [libraries]
 kotlinx-ser-core = {module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref="kotlinx"}
@@ -14,7 +15,11 @@ cucumber-junit = {module = "io.cucumber:cucumber-junit",  version.ref="cucumber"
 cucumber-java8 = {module = "io.cucumber:cucumber-java8",  version.ref="cucumber"}
 vertx-web = {module = "io.vertx:vertx-web", version.ref="vertxImpl"}
 vertx-web-client = {module = "io.vertx:vertx-web-client", version.ref="vertxImpl"}
+vertx-kotlin-coroutines = {module = "io.vertx:vertx-lang-kotlin-coroutines", version.ref="vertxImpl"}
 netty = "io.netty:netty-all:4.1.90.Final" # remove vertx warning on MacOS
+kotest-property = {module = "io.kotest:kotest-property", version.ref="kotest"}
+kotest-assertion-core = {module = "io.kotest:kotest-assertions-core", version.ref="kotest"}
+kotest-framework = {module = "io.kotest:kotest-framework-engine", version.ref="kotest"}
 
 #probably not all dependencies are needed (to check)
 kmongo-base = {module = "org.litote.kmongo:kmongo", version.ref="kmongo"}
@@ -25,12 +30,14 @@ kmongo-reactor = {module = "org.litote.kmongo:kmongo-reactor", version.ref="kmon
 [bundles]
 kotlinx = ["kotlinx-ser-core", "kotlinx-ser-json"]
 cucumber = ["cucumber-java", "cucumber-junit", "cucumber-java8"]
-vertx-server = ["vertx-web", "netty"]
+vertx-server = ["vertx-web", "netty", "vertx-kotlin-coroutines"]
 vertx-client = ["vertx-web-client", "netty"]
 kmongo = ["kmongo-base", "kmongo-coroutine", "kmongo-async", "kmongo-reactor"]
+kotest = ["kotest-property", "kotest-assertion-core", "kotest-framework"]
 
 
 [plugins]
+kotest-multiplatform = {id = "io.kotest.multiplatform", version.ref="kotest"}
 kotlin-jvm = {id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 vertx = {id = "io.vertx.vertx-plugin", version.ref = "vertx"}

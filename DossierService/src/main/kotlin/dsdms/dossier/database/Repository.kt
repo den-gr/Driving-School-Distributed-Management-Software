@@ -4,13 +4,13 @@ import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 
 interface Repository {
-    fun createDossier(newDossier: Dossier): String?
+    suspend fun createDossier(newDossier: Dossier): String?
 
-    fun readDossierFromId(id: String): Dossier?
+    suspend fun readDossierFromId(id: String): Dossier?
 
-    fun readDossierFromCf(cf: String): List<Dossier>
+    suspend fun readDossierFromCf(cf: String): List<Dossier>
 
-    fun updateExamStatus(newStatus: ExamStatus?, id: String): RepositoryResponseStatus
+    suspend fun updateExamStatus(newStatus: ExamStatus?, id: String): RepositoryResponseStatus
 
-    fun deleteDossier(id: String): RepositoryResponseStatus
+    suspend fun deleteDossier(id: String): RepositoryResponseStatus
 }
