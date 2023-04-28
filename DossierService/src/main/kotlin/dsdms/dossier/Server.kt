@@ -5,18 +5,25 @@ import dsdms.dossier.database.RepositoryImpl
 import dsdms.dossier.handlers.RouteHandlers
 import dsdms.dossier.handlers.RouteHandlersImpl
 import dsdms.dossier.model.ModelImpl
-import io.vertx.core.AbstractVerticle
+import io.vertx.core.Vertx
+import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.dispatcher
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
-class Server(private val port: Int, dbConnection: CoroutineDatabase) : AbstractVerticle() {
+@DelicateCoroutinesApi
+class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
+
     private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
-    override fun start() {
+    override suspend fun start() {
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
@@ -33,10 +40,22 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : AbstractV
 
     private fun setRoutes(router: Router) {
         router.get("/api/:id").handler(::handle)
-        router.post("/dossiers").handler(handlersImpl::handleDossierRegistration)
-        router.get("/dossiers/:id").handler(handlersImpl::handleDossierIdReading)
-        router.put("/dossiers/:id").handler(handlersImpl::handleDossierExamStatusUpdate)
-        router.delete("/dossiers/:id").handler(handlersImpl::deleteDossier)
+        router.post("/dossiers").coroutineHandler(handlersImpl::handleDossierRegistration)
+        router.get("/dossiers/:id").coroutineHandler(handlersImpl::handleDossierIdReading)
+        router.put("/dossiers/:id").coroutineHandler(handlersImpl::handleDossierExamStatusUpdate)
+        router.delete("/dossiers/:id").coroutineHandler(handlersImpl::deleteDossier)
+    }
+
+    private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {
+        handler { ctx ->
+            launch(Vertx.currentContext().dispatcher()) {
+                try {
+                    fn(ctx)
+                } catch (e: Exception) {
+                    ctx.fail(e)
+                }
+            }
+        }
     }
 
     private fun handle(routingContext: RoutingContext){

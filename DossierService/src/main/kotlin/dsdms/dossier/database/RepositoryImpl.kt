@@ -12,26 +12,20 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 class RepositoryImpl(dossierServiceDb: CoroutineDatabase): Repository {
     private val dossiers = dossierServiceDb.getCollection<Dossier>("Dossier")
 
-    override fun createDossier(newDossier: Dossier): String? {
-        return newDossier.apply {
-            runBlocking { dossiers.insertOne(newDossier) }
-        }._id
+    override suspend fun createDossier(newDossier: Dossier): String? {
+        return newDossier.apply { dossiers.insertOne(newDossier) }._id
     }
 
-    override fun readDossierFromId(id: String): Dossier? {
-        return runBlocking { dossiers.findOneById(id) }
+    override suspend fun readDossierFromId(id: String): Dossier? {
+        return dossiers.findOneById(id)
     }
 
-    override fun readDossierFromCf(cf: String): List<Dossier> {
-        return runBlocking { dossiers.find(Dossier::fiscal_code eq cf).toList() }
+    override suspend fun readDossierFromCf(cf: String): List<Dossier> {
+        return dossiers.find(Dossier::fiscal_code eq cf).toList()
     }
 
-    override fun updateExamStatus(newStatus: ExamStatus?, id: String): RepositoryResponseStatus {
-        return handleUpdateResults(
-            runBlocking {
-                dossiers.updateOne((Dossier::_id eq id), setValue(Dossier::examStatus, newStatus))
-            }
-        )
+    override suspend fun updateExamStatus(newStatus: ExamStatus?, id: String): RepositoryResponseStatus {
+        return handleUpdateResults(dossiers.updateOne((Dossier::_id eq id), setValue(Dossier::examStatus, newStatus)))
     }
 
     private fun handleUpdateResults(updateResult: UpdateResult): RepositoryResponseStatus {
@@ -42,7 +36,7 @@ class RepositoryImpl(dossierServiceDb: CoroutineDatabase): Repository {
         else RepositoryResponseStatus.OK
     }
 
-    override fun deleteDossier(id: String): RepositoryResponseStatus {
+    override suspend fun deleteDossier(id: String): RepositoryResponseStatus {
         return handleDeleteResult(
             runBlocking {
                 dossiers.deleteOne(Dossier::_id eq id)
