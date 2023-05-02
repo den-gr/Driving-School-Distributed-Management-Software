@@ -5,7 +5,7 @@ import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
-import io.kotest.common.runBlocking
+import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
 

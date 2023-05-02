@@ -11,7 +11,7 @@ plugins {
 
 
 dependencies {
-    testImplementation(kotlin("test"))
+    testImplementation(libs.bundles.kotest)
     implementation(kotlin("stdlib-jdk8"))
 }
 

@@ -1,16 +1,18 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "dsdms"
-version = "1.0-SNAPSHOT"
+group = "it.unibo.dsdms"
+version = "0.0.1-SNAPSHOT1"
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.vertx)
     alias(libs.plugins.johnrengelman.shadow)
+
+    signing
+    `maven-publish`
+    id("org.jetbrains.dokka") version "1.7.20"
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
-vertx.mainVerticle="dsdms.dossier.Main" //TODO
 
 repositories {
     mavenCentral()
@@ -21,16 +23,4 @@ subprojects{
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
     }
-}
-
-tasks.register<Exec>("myRun") {//inline function with reified type!
-    //Configuration action is of type T.() -> Unit, in this case Exec.T() -> Unit
-    val javaExecutable = org.gradle.internal.jvm.Jvm.current().javaExecutable.absolutePath
-    commandLine( // this is a method of class org.gradle.api.Exec
-        javaExecutable, "-version"
-    )
-    //There is no need of doLast / doFirst, actions are already configured
-    //Still, we may want to do something before or after the task has been executed
-    doLast { println("$javaExecutable invocation complete") }
-    doFirst { println("Ready to invoke $javaExecutable") }
 }

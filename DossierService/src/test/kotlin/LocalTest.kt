@@ -3,10 +3,11 @@ import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatusImpl
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.litote.kmongo.*
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
+@Suppress("unused")
 class LocalTest: FunSpec({
     lateinit var dossiers: MongoCollection<Dossier>
 
@@ -20,7 +21,7 @@ class LocalTest: FunSpec({
         val den = Dossier("den", "grush", "DNFG123")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
-        assertNotNull(result)
+        result shouldNotBe null
     }
 
     test("update test") {
@@ -36,6 +37,6 @@ class LocalTest: FunSpec({
 
         println(updateResult.toString())
 
-        assertEquals(true, updateResult.deletedCount.toInt() != 1)
+        (updateResult.deletedCount.toInt() != 1) shouldBe true
     }
 })
