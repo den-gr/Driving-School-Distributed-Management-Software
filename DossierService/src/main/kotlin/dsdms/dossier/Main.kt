@@ -11,7 +11,7 @@ class Main {
         @DelicateCoroutinesApi
         fun main(args : Array<String>){
             val port = 8000
-            println("Started")
+            println("Dossier service started")
 
             val dbConnection = KMongo
                 .createClient("mongodb://admin:admin@mongo:27017")

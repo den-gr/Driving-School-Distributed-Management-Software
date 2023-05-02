@@ -7,9 +7,6 @@ import dsdms.dossier.model.valueObjects.examStatus.ExamStatusImpl
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
-/**
- * Per motivi di implem
- */
 @Serializable
 data class Dossier(
     val name: String,
