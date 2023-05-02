@@ -1,8 +1,6 @@
-group = "dsdms.client"
+group = "it.unibo.dsdms.client"
 version = "0.0.1"
 
-
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
@@ -13,14 +11,11 @@ plugins {
 
 application.mainClass.set("dsdms.client.Main")
 
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
-    implementation(libs.bundles.kotlinx)
+    implementation(rootProject.libs.bundles.kotlinx)
     implementation(libs.bundles.vertx.client)
     implementation(libs.bundles.cucumber)
 

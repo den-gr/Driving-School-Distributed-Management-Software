@@ -1,5 +1,5 @@
 
-group = "dsdms.dossier"
+group = "it.unibo.dsdms.dossier"
 version = "0.0.1"
 
 plugins {
@@ -21,9 +21,6 @@ dependencies {
     implementation(libs.bundles.vertx.server)
 }
 
-repositories {
-    mavenCentral()
-}
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()

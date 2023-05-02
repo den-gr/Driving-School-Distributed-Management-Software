@@ -12,15 +12,15 @@ plugins {
     `maven-publish`
     id("org.jetbrains.dokka") version "1.7.20"
     id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+
 }
 
-repositories {
-    mavenCentral()
-}
-
-
-subprojects{
+allprojects{
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
+    }
+
+    repositories {
+        mavenCentral()
     }
 }
