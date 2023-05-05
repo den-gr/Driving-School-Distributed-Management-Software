@@ -6,5 +6,5 @@ import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
 interface Repository {
     fun createDrivingSlot(newDrivingSlot: DrivingSlot): String?
 
-    fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): DrivingSlot?
+    fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot>
 }

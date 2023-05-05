@@ -13,7 +13,7 @@ class DrivingService(private val repository: Repository) {
 //        return DomainResponseStatus.OK
 //    }
 
-    fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): DrivingSlot?{
+    fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {
         return repository.getOccupiedDrivingSlots(docs)
     }
 }

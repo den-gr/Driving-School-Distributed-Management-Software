@@ -12,10 +12,10 @@ class RepositoryImpl(drivingService: MongoDatabase): Repository {
         return newDrivingSlot.apply { drivingSlots.insertOne(newDrivingSlot) }._id
     }
 
-    override fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): DrivingSlot? {
-        return drivingSlots.findOne(DrivingSlot::date eq docs.date)
-       // }
-        //else
-            //drivingSlots.find(and(DrivingSlot::date eq docs.date, DrivingSlot::instructorId eq docs.instructorId)).toList()
+    override fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {
+        return if (docs.instructorId == null)
+            drivingSlots.find(DrivingSlot::date eq docs.date).toList()
+        else
+            drivingSlots.find(and(DrivingSlot::date eq docs.date, DrivingSlot::instructorId eq docs.instructorId)).toList()
     }
 }
