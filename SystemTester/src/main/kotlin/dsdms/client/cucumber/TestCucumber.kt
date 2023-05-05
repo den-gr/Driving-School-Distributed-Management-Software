@@ -19,7 +19,7 @@ import kotlin.test.assertNotNull
     plugin = ["pretty", "summary"]
 )
 class TestCucumber: En {
-    private val client: WebClient = VertxProviderImpl().getNewClient()
+    private val client: WebClient = VertxProviderImpl().getNewClient(8000)
     private var value: Int = -1
     private var response:  HttpResponse<Buffer>? = null
 

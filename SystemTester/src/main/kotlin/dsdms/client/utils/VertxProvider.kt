@@ -1,12 +1,11 @@
 package dsdms.client.utils
 
 import io.vertx.core.Vertx
-import io.vertx.core.http.HttpClientOptions
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 
 interface VertxProvider{
-    fun getNewClient(): WebClient
+    fun getNewClient(port: Int): WebClient
 }
 
 class VertxProviderImpl : VertxProvider {
@@ -18,9 +17,9 @@ class VertxProviderImpl : VertxProvider {
         }
     }
 
-    override fun getNewClient(): WebClient{
+    override fun getNewClient(port: Int): WebClient{
         val options: WebClientOptions = WebClientOptions()
-            .setDefaultPort(8000)
+            .setDefaultPort(port)
             .setDefaultHost(host)
         return WebClient.create(vertx, options)
     }
