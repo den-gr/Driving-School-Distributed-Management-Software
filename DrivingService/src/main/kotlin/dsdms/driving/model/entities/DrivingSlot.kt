@@ -1,13 +1,20 @@
 package dsdms.driving.model.entities
 
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class DrivingSlot(
     @Contextual val _id: String? = null,
-    // data, fascia oraria, istruttore, dossier, macchina
+    val date: LocalDate,
+    val time: LocalTime,
+    val instructorId: String,
+    val dossierId: String,
+    val vehicle: String
 )
+
 
 //@Serializable
 //data class drivingSlotBooking(
