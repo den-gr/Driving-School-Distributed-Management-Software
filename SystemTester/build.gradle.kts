@@ -15,12 +15,14 @@ application.mainClass.set("dsdms.client.Main")
 dependencies {
     implementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     implementation(rootProject.libs.bundles.kotlinx)
     implementation(libs.bundles.vertx.client)
     implementation(libs.bundles.cucumber)
 
     //Allows to add external module classes as dependencies
     implementation(project(":DossierService"))
+    implementation(project(":DrivingService"))
 }
 
 tasks.test {
