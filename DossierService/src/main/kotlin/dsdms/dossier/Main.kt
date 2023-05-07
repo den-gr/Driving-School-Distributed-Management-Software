@@ -7,14 +7,27 @@ import org.litote.kmongo.reactivestreams.KMongo
 
 class Main {
     companion object{
+        private const val DEFAULT_MONGO_URI = "mongodb://admin:admin@localhost:27017"
+        private const val DEFAULT_SERVER_PORT = 8000
+
+
         @JvmStatic
         @DelicateCoroutinesApi
         fun main(args : Array<String>){
-            val port = 8000
+
+
+            val port = if (System.getProperty("dossier_port") != null) System.getProperty("dossier_port").toInt()
+                else DEFAULT_SERVER_PORT
+
+            val mongoURI = if (System.getProperty("mongo_uri") != null) System.getProperty("mongo_uri")
+                else DEFAULT_MONGO_URI
+
+            println("Port: $port")
+            println("MongoURI: $mongoURI")
             println("Dossier service started")
 
             val dbConnection = KMongo
-                .createClient("mongodb://admin:admin@mongo:27017")
+                .createClient(mongoURI)
                 .coroutine
                 .getDatabase("dossier_service")
             val server = Server(port, dbConnection)

@@ -19,7 +19,10 @@ services:
       - mongo
     build:
       context: ./DossierService
-      dockerfile: Dockerfile
+      args:
+        - DOSSIER_PORT=${DOSSIER_SERVICE_PORT}
+        - MONGO_URI=${MONGO_URI}
+
     image: dossier_service
     ports:
       - "${DOSSIER_SERVICE_PORT}:${DOSSIER_SERVICE_PORT}"
@@ -31,7 +34,6 @@ services:
       - mongo
     build:
       context: ./DrivingService
-      dockerfile: Dockerfile
     image: driving_service
     ports:
       - "${DRIVING_SERVICE_PORT}:${DRIVING_SERVICE_PORT}"
