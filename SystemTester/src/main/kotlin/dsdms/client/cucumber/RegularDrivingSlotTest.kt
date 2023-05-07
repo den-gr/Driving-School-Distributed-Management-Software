@@ -14,6 +14,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
+import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 
 @RunWith(Cucumber::class)
@@ -22,9 +23,8 @@ import kotlin.test.assertEquals
     plugin = ["pretty", "summary"]
 )
 class RegularDrivingSlotTest : En {
-    private val client: WebClient = VertxProviderImpl().getNewClient(8010)
+    private val client: WebClient = VertxProviderImpl().getDrivingServiceClient()
     private var value: List<DrivingSlot>? = null
-    private var statusCode: Int? = null
 
     init {
         val sleeper = SmartSleep()
@@ -37,7 +37,10 @@ class RegularDrivingSlotTest : En {
             val response = sleeper.waitResult(request)
 
             checkResponse(response)
-            statusCode = response?.statusCode()
+            val statusCode = response?.statusCode()
+            println("BEfore $statusCode")
+            assertEquals(HTTP_OK, statusCode)
+            println("after $statusCode")
             value = Json.decodeFromString(ListSerializer(DrivingSlot.serializer()), response?.body().toString())
         }
         Then("the first driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}")

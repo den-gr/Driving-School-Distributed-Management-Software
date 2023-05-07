@@ -27,7 +27,7 @@ import kotlin.test.assertNotNull
     plugin = ["pretty", "summary"]
 )
 class UpdateDossierTest : En {
-    private val client: WebClient = VertxProviderImpl().getNewClient(8000)
+    private val client: WebClient = VertxProviderImpl().getDossierServiceClient()
     private var value: String = ""
     private var retrievedDossier: Dossier? = null
     private var result: HttpResponse<Buffer>? = null

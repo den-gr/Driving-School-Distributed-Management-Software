@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.8'
 
 services:
   mongo:
@@ -22,17 +22,33 @@ services:
       dockerfile: Dockerfile
     image: dossier_service
     ports:
-      - "8000:8000"
+      - "${DOSSIER_SERVICE_PORT}:${DOSSIER_SERVICE_PORT}"
+    networks:
+      - dsdmsNet
+
+  driving_service:
+    depends_on:
+      - mongo
+    build:
+      context: ./DrivingService
+      dockerfile: Dockerfile
+    image: driving_service
+    ports:
+      - "${DRIVING_SERVICE_PORT}:${DRIVING_SERVICE_PORT}"
     networks:
       - dsdmsNet
 
   system_tester:
     depends_on:
       - dossier_service
+      - driving_service
     build:
       context: ./SystemTester
       args:
-        - DOSSIER_HOST=dossier_service
+        - DOSSIER_SERVICE_HOST=dossier_service
+        - DOSSIER_SERVICE_PORT=${DOSSIER_SERVICE_PORT}
+        - DRIVING_SERVICE_HOST=driving_service
+        - DRIVING_SERVICE_PORT=${DRIVING_SERVICE_PORT}
       dockerfile: Dockerfile
     image: system_tester
     networks:
@@ -42,4 +58,4 @@ networks:
   dsdmsNet:
     driver: bridge
     driver_opts:
-      com.docker.network.bridge.name: "Networkk"
+      com.docker.network.bridge.name: "DSDMS_Network"
