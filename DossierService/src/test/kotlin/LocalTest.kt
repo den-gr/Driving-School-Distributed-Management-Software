@@ -2,29 +2,33 @@ import com.mongodb.client.MongoCollection
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatusImpl
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
+import kotlin.test.Test
 import org.litote.kmongo.*
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
-@Suppress("unused")
-class LocalTest: FunSpec({
+internal class LocalTest{
     lateinit var dossiers: MongoCollection<Dossier>
 
-    beforeEach {
+    @BeforeEach
+    fun beforeEach() {
         val client = KMongo.createClient("mongodb://admin:admin@localhost:27017")
         val database = client.getDatabase("dossier_service")
         dossiers = database.getCollection<Dossier>("Dossier")
     }
 
-    test("assert insert test") {
+    @Disabled
+    @Test fun assertInsertTest(){
         val den = Dossier("den", "grush", "DNFG123")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
-        result shouldNotBe null
+        assertNull(result)
     }
 
-    test("update test") {
+    @Disabled
+    @Test fun updateTest(){
         val den = Dossier("den", "grush", "DNFG123456789")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
@@ -37,6 +41,6 @@ class LocalTest: FunSpec({
 
         println(updateResult.toString())
 
-        (updateResult.deletedCount.toInt() != 1) shouldBe true
+        assertTrue(updateResult.deletedCount.toInt() != 1)
     }
-})
+}

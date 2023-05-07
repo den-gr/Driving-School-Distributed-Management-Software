@@ -14,13 +14,16 @@ plugins {
 application.mainClass.set("dsdms.driving.Main")
 
 dependencies {
+    testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.kmongo)
     implementation(libs.bundles.vertx.server)
-    testImplementation(libs.bundles.kotest)
-    testImplementation(kotlin("test"))
+
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {

@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
-    alias(libs.plugins.kotest.multiplatform)
+//    alias(libs.plugins.kotest.multiplatform)
     application
 
     id("java-library")
@@ -14,11 +14,15 @@ plugins {
 application.mainClass.set("dsdms.dossier.Main")
 
 dependencies {
-    testImplementation(libs.bundles.kotest)
+    testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.kmongo)
     implementation(libs.bundles.vertx.server)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
