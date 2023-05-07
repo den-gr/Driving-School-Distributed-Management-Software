@@ -6,10 +6,11 @@ import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 import kotlinx.coroutines.runBlocking
-import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.eq
+import org.litote.kmongo.setValue
 
-class RepositoryImpl(dossierServiceDb: CoroutineDatabase): Repository {
+class RepositoryImpl(dossierServiceDb: CoroutineDatabase) : Repository {
     private val dossiers = dossierServiceDb.getCollection<Dossier>("Dossier")
 
     override suspend fun createDossier(newDossier: Dossier): String? {
@@ -29,11 +30,13 @@ class RepositoryImpl(dossierServiceDb: CoroutineDatabase): Repository {
     }
 
     private fun handleUpdateResults(updateResult: UpdateResult): RepositoryResponseStatus {
-        return if (updateResult.matchedCount.toInt() != 1)
+        return if (updateResult.matchedCount.toInt() != 1) {
             RepositoryResponseStatus.MULTIPLE_EQUAL_IDS
-        else if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged())
+        } else if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged()) {
             RepositoryResponseStatus.UPDATE_ERROR
-        else RepositoryResponseStatus.OK
+        } else {
+            RepositoryResponseStatus.OK
+        }
     }
 
     override suspend fun deleteDossier(id: String): RepositoryResponseStatus {
@@ -45,9 +48,10 @@ class RepositoryImpl(dossierServiceDb: CoroutineDatabase): Repository {
     }
 
     private fun handleDeleteResult(deleteResult: DeleteResult): RepositoryResponseStatus {
-        return if (!deleteResult.wasAcknowledged() || deleteResult.deletedCount.toInt() == 0)
+        return if (!deleteResult.wasAcknowledged() || deleteResult.deletedCount.toInt() == 0) {
             RepositoryResponseStatus.DELETE_ERROR
-        else
+        } else {
             RepositoryResponseStatus.OK
+        }
     }
 }

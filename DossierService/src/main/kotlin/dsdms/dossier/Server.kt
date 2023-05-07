@@ -32,7 +32,7 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
         vertx.createHttpServer()
             .requestHandler(router)
             .listen(port)
-            .onFailure{
+            .onFailure {
                 println("Vertx failure: ${it.message}")
                 exitProcess(1)
             }
@@ -58,14 +58,13 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
         }
     }
 
-    private fun handle(routingContext: RoutingContext){
+    private fun handle(routingContext: RoutingContext) {
         val id = routingContext.request().getParam("id").toIntOrNull()
-        val response =  routingContext.response()
-        if(id != null){
+        val response = routingContext.response()
+        if (id != null) {
             response.setStatusCode(200).end((id).toString())
-        }else{
+        } else {
             response.setStatusCode(401).end("wrong input")
         }
     }
-
 }

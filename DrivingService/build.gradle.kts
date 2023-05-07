@@ -19,7 +19,6 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.kmongo)
     implementation(libs.bundles.vertx.server)
-
 }
 
 tasks.test {
@@ -32,4 +31,3 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveFileName.set("${project.name}-${project.version}.jar")
     destinationDirectory.set(file("$buildDir/output"))
 }
-

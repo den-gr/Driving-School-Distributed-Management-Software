@@ -1,7 +1,8 @@
 package dsdms.driving.handlers
 
 import dsdms.driving.model.Model
-import dsdms.driving.model.domainServices.DomainResponseStatus.*
+import dsdms.driving.model.domainServices.DomainResponseStatus.NO_SLOT_OCCUPIED
+import dsdms.driving.model.domainServices.DomainResponseStatus.OK
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
 import io.vertx.ext.web.RoutingContext
@@ -35,8 +36,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                 routingContext.response()
                     .setStatusCode(domainConversionTable.getHttpCode(NO_SLOT_OCCUPIED))
                     .end(NO_SLOT_OCCUPIED.name)
-            }
-            else {
+            } else {
                 routingContext.response()
                     .setStatusCode(domainConversionTable.getHttpCode(OK))
                     .end(Json.encodeToString(ListSerializer(DrivingSlot.serializer()), occupiedDrivingSlots))
@@ -45,6 +45,4 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
             routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
         }
     }
-
-
 }

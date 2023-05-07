@@ -17,10 +17,11 @@ class DossierService(private val repository: Repository) {
     }
 
     suspend fun verifyDocuments(documents: SubscriberDocuments): DomainResponseStatus {
-        return if (checkDuplicatedFiscalCode(documents))
+        return if (checkDuplicatedFiscalCode(documents)) {
             DomainResponseStatus.OK
-        else
+        } else {
             DomainResponseStatus.FISCAL_CODE_DUPLICATION
+        }
     }
 
     suspend fun readDossierFromId(id: String): Dossier? {
@@ -29,9 +30,11 @@ class DossierService(private val repository: Repository) {
 
     suspend fun updateExamStatus(data: ExamStatusUpdate, id: String): RepositoryResponseStatus {
         val newStatus = readDossierFromId(id)?.examStatus
-        if (data.exam == "theoretical")
+        if (data.exam == "theoretical") {
             newStatus?.modifyTheoretical(data.newStatus)
-        else newStatus?.modifyPractical(data.newStatus)
+        } else {
+            newStatus?.modifyPractical(data.newStatus)
+        }
         return repository.updateExamStatus(newStatus, id)
     }
 

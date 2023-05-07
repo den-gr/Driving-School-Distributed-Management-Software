@@ -5,11 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("vehicle")
-class LicensePlateInit(private val licensePlate: String): LicensePlate {
+class LicensePlateInit(private val licensePlate: String) : LicensePlate {
 
     init {
-        if (!verifyStructure())
+        if (!verifyStructure()) {
             throw IllegalArgumentException("License plate format not valid")
+        }
     }
 
     override fun verifyStructure(): Boolean {
@@ -20,5 +21,4 @@ class LicensePlateInit(private val licensePlate: String): LicensePlate {
     override fun toString(): String {
         return licensePlate
     }
-
 }

@@ -1,4 +1,3 @@
-
 group = "it.unibo.dsdms.dossier"
 version = "0.0.1"
 

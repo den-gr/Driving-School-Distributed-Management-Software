@@ -4,12 +4,12 @@ import dsdms.driving.model.valueObjects.licensePlate.LicensePlateInit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.json.Json
-import kotlin.test.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class LocalTest{
+class LocalTest {
     @Test fun regexTestShouldThrowException() {
         assertThrows<IllegalArgumentException> { LicensePlateInit("FZ340ARR") }
     }
@@ -25,7 +25,7 @@ class LocalTest{
 
         val prova = Json.encodeToString(GetDrivingSlotDocs.serializer(), GetDrivingSlotDocs(LocalDate.parse("2013-12-04")))
 
-        assertEquals(prova,"{\"date\":\"2013-12-04\"}")
+        assertEquals(prova, "{\"date\":\"2013-12-04\"}")
     }
 
     @Test fun localTimeSerialization() {
@@ -34,7 +34,6 @@ class LocalTest{
 
         val prova = Json.encodeToString(LocalTime.serializer(), LocalTime.parse("09:30"))
 
-        assertEquals(prova,"\"09:30\"")
+        assertEquals(prova, "\"09:30\"")
     }
-
 }

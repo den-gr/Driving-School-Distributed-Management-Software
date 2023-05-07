@@ -13,8 +13,8 @@ val dbConversionTable: Map<RepositoryResponseStatus, Int> = mapOf(
 
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.OK to HttpURLConnection.HTTP_OK,
-    DomainResponseStatus.NO_SLOT_OCCUPIED to HttpURLConnection.HTTP_OK,
-    )
+    DomainResponseStatus.NO_SLOT_OCCUPIED to HttpURLConnection.HTTP_OK
+)
 
 fun Map<RepositoryResponseStatus, Int>.getHttpCode(repositoryResponseStatus: RepositoryResponseStatus): Int {
     return dbConversionTable.getOrDefault(repositoryResponseStatus, HttpURLConnection.HTTP_INTERNAL_ERROR)

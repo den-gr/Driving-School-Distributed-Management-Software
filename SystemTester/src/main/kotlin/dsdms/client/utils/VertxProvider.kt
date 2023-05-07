@@ -4,7 +4,7 @@ import io.vertx.core.Vertx
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 
-interface VertxProvider{
+interface VertxProvider {
 
     fun getDossierServiceClient(): WebClient
 

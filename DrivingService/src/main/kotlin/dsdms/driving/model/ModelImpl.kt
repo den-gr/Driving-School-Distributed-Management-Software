@@ -1,6 +1,5 @@
 package dsdms.driving.model
 
-
 import dsdms.driving.database.Repository
 import dsdms.driving.model.domainServices.DrivingService
 

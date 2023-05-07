@@ -4,12 +4,14 @@ import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatusImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
+import org.litote.kmongo.KMongo
+import org.litote.kmongo.eq
+import org.litote.kmongo.getCollection
 import kotlin.test.Test
-import org.litote.kmongo.*
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-internal class LocalTest{
+internal class LocalTest {
     lateinit var dossiers: MongoCollection<Dossier>
 
     @BeforeEach
@@ -20,7 +22,8 @@ internal class LocalTest{
     }
 
     @Disabled
-    @Test fun assertInsertTest(){
+    @Test
+    fun assertInsertTest() {
         val den = Dossier("den", "grush", "DNFG123")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
@@ -28,7 +31,8 @@ internal class LocalTest{
     }
 
     @Disabled
-    @Test fun updateTest(){
+    @Test
+    fun updateTest() {
         val den = Dossier("den", "grush", "DNFG123456789")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 

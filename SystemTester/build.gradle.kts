@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.bundles.vertx.client)
     implementation(libs.bundles.cucumber)
 
-    //Allows to add external module classes as dependencies
+    // Allows to add external module classes as dependencies
     implementation(project(":DossierService"))
     implementation(project(":DrivingService"))
 }

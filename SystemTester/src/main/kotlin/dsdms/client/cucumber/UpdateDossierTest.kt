@@ -1,9 +1,9 @@
 package dsdms.client.cucumber
 
-import dsdms.client.utils.createJson
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
+import dsdms.client.utils.createJson
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.ExamStatusUpdate
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
@@ -60,13 +60,15 @@ class UpdateDossierTest : En {
             assertNotNull(retrievedDossier)
             if (type == "theoretical") {
                 retrievedDossier?.examStatus?.let { assertFalse(it.getTheoretical()) }
-            } else retrievedDossier?.examStatus?.let { assertFalse(it.getPractical()) }
+            } else {
+                retrievedDossier?.examStatus?.let { assertFalse(it.getPractical()) }
+            }
         }
 
-        Then("trying to update {word} exam status to true") { type: String  ->
+        Then("trying to update {word} exam status to true") { type: String ->
             println(value)
             val request = client
-                .put( "/dossiers/$value")
+                .put("/dossiers/$value")
                 .sendBuffer(createJson(ExamStatusUpdate(type, true)))
             val response = sleeper.waitResult(request)
 

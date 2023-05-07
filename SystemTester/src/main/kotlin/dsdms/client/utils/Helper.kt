@@ -6,12 +6,11 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.test.assertNotNull
 
-
-inline fun<reified T> createJson(docs: T): Buffer? {
+inline fun <reified T> createJson(docs: T): Buffer? {
     return Buffer.buffer(Json.encodeToString(docs))
 }
 
-fun checkResponse(res: HttpResponse<Buffer>?){
+fun checkResponse(res: HttpResponse<Buffer>?) {
     assertNotNull(res)
     assertNotNull(res.body())
 }

@@ -13,9 +13,12 @@ plugins {
     id("org.jetbrains.dokka") version "1.7.20"
     id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 
+//    id("org.jlleitschuh.gradle.ktlint") version "11.3.2" //TEMPORALLY DISABLE
 }
 
-allprojects{
+allprojects {
+//    apply(plugin = "org.jlleitschuh.gradle.ktlint") //TEMPORALLY DISABLE
+
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
     }

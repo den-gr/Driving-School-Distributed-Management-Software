@@ -16,6 +16,6 @@ class PracticalExamAttemptsImpl : PracticalExamAttempts {
         }
 
     override fun verifyAttempts(): Boolean {
-       return attempts < maxAttempts
+        return attempts < maxAttempts
     }
 }

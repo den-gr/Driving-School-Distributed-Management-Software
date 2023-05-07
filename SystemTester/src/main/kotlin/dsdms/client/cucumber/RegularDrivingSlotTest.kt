@@ -29,8 +29,7 @@ class RegularDrivingSlotTest : En {
     init {
         val sleeper = SmartSleep()
 
-        When("i request occupied driving slots in a {word}")
-        { date: String ->
+        When("i request occupied driving slots in a {word}") { date: String ->
             val request = client
                 .get("/drivingSlots")
                 .sendBuffer(createJson(GetDrivingSlotDocs(LocalDate.parse(date))))
@@ -43,24 +42,21 @@ class RegularDrivingSlotTest : En {
             println("after $statusCode")
             value = Json.decodeFromString(ListSerializer(DrivingSlot.serializer()), response?.body().toString())
         }
-        Then("the first driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}")
-        { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        Then("the first driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(0)?.date.toString())
             assertEquals(time, value?.get(0)?.time.toString())
             assertEquals(instructorId, value?.get(0)?.instructorId)
             assertEquals(dossierId, value?.get(0)?.dossierId)
             assertEquals(vehicle, value?.get(0)?.vehicle.toString())
         }
-        Then("the second driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}")
-        { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        Then("the second driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(1)?.date.toString())
             assertEquals(time, value?.get(1)?.time.toString())
             assertEquals(instructorId, value?.get(1)?.instructorId)
             assertEquals(dossierId, value?.get(1)?.dossierId)
             assertEquals(vehicle, value?.get(1)?.vehicle.toString())
         }
-        Then("the third driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}")
-        { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        Then("the third driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(2)?.date.toString())
             assertEquals(time, value?.get(2)?.time.toString())
             assertEquals(instructorId, value?.get(2)?.instructorId)

@@ -7,24 +7,24 @@ import io.vertx.ext.web.client.HttpResponse
 class SmartSleep(private val timeout: Long = 5000) {
 
     fun waitResult(future: Future<HttpResponse<Buffer>>): HttpResponse<Buffer>? {
-        future.onFailure{ println(it.message) }
+        future.onFailure { println(it.message) }
 
         var toWait = timeout
         val iterable = iterator {
             var x = 50L
-            while(true){
+            while (true) {
                 yield(x)
                 x *= 2
             }
         }
-        for(i in iterable){
+        for (i in iterable) {
             print(".")
-            if(toWait < i){
+            if (toWait < i) {
                 Thread.sleep(toWait)
                 return future.result()
             }
             Thread.sleep(i)
-            if(future.isComplete){
+            if (future.isComplete) {
                 println(" is complete on $i")
                 return future.result()
             }
@@ -32,7 +32,5 @@ class SmartSleep(private val timeout: Long = 5000) {
         }
         println("Feature Timeout")
         return null
-
     }
 }
-
