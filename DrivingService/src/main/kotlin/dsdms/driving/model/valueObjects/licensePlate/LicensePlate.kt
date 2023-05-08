@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 @JsonDeserialize(`as` = LicensePlateInit::class)
 sealed interface LicensePlate {
-    fun verifyStructure(): Boolean
+    fun verifyStructure(numberPlate: String): Boolean
 }

@@ -1,29 +1,20 @@
 package dsdms.driving.model.entities
 
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalTime
+import dsdms.driving.model.valueObjects.DrivingSlotType
+import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class DrivingSlot(
-    @Contextual val _id: String? = null,
-    val date: LocalDate,
-    val time: LocalTime,
+    val date: String,
+    val time: String,
     val instructorId: String,
     val dossierId: String,
-    val vehicle: String
+    val licensePlate: LicensePlate,
+    val slotType: DrivingSlotType,
+    @Contextual val _id: String? = null,
 )
-
-// @Serializable
-// data class drivingSlotBooking(
-//    // data, fascia oraria, id/nome istruttore, id dossier, ORDINARY/EXAM, targa macchina
-// )
-
-// Elemento di una enum che indica: ORDINARY, EXAM (come tipologia di guida)
-// Un riferimento (id) ad un istruttore (tabella con istruttori)
-// Una data ed una fascia oraria (30 minuti)
-// Un riferimento (id) ad un veicolo
 
 // primo passaggio: get di tutti gli slot già occupati in un certo giorno (parametro opzionale: id istruttore preferito)
 // client: fa il "not" di questi risultati, ottenendo gli slot liberi

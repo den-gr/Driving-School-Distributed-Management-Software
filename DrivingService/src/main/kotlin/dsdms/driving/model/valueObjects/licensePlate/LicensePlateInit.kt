@@ -1,24 +1,31 @@
 package dsdms.driving.model.valueObjects.licensePlate
 
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("vehicle")
-class LicensePlateInit(private val licensePlate: String) : LicensePlate {
+@SerialName("licensePlate")
+class LicensePlateInit : LicensePlate {
 
-    init {
-        if (!verifyStructure()) {
+    @JsonProperty
+    var numberPlate: String
+
+    @JsonCreator
+    constructor(numberPlate: String) {
+        if (!verifyStructure(numberPlate)) {
             throw IllegalArgumentException("License plate format not valid")
         }
+        this.numberPlate = numberPlate
     }
 
-    override fun verifyStructure(): Boolean {
+    override fun verifyStructure(numberPlate: String): Boolean {
         val regex = Regex("[A-Z]{2}[0-9]{3}[A-Z]{2}")
-        return licensePlate.matches(regex)
+        return numberPlate.matches(regex)
     }
 
     override fun toString(): String {
-        return licensePlate
+        return numberPlate
     }
 }
