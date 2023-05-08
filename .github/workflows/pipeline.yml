@@ -13,7 +13,7 @@ on:
             - 'LICENSE'
 
 jobs: 
-    firstJob:
+    BuildAndTest:
         strategy:
             matrix:
                 os: [ ubuntu-latest ] #windows-latest
@@ -21,7 +21,7 @@ jobs:
         steps:
             - run: echo "Hello World"
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
             - uses: actions/setup-java@v1 # Add this step (if possible)
               with:
                 java-version: "16"
@@ -31,16 +31,28 @@ jobs:
                 version: 1.7.10
             - name: gradle build
               run: ./gradlew build
-            - name: docker compose
+            - name: Docker compose
               uses: isbang/compose-action@v1.4.1
               with:
                 down-flags: "--volumes"
-                services: dossier_service
-            - name: run tests
+                services: |
+                  dossier_service
+                  driving_service
+            - name: Run tests
               run: ./gradlew SystemTester:run
-
-#            - name: run tests
-#              run: |
-#                  ./gradlew DossierService:run &
-#                  sleep 5 &&
-#                  ./gradlew cucumber
+    release:
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/automatic-release'
+        needs: BuildAndTest
+        runs-on: ubuntu-latest
+        concurrency:
+          group: release
+          cancel-in-progress: false
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v3
+          - name: Release
+            env:
+              GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+            run: |
+              npm install
+              npx semantic-release

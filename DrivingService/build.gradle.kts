@@ -1,5 +1,4 @@
-group = "dsdms.driving"
-version = "0.0.1"
+group = "it.unibo.dsdms.driving"
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -28,6 +27,7 @@ tasks.test {
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     manifest.attributes["Main-Class"] = application.mainClass
-    archiveFileName.set("${project.name}-${project.version}.jar")
+    val projectVersion = project.properties["version"] as String
+    archiveFileName.set("${project.name}-$projectVersion.jar")
     destinationDirectory.set(file("$buildDir/output"))
 }
