@@ -13,7 +13,11 @@ val dbConversionTable: Map<RepositoryResponseStatus, Int> = mapOf(
 
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.OK to HttpURLConnection.HTTP_OK,
-    DomainResponseStatus.NO_SLOT_OCCUPIED to HttpURLConnection.HTTP_OK
+    DomainResponseStatus.NO_SLOT_OCCUPIED to HttpURLConnection.HTTP_OK,
+    DomainResponseStatus.INSTRUCTOR_NOT_FREE to HttpURLConnection.HTTP_UNAVAILABLE,
+    DomainResponseStatus.VEHICLE_NOT_FREE to HttpURLConnection.HTTP_UNAVAILABLE,
+    DomainResponseStatus.INVALID_PROVISIONAL_LICENSE to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.OCCUPIED_DRIVING_SLOTS to HttpURLConnection.HTTP_UNAVAILABLE
 )
 
 fun Map<RepositoryResponseStatus, Int>.getHttpCode(repositoryResponseStatus: RepositoryResponseStatus): Int {

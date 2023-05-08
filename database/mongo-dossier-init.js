@@ -36,29 +36,39 @@ db2.createCollection('DrivingSlot');
 db2.createCollection('Instructor');
 db2.createCollection('Vehicles');
 db2.DrivingSlot.insertMany([
-    {
-      _id: "b1",
-      date:"2013-12-04",
-      time: "10:30",
-      instructorId: "i1",
-      dossierId: "d1",
-      vehicle: "FZ340AR"
-    },
+
     {
       _id: "b2",
-      date:"2013-12-04",
+      date:"2023-12-04",
       time: "09:00",
-      instructorId: "i2",
+      instructorId: "i1",
       dossierId: "d2",
-      vehicle: "HG745BC"
+      licensePlate: {
+        numberPlate: "HG745BC"
+      },
+      slotType: "ORDINARY"
     },
     {
       _id: "b3",
-      date:"2013-12-04",
+      date:"2023-12-04",
       time: "10:00",
       instructorId: "i2",
       dossierId: "d1",
-      vehicle: "HG745BC"
+      licensePlate: {
+        numberPlate: "HG745BC"
+      },
+      slotType: "ORDINARY"
+    },
+    {
+      _id: "b1",
+      date:"2023-12-04",
+      time: "10:30",
+      instructorId: "i1",
+      dossierId: "d1",
+      licensePlate: {
+        numberPlate: "FZ340AR"
+      },
+      slotType: "ORDINARY"
     }
 ]);
 db2.Instructor.insertMany([

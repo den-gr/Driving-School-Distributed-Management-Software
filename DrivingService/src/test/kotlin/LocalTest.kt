@@ -16,7 +16,7 @@ class LocalTest {
 
     @Test fun regexTest() {
         val licensePlate: LicensePlate = LicensePlateInit("FZ340AR")
-        assertTrue(licensePlate.verifyStructure())
+        assertTrue(licensePlate.verifyStructure("FZ340AR"))
     }
 
     @Test fun localDateSerialization() {
@@ -29,6 +29,15 @@ class LocalTest {
     }
 
     @Test fun localTimeSerialization() {
+        val json = Json.encodeToString(LocalTime.serializer(), LocalTime(9, 30))
+        println(json)
+
+        val prova = Json.encodeToString(LocalTime.serializer(), LocalTime.parse("09:30"))
+
+        assertEquals(prova, "\"09:30\"")
+    }
+
+    @Test fun localDateTime() {
         val json = Json.encodeToString(LocalTime.serializer(), LocalTime(9, 30))
         println(json)
 
