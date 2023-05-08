@@ -7,4 +7,6 @@ interface Repository {
     fun createDrivingSlot(newDrivingSlot: DrivingSlot): String?
 
     fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot>
+
+    fun getFutureDrivingSlots(): List<DrivingSlot>
 }
