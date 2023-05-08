@@ -5,16 +5,20 @@ import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
 import dsdms.client.utils.createJson
 import dsdms.driving.model.entities.DrivingSlot
+import dsdms.driving.model.valueObjects.DrivingSlotBooking
+import dsdms.driving.model.valueObjects.DrivingSlotType
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
+import dsdms.driving.model.valueObjects.licensePlate.LicensePlateInit
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import io.vertx.ext.web.client.WebClient
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
-import java.net.HttpURLConnection.HTTP_OK
+import java.net.HttpURLConnection.*
 import kotlin.test.assertEquals
 
 @RunWith(Cucumber::class)
@@ -25,6 +29,8 @@ import kotlin.test.assertEquals
 class RegularDrivingSlotTest : En {
     private val client: WebClient = VertxProviderImpl().getDrivingServiceClient()
     private var value: List<DrivingSlot>? = null
+    private var statusCode: Int? = null
+    private var statusMessage: String? = null
 
     init {
         val sleeper = SmartSleep()
@@ -37,9 +43,7 @@ class RegularDrivingSlotTest : En {
 
             checkResponse(response)
             val statusCode = response?.statusCode()
-            println("BEfore $statusCode")
             assertEquals(HTTP_OK, statusCode)
-            println("after $statusCode")
             value = Json.decodeFromString(ListSerializer(DrivingSlot.serializer()), response?.body().toString())
         }
         Then("the first driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
@@ -47,21 +51,37 @@ class RegularDrivingSlotTest : En {
             assertEquals(time, value?.get(0)?.time.toString())
             assertEquals(instructorId, value?.get(0)?.instructorId)
             assertEquals(dossierId, value?.get(0)?.dossierId)
-            assertEquals(vehicle, value?.get(0)?.vehicle.toString())
+            assertEquals(vehicle, value?.get(0)?.licensePlate.toString())
         }
         Then("the second driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(1)?.date.toString())
             assertEquals(time, value?.get(1)?.time.toString())
             assertEquals(instructorId, value?.get(1)?.instructorId)
             assertEquals(dossierId, value?.get(1)?.dossierId)
-            assertEquals(vehicle, value?.get(1)?.vehicle.toString())
+            assertEquals(vehicle, value?.get(1)?.licensePlate.toString())
         }
         Then("the third driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(2)?.date.toString())
             assertEquals(time, value?.get(2)?.time.toString())
             assertEquals(instructorId, value?.get(2)?.instructorId)
             assertEquals(dossierId, value?.get(2)?.dossierId)
-            assertEquals(vehicle, value?.get(2)?.vehicle.toString())
+            assertEquals(vehicle, value?.get(2)?.licensePlate.toString())
+        }
+        When("i send {word}, {word}, {word}, {word}, {word} to book the driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+            val request = client
+                .post("/drivingSlots")
+                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateInit(vehicle))))
+            val response = sleeper.waitResult(request)
+            checkResponse(response)
+            statusMessage = response?.body().toString()
+            statusCode = response?.statusCode()
+        }
+        Then("i receive {word} with {int}") { response: String, code: Int ->
+            println("statusMessage: $statusMessage")
+            println("statusCode: $statusCode")
+            if (statusCode != 200)
+                assertEquals(response, statusMessage)
+            assertEquals(code, statusCode)
         }
     }
 }
