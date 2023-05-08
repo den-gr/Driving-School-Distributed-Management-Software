@@ -7,7 +7,6 @@ on:
             - main
             - develop
         paths-ignore:
-            - "report/*"
             - 'README.md'
             - 'CHANGELOG.md'
             - 'LICENSE'
