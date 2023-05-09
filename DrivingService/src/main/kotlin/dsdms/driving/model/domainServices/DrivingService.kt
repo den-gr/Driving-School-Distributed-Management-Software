@@ -4,6 +4,7 @@ import dsdms.driving.database.Repository
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
+import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
 
 class DrivingService(private val repository: Repository) {
     fun saveNewDrivingSlot(documents: DrivingSlotBooking): String? {
@@ -21,6 +22,14 @@ class DrivingService(private val repository: Repository) {
         )
     }
 
+    private fun vehicleExist(licensePlate: LicensePlate): Boolean {
+        return repository.doesVehicleExist(licensePlate)
+    }
+
+    private fun instructorExist(instructorId: String): Boolean {
+        return repository.doesInstructorExist(instructorId)
+    }
+
     fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
         val futureDrivingSlots: List<DrivingSlot> = repository.getFutureDrivingSlots()
 
@@ -35,13 +44,15 @@ class DrivingService(private val repository: Repository) {
 
         val forThisDossier: (DrivingSlot) -> Boolean = { el -> el.dossierId == drivingSlotBooking.dossierId }
 
-        return if (futureDrivingSlots.any(forThisDossier))
-            DomainResponseStatus.OCCUPIED_DRIVING_SLOTS
-        else if (futureDrivingSlots.any(forThisInstructor))
-            DomainResponseStatus.INSTRUCTOR_NOT_FREE
-        else if (futureDrivingSlots.any(forThisVehicle))
-            DomainResponseStatus.VEHICLE_NOT_FREE
-        else DomainResponseStatus.OK
+        return if (vehicleExist(drivingSlotBooking.licensePlate).not() || instructorExist(drivingSlotBooking.instructorId).not())
+                DomainResponseStatus.BAD_VEHICLE_INSTRUCTOR_INFO
+            else if (futureDrivingSlots.any(forThisDossier))
+                DomainResponseStatus.OCCUPIED_DRIVING_SLOTS
+            else if (futureDrivingSlots.any(forThisInstructor))
+                DomainResponseStatus.INSTRUCTOR_NOT_FREE
+            else if (futureDrivingSlots.any(forThisVehicle))
+                DomainResponseStatus.VEHICLE_NOT_FREE
+            else DomainResponseStatus.OK
     }
 
     fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {

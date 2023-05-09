@@ -29,3 +29,6 @@ data class DrivingSlot(
 // servirà query per ottenere la lista di macchine
 // servirà query per ottenere la lista di istruttori
 // servirà query per ottenere il numero di guide effettuate da un certo DossierID
+
+
+// controllare esistenza di: provisional license, licensePlate e instructorId
