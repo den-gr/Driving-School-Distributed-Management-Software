@@ -20,3 +20,5 @@ Feature: Regular driving slot booking
             | 2023-12-04 | 11:00 | i2 | d5 | KF037MF | VEHICLE_NOT_FREE | 503 |
 #            | 2013-12-04 | 12:00AM | i2 | d1 | KF037MF | INVALID_PROVISIONAL_LICENSE | 400 |
             | 2023-12-04 | 13:00 | i1 | d1 | GN567MG | OCCUPIED_DRIVING_SLOTS | 503 |
+            | 2023-12-18 | 13:00 | i1 | d6 | GN567MH | BAD_VEHICLE_INSTRUCTOR_INFO | 404 |
+            | 2023-12-18 | 13:00 | i3 | d6 | GN567MH | BAD_VEHICLE_INSTRUCTOR_INFO | 404 |
