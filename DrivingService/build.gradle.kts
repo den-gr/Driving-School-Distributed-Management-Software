@@ -1,11 +1,11 @@
-group = "dsdms.driving"
-version = "0.0.1"
+group = "it.unibo.dsdms.driving"
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
     alias(libs.plugins.kotest.multiplatform)
+//    alias(libs.plugins.dokka)
     application
 
     id("java-library")
@@ -25,9 +25,14 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.jar{
+    archiveClassifier.set("sources")
+}
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     manifest.attributes["Main-Class"] = application.mainClass
-    archiveFileName.set("${project.name}-${project.version}.jar")
+    val projectVersion = project.properties["version"] as String
+    archiveFileName.set("${project.name}-$projectVersion.jar")
     destinationDirectory.set(file("$buildDir/output"))
 }

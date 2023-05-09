@@ -1,11 +1,11 @@
 group = "it.unibo.dsdms.dossier"
-version = "0.0.1"
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
-//    alias(libs.plugins.kotest.multiplatform)
+//    alias(libs.plugins.dokka)
+
     application
 
     id("java-library")
@@ -18,15 +18,21 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.kmongo)
     implementation(libs.bundles.vertx.server)
+
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
+tasks.jar{
+    archiveClassifier.set("sources")
+}
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     manifest.attributes["Main-Class"] = application.mainClass
-    archiveFileName.set("${project.name}-${project.version}.jar")
+    val projectVersion = project.properties["version"] as String
+    archiveFileName.set("${project.name}-$projectVersion.jar")
     destinationDirectory.set(file("$buildDir/output"))
 }

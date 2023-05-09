@@ -1,26 +1,27 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "it.unibo.dsdms"
-version = "0.0.1-SNAPSHOT1"
+group = "it.unibo.dsdms.client"
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
-
-    signing
-    `maven-publish`
-    id("org.jetbrains.dokka") version "1.7.20"
-    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+    alias(libs.plugins.dokka)
 
 //    id("org.jlleitschuh.gradle.ktlint") version "11.3.2" //TEMPORALLY DISABLE
 }
 
 allprojects {
 //    apply(plugin = "org.jlleitschuh.gradle.ktlint") //TEMPORALLY DISABLE
+    apply(plugin = "org.jetbrains.dokka")
 
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
+    }
+
+    tasks.register<Jar>("createJavadoc") {
+        from(tasks.dokkaJavadoc.get().outputDirectory)
+        archiveClassifier.set("javadoc")
     }
 
     repositories {
