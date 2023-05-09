@@ -34,7 +34,7 @@ db.Dossier.insertMany([
 db2 = db.getSiblingDB('driving_service');
 db2.createCollection('DrivingSlot');
 db2.createCollection('Instructor');
-db2.createCollection('Vehicles');
+db2.createCollection('Vehicle');
 db2.DrivingSlot.insertMany([
 
     {
@@ -75,21 +75,47 @@ db2.Instructor.insertMany([
     {
       _id: "i1",
       name: "riccardo",
-      surname: "bacca"
+      surname: "bacca",
+      fiscal_code: "BCCRCR99C07C573X"
     },
     {
       _id: "i2",
       name: "denys",
-      surname: "grushchak"
+      surname: "grushchak",
+      fiscal_code: "DRGOENMD75493MV"
     }
 ]);
-db2.Vehicles.insertMany([
+db2.Vehicle.insertMany([
     {
-      licensePlate: "FZ340AR",
-      model: "Jeep Renegade"
+      licensePlate: {
+        numberPlate: "FZ340AR"
+      },
+      manufacturer: "Jeep",
+      model: "Renegade",
+      year: 2020
     },
     {
-      licensePlate: "HG745BC",
-      model: "Fiat Punto"
+      licensePlate: {
+        numberPlate: "HG745BC"
+      },
+      manufacturer: "Fiat",
+      model: "Punto",
+      year: 2016
+    },
+    {
+      licensePlate: {
+        numberPlate: "GN567MG"
+      },
+      manufacturer: "Audi",
+      model: "A3",
+      year: 2015
+    },
+    {
+      licensePlate: {
+        numberPlate: "KF037MF"
+      },
+      manufacturer: "BMW",
+      model: "118d",
+      year: 2014
     }
 ]);
