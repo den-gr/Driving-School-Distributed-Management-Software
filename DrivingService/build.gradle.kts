@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
     alias(libs.plugins.kotest.multiplatform)
+//    alias(libs.plugins.dokka)
     application
 
     id("java-library")
@@ -22,6 +23,10 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.jar{
+    archiveClassifier.set("sources")
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
