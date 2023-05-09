@@ -14,7 +14,7 @@ Questo ha permesso di determinare nel dettaglio, le funzionalità necessarie e v
 ## Requisiti di Business
 I requisiti di business specificano le caratteristiche che il sistema dovrà possedere per essere corretto, definendone gli obiettivi di alto livello.
 
-I requisiti di business previsti dal Driving School Management Software, che sono stati individuati, sono i seguenti:
+I requisiti di business previsti dal Driving School Distributed Management Software, che sono stati individuati, sono i seguenti:
 - digitalizzare i processi di business attualmente cartacei;
 - ridurre i tempi di ogni operazione;
 - consentire l'utilizzo di alcuni applicativi (es. prenotazione di guide pratiche) da remoto;
@@ -68,16 +68,16 @@ Optional: un Vehicle dopo un certo numero di Driving Slot a lui associati, dovr�
 ## Requisiti non funzionali
 I requisiti non funzionali riguardano le funzionalità che il sistema non deve necessariamente possedere per fare in modo che sia funzionante e corretto.
 
-I requisiti non funzionali previsti dal Driving School Management Software, che sono stati individuati, sono i seguenti:
+I requisiti non funzionali che sono stati individuati sono i seguenti:
 - il software deve essere cross-platform, cioè eseguibile sia su sistemi operativi Windows che su MacOS e Linux, o comunque su qualsiasi sistema operativo capace di supportare Java Runtime Environment versione 16 e successive;
 - il sistema deve essere integrabile con front-end esterni, utilizzando le API messe a disposizione;
 
 ## Requisiti implementativi
 I requisiti di implementazione vincolano l’intera fase di realizzazione del sistema, ad esempio richiedendo l’uso di uno specifico linguaggio di programmazione e/o di uno specifico tool software.
 
-I requisiti implementativi previsti dal Driving School Management Software, che sono stati indicati dal cliente, sono i seguenti:
+I requisiti implementativi previsti dal Driving School Distributed Management Software, che sono stati indicati dal cliente, sono i seguenti:
 - le componenti software del sistema saranno programmate in linguaggio Kotlin;
-- il software deve essere basato sull'architettura di base dei Microservizi;;
+- il software deve essere basato sull'architettura di base dei Microservizi;
 - le API (Application Programming Interface) fornite da ciascun microservizio, dovranno essere di tipo REST;
 - il deployment di ciascun microservizio, dovrà avvenire mediante l'utilizzo di Container Docker;
 - il testing del sistema dovrà avvenire mediante Acceptance Testing;
