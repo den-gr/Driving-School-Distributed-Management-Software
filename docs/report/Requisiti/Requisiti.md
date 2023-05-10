@@ -1,3 +1,10 @@
+---
+title: Requisiti
+has_children: false
+nav_order: 3
+---
+
+
 # Requisiti
 
 Questa sezione della relazione, viene dedicata alla descrizione approfondita dei requisiti di progetto, raccolti durante le fasi di analisi del dominio e perfezionati durante le fasi di Knowledge Crunching.
@@ -7,10 +14,10 @@ Questo ha permesso di determinare nel dettaglio, le funzionalità necessarie e v
 ## Requisiti di Business
 I requisiti di business specificano le caratteristiche che il sistema dovrà possedere per essere corretto, definendone gli obiettivi di alto livello.
 
-I requisiti di business previsti dal Driving School Management Software, che sono stati individuati, sono i seguenti:
+I requisiti di business previsti dal Driving School Distributed Management Software, che sono stati individuati, sono i seguenti:
 - digitalizzare i processi di business attualmente cartacei;
 - ridurre i tempi di ogni operazione;
-- consentire l'utilizzo di alcuni applicativi (es. prenotazione di Driving Lessons) da remoto;
+- consentire l'utilizzo di alcuni applicativi (es. prenotazione di guide pratiche) da remoto;
 
 ## Requisiti utente
 I requisiti utente esprimono i bisogni degli utenti e descrivono quali sono le azioni che l’utente deve poter effettuare interagendo con il sistema.
@@ -24,6 +31,7 @@ Dalla precedente analisi del dominio che è stata effettuata possiamo rilevare i
 - registrare un Dossier valido ed esistente, all'interno di un Exam Appeal;
 - aggiornare o creare Theoretical Exam Pass o Provisional License;
 - registrare e leggere Doctor Slot;
+- selezionare e leggere Practical Exam Day;
 
 ## Requisiti funzionali
 I requisiti funzionali riguardano le funzionalità che il sistema deve mettere a disposizione all’utente. Per la loro definizione è necessario basarsi sui requisiti utente estratti in precedenza.
@@ -53,22 +61,23 @@ Optional: un dossier può essere invalidato manualmente, tramite una chiamata ad
 - ciascun Driving Slot può rappresentare un Practical Exam o una Driving Lesson;
 - ciascun Dossier può riservare un Driving slot alla volta;
 - per poter inserire un Driving Slot, è necessario verificare la validità della Provisiona License
+- è possibile inserire un Driving Slot relativo a Practical Exam, solo in un Practical Exam Day;
 
 Optional: un Vehicle dopo un certo numero di Driving Slot a lui associati, dovrà procedere ad un controllo.
 
 ## Requisiti non funzionali
 I requisiti non funzionali riguardano le funzionalità che il sistema non deve necessariamente possedere per fare in modo che sia funzionante e corretto.
 
-I requisiti non funzionali previsti dal Driving School Management Software, che sono stati individuati, sono i seguenti:
+I requisiti non funzionali che sono stati individuati sono i seguenti:
 - il software deve essere cross-platform, cioè eseguibile sia su sistemi operativi Windows che su MacOS e Linux, o comunque su qualsiasi sistema operativo capace di supportare Java Runtime Environment versione 16 e successive;
 - il sistema deve essere integrabile con front-end esterni, utilizzando le API messe a disposizione;
 
 ## Requisiti implementativi
 I requisiti di implementazione vincolano l’intera fase di realizzazione del sistema, ad esempio richiedendo l’uso di uno specifico linguaggio di programmazione e/o di uno specifico tool software.
 
-I requisiti implementativi previsti dal Driving School Management Software, che sono stati indicati dal cliente, sono i seguenti:
+I requisiti implementativi previsti dal Driving School Distributed Management Software, che sono stati indicati dal cliente, sono i seguenti:
 - le componenti software del sistema saranno programmate in linguaggio Kotlin;
-- il software deve essere basato sull'architettura di base dei Microservizi;;
+- il software deve essere basato sull'architettura di base dei Microservizi;
 - le API (Application Programming Interface) fornite da ciascun microservizio, dovranno essere di tipo REST;
 - il deployment di ciascun microservizio, dovrà avvenire mediante l'utilizzo di Container Docker;
 - il testing del sistema dovrà avvenire mediante Acceptance Testing;
