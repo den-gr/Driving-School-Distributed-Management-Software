@@ -1,9 +1,0 @@
-BoundedContext ExamContext{
-  domainVisionStatement = "This context is responsible for ..." 
-  responsibilities = " Consente la gestione di Theoretical Exam e Practical Exam, insieme a tutto ciò che ne concerne (Doctor Visit, Theoretical Exam Pass e Provisional License)."
-  implementationTechnology = "Kotlin + Vert.x"
-  
-  type = FEATURE
-  businessModel = "COMPLIANCE"
-  evolution = COMMODITY // optional
-}

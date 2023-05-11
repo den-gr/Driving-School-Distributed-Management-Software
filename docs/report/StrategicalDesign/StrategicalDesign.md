@@ -20,6 +20,12 @@ I sotto domini sopra elencati, sono stati inoltre classificati come:
 
 Avendo chiaro le informazioni di cui sopra, i sotto domini precedentemente individuati sono stati classificati come segue: Dossier di tipo Genreric, Exam di tipo Core e Driving di tipo Support.
 
+<div align="center">
+      <img id="fig1" src="img/contextmap.png">
+      <p align="center" >[Fig 1] Context map del sistema</p>
+</div>
+
+
 ## Bounded context canvas
 
 Il successivo passaggio di progettazione, dettato dal DDD, è stata la progettazione dei Bounded Contexts all'interno dei domini in esame.

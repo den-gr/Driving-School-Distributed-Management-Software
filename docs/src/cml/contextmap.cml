@@ -1,46 +1,67 @@
-import "./DrivingContext.cml"
-import "./ExamContext.cml"
-import "./DossierContext.cml"
-
 ContextMap {
   type = SYSTEM_LANDSCAPE
-  state = TO_BE // AS_IS
-
+  state = AS_IS
+  
+  contains DossierContext
   contains DrivingContext
   contains ExamContext
-  contains DossierContext
+  contains DoctorContext
   
-  DrivingContext [P]<->[P] ExamContext : name{
-    implementationTechnology = "RESTful HTTP"
-  }
-
-  DossierContext [U]->[D, ACL] ExamContext
+  DrivingContext [P]<->[P] ExamContext 
+  DossierContext [P]<->[P] ExamContext
+  ExamContext [D] <- [U] DoctorContext
+  DoctorContext [D] <- [U] DossierContext
 }
 
-Domain Dom{
-  domainVisionStatement = "This domain is responsible for ..."
+Domain DSDMS{
 
-  Subdomain A
-  Subdomain B{
+  Subdomain A{
     domainVisionStatement = "This subdomain is responsible for ..."
     type = CORE_DOMAIN
+  }
 
-    Entity Dossier{
-      aggregateRoot
+  Subdomain B{
+    domainVisionStatement = "This subdomain is responsible for ..."
+    type = SUPPORTING_DOMAIN
 
-      int id
-      String name
-      String surname
-      Date birthdate
-      - List<ProvisionalLicense> list
+  }
 
-
-    }
-
-    Entity ProvisionalLicense
+  Subdomain CC{
+    domainVisionStatement = ""
+    type = GENERIC_SUBDOMAIN
   }
 }
 
+BoundedContext AbstractContext{
+  implementationTechnology = "Kotlin, Vertx, Kmongo"
+  type = SYSTEM
+}
 
 
+BoundedContext DossierContext refines AbstractContext{
+  domainVisionStatement = "Gestione di tutte le informazione riguardanti un iscritto, gestisce invalidità delle pratiche"
+  
+  businessModel = "COMPLIANCE"
+  evolution = COMMODITY
+}
 
+BoundedContext DrivingContext refines AbstractContext{
+  domainVisionStatement = "Consente la gestione degli slot di guida, acquisendo l’informazione relative a veicoli, istruttori e utilizzando l’informazione del foglio rosa relativo ad una pratica"
+  businessModel = "REVENUE"
+  evolution = COMMODITY
+}
+
+BoundedContext ExamContext refines AbstractContext{
+  domainVisionStatement = "Consente la gestione di esame teorico e pratico, insieme a tutto ciò che ne concerne (registro d’esame teorico e foglio rosa)"
+  
+  businessModel = "COMPLIANCE"
+  evolution = CUSTOM_BUILT
+}
+
+
+BoundedContext DoctorContext refines AbstractContext{
+  domainVisionStatement = "consente la gestione di tutto ciò che concerne la visita, necessaria agli iscritti per poter coneguire l’esame teorico"
+  
+  businessModel = "COMPLIANCE"
+  evolution = CUSTOM_BUILT
+}
