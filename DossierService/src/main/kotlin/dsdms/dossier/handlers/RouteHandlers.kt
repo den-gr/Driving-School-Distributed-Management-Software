@@ -10,6 +10,4 @@ interface RouteHandlers {
     suspend fun handleDossierIdReading(routingContext: RoutingContext)
 
     suspend fun handleDossierExamStatusUpdate(routingContext: RoutingContext)
-
-    suspend fun deleteDossier(routingContext: RoutingContext)
 }

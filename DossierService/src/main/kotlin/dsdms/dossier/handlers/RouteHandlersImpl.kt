@@ -61,12 +61,4 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
             routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end(ex.message)
         }
     }
-
-    override suspend fun deleteDossier(routingContext: RoutingContext) {
-        GlobalScope.launch {
-            val deleteResult: RepositoryResponseStatus =
-                model.dossierService.deleteDossier(routingContext.request().getParam("id").toString())
-            routingContext.response().setStatusCode(dbConversionTable.getHttpCode(deleteResult)).end(deleteResult.name)
-        }
-    }
 }
