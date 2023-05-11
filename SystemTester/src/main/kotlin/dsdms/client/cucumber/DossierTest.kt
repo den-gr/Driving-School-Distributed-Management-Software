@@ -69,7 +69,7 @@ class DossierTest : En {
             assertNotNull(retrievedDossier)
             assertEquals(name, retrievedDossier?.name)
             assertEquals(surname, retrievedDossier?.surname)
-            assertEquals(LocalDate.parse(birthdate), retrievedDossier?.birthdate)
+            assertEquals(birthdate, retrievedDossier?.birthdate)
             assertEquals(fiscal_code, retrievedDossier?.fiscal_code)
         }
 

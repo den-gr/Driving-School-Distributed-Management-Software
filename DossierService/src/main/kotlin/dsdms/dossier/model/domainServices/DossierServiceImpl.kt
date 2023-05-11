@@ -12,7 +12,7 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
     private val subscriberControls: SubscriberControls = SubscriberControlsImpl()
 
     override suspend fun saveNewDossier(givenDocuments: SubscriberDocuments): String? {
-        return repository.createDossier(Dossier(givenDocuments.name, givenDocuments.surname, givenDocuments.birthdate, givenDocuments.fiscal_code))
+        return repository.createDossier(Dossier(givenDocuments.name, givenDocuments.surname, givenDocuments.birthdate.toString(), givenDocuments.fiscal_code))
     }
 
     override suspend fun verifyDocuments(documents: SubscriberDocuments): DomainResponseStatus {

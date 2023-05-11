@@ -7,7 +7,7 @@ import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
 import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
 
 class DrivingService(private val repository: Repository) {
-    fun saveNewDrivingSlot(documents: DrivingSlotBooking): String? {
+    suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): String? {
         return repository.createDrivingSlot(createRegularDrivingSlot(documents))
     }
 
@@ -22,15 +22,15 @@ class DrivingService(private val repository: Repository) {
         )
     }
 
-    private fun vehicleExist(licensePlate: LicensePlate): Boolean {
+    private suspend fun vehicleExist(licensePlate: LicensePlate): Boolean {
         return repository.doesVehicleExist(licensePlate)
     }
 
-    private fun instructorExist(instructorId: String): Boolean {
+    private suspend fun instructorExist(instructorId: String): Boolean {
         return repository.doesInstructorExist(instructorId)
     }
 
-    fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
+    suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
         val futureDrivingSlots: List<DrivingSlot> = repository.getFutureDrivingSlots()
 
         val dateAndTime: (DrivingSlot) -> Boolean = { el ->
@@ -55,7 +55,7 @@ class DrivingService(private val repository: Repository) {
             else DomainResponseStatus.OK
     }
 
-    fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {
+    suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {
         return repository.getOccupiedDrivingSlots(docs)
     }
 }

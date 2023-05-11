@@ -3,7 +3,6 @@ package dsdms.driving.handlers
 import io.vertx.ext.web.RoutingContext
 
 interface RouteHandlers {
-
-    fun registerNewDrivingSlot(routingContext: RoutingContext)
-    fun getOccupiedDrivingSlots(routingContext: RoutingContext)
+    suspend fun registerNewDrivingSlot(routingContext: RoutingContext)
+    suspend fun getOccupiedDrivingSlots(routingContext: RoutingContext)
 }

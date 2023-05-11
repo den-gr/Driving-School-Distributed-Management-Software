@@ -1,7 +1,8 @@
 package dsdms.driving
 
 import io.vertx.core.Vertx
-import org.litote.kmongo.KMongo
+import org.litote.kmongo.coroutine.coroutine
+import org.litote.kmongo.reactivestreams.KMongo
 
 class Main {
     companion object {
@@ -28,6 +29,7 @@ class Main {
 
             val dbConnection = KMongo
                 .createClient(mongoURI)
+                .coroutine
                 .getDatabase("driving_service")
             val server = Server(port, dbConnection)
             Vertx.vertx().deployVerticle(server)
