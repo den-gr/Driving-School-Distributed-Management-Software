@@ -11,12 +11,11 @@ import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.client.WebClient
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
-import java.net.HttpURLConnection.HTTP_BAD_REQUEST
-import java.net.HttpURLConnection.HTTP_CONFLICT
-import java.net.HttpURLConnection.HTTP_OK
+import java.net.HttpURLConnection.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -34,10 +33,10 @@ class DossierTest : En {
 
     init {
         val sleeper = SmartSleep()
-        When("I send {word}, {word}, {word} to server") { name: String, surname: String, fiscal_code: String ->
+        When("I send {word}, {word},{word},{word} to server") { name: String, surname: String, birthdate: String, fiscal_code: String ->
             val request = client
                 .post("/dossiers")
-                .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
+                .sendBuffer(createJson(SubscriberDocuments(name, surname, LocalDate.parse(birthdate), fiscal_code)))
             val response = sleeper.waitResult(request)
 
             checkResponse(response)
@@ -66,14 +65,15 @@ class DossierTest : En {
             retrievedDossier = Json.decodeFromString(response?.body().toString())
         }
 
-        Then("I received {word}, {word}, {word} of registered dossier") { name: String, surname: String, fiscal_code: String ->
+        Then("I received {word},{word},{word},{word} of registered dossier") { name: String, surname: String, birthdate: String, fiscal_code: String ->
             assertNotNull(retrievedDossier)
             assertEquals(name, retrievedDossier?.name)
             assertEquals(surname, retrievedDossier?.surname)
+            assertEquals(LocalDate.parse(birthdate), retrievedDossier?.birthdate)
             assertEquals(fiscal_code, retrievedDossier?.fiscal_code)
         }
 
-        When("I send bad informations {word}, {int}, {word} to server") { name: String, surname: Int, fiscal_code: String ->
+        When("I send bad informations {word}, {int}, {word}, {word} to server") { name: String, surname: Int, birthdate: String, fiscal_code: String ->
             val request = client
                 .post("/dossiers")
                 .sendJson(
@@ -82,6 +82,8 @@ class DossierTest : En {
                         name,
                         "surname",
                         surname,
+                        "birthdate",
+                        birthdate,
                         "fiscal_code",
                         fiscal_code
                     )
@@ -97,10 +99,10 @@ class DossierTest : En {
             assertEquals(HTTP_BAD_REQUEST, statusCode)
         }
 
-        When("I send duplicated informations {word}, {word}, {word} to server") { name: String, surname: String, fiscal_code: String ->
+        When("I send duplicated informations {word},{word},{word},{word} to server") { name: String, surname: String, birthdate: String, fiscal_code: String ->
             val request = client
                 .post("/dossiers")
-                .sendBuffer(createJson(SubscriberDocuments(name, surname, fiscal_code)))
+                .sendBuffer(createJson(SubscriberDocuments(name, surname, LocalDate.parse(birthdate), fiscal_code)))
             val response = sleeper.waitResult(request)
 
             assertNotNull(response)
