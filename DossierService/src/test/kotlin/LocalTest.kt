@@ -2,6 +2,7 @@ import com.mongodb.client.MongoCollection
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatusImpl
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.litote.kmongo.KMongo
@@ -24,7 +25,7 @@ internal class LocalTest {
     @Disabled
     @Test
     fun assertInsertTest() {
-        val den = Dossier("den", "grush", "DNFG123")
+        val den = Dossier("den", "grush", LocalDate(1999, 3, 7),"DNFG123")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
         assertNull(result)
@@ -33,7 +34,7 @@ internal class LocalTest {
     @Disabled
     @Test
     fun updateTest() {
-        val den = Dossier("den", "grush", "DNFG123456789")
+        val den = Dossier("den", "grush", LocalDate(1999, 3, 7),"DNFG123456789")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
         println(result.toString())

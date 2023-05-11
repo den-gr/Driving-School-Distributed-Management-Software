@@ -4,6 +4,7 @@ import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttempts
 import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttemptsImpl
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatusImpl
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
@@ -11,6 +12,7 @@ import kotlinx.serialization.Serializable
 data class Dossier(
     val name: String,
     val surname: String,
+    val birthdate: LocalDate,
     val fiscal_code: String,
     @Contextual val _id: String? = null,
     val validity: Boolean = true,

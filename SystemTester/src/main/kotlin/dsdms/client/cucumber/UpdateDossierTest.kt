@@ -13,6 +13,7 @@ import io.cucumber.junit.CucumberOptions
 import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
@@ -36,10 +37,10 @@ class UpdateDossierTest : En {
         val sleeper = SmartSleep()
         println(client)
 
-        Given("a new registered dossier: {word}, {word}, {word}") { name: String, surname: String, fc: String ->
+        Given("a new registered dossier: {word}, {word}, {word}, {word}") { name: String, surname: String, birthdate: String, fc: String ->
             val request = client
                 .post("/dossiers")
-                .sendBuffer(createJson(SubscriberDocuments(name, surname, fc)))
+                .sendBuffer(createJson(SubscriberDocuments(name, surname, LocalDate.parse(birthdate), fc)))
             val response = sleeper.waitResult(request)
 
             checkResponse(response)

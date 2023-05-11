@@ -5,6 +5,7 @@ db.Dossier.insertMany([
       _id: "d1",
       name: "prova1",
       surname: "prova1",
+      birthdate: "1999-03-07",
       fiscal_code: "MR45G3",
       validity: true,
       examAttempts: {
@@ -19,6 +20,7 @@ db.Dossier.insertMany([
       _id: "d2",
       name: "prova2",
       surname: "prova2",
+      birthdate: "1999-03-07",
       fiscal_code: "MFH7594",
       validity: true,
       examAttempts: {
