@@ -13,24 +13,6 @@ ContextMap {
   DoctorContext [D] <- [U] DossierContext
 }
 
-Domain DSDMS{
-
-  Subdomain A{
-    domainVisionStatement = "This subdomain is responsible for ..."
-    type = CORE_DOMAIN
-  }
-
-  Subdomain B{
-    domainVisionStatement = "This subdomain is responsible for ..."
-    type = SUPPORTING_DOMAIN
-
-  }
-
-  Subdomain CC{
-    domainVisionStatement = ""
-    type = GENERIC_SUBDOMAIN
-  }
-}
 
 BoundedContext AbstractContext{
   implementationTechnology = "Kotlin, Vertx, Kmongo"

@@ -20,11 +20,17 @@ I sotto domini sopra elencati, sono stati inoltre classificati come:
 
 Avendo chiaro le informazioni di cui sopra, i sotto domini precedentemente individuati sono stati classificati come segue: Dossier di tipo Genreric, Exam di tipo Core e Driving di tipo Support.
 
+### Bounded contex
+
+Per tre sotto domini rilevati sono stati progettaiti quatro bounded context:
+- *Dossier context* che appartieniene a Dossier subdomain
+- *Driving context* che appartiene a Driving subdomain
+- *Exam context* e *Doctor context* che appartengono a Exam subdomain 
+
 <div align="center">
       <img id="fig1" src="img/contextmap.png">
       <p align="center" >[Fig 1] Context map del sistema</p>
 </div>
-
 
 ## Bounded context canvas
 
@@ -32,6 +38,7 @@ Il successivo passaggio di progettazione, dettato dal DDD, è stata la progettaz
 Ciascun Bounded Context modella una porzione del dominio, definendone i confini in modo chiaro e non ambiguo, con l'obiettivo di gestirne le relative entrate ed uscite in termini di informazioni ed azioni eseguibili.
 
 Per ciascun contesto individuato, di seguito si propone una rappresentazine testuale dei Bounded Context Canvas.
+
 
 ### Dossier context
 
