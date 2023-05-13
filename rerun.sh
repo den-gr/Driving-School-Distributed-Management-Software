@@ -1,5 +1,5 @@
 #!/bin/sh
 ./gradlew build
 docker-compose build
-docker-compose up
+docker-compose up --abort-on-container-exit
 docker-compose down
