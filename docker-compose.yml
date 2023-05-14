@@ -42,10 +42,25 @@ services:
     networks:
       - dsdmsNet
 
+  exam_service:
+    depends_on:
+      - mongo
+    build:
+      context: ./ExamService
+      args:
+        - EXAM_PORT=${EXAM_SERVICE_PORT}
+        - MONGO_URI=${MONGO_URI}
+    image: exam_service
+    ports:
+      - "${EXAM_SERVICE_PORT}:${EXAM_SERVICE_PORT}"
+    networks:
+      - dsdmsNet
+
   system_tester:
     depends_on:
       - dossier_service
       - driving_service
+      - exam_service
     build:
       context: ./SystemTester
       args:
@@ -53,6 +68,8 @@ services:
         - DOSSIER_SERVICE_PORT=${DOSSIER_SERVICE_PORT}
         - DRIVING_SERVICE_HOST=driving_service
         - DRIVING_SERVICE_PORT=${DRIVING_SERVICE_PORT}
+        - EXAM_SERVICE_HOST=exam_service
+        - EXAM_SERVICE_PORT=${EXAM_SERVICE_PORT}
       dockerfile: Dockerfile
     image: system_tester
     networks:

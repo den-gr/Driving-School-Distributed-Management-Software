@@ -1,6 +1,6 @@
 package dsdms.exam
 
-
+import io.vertx.core.Vertx
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
@@ -31,8 +31,8 @@ class Main {
                 .createClient(mongoURI)
                 .coroutine
                 .getDatabase("exam_service") //TODO check db name
-//            val server = Server(port, dbConnection)
-//            Vertx.vertx().deployVerticle(server)
+            val server = Server(port, dbConnection)
+            Vertx.vertx().deployVerticle(server)
         }
     }
 }
