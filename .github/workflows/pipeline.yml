@@ -37,6 +37,7 @@ jobs:
                 services: |
                   dossier_service
                   driving_service
+                  exam_service
             - name: Run tests
               run: ./gradlew SystemTester:run
     release:
