@@ -21,13 +21,8 @@ dependencies {
     implementation(libs.bundles.vertx.server)
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 
-tasks.jar{
-    archiveClassifier.set("sources")
-}
+
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
