@@ -40,7 +40,7 @@ kmongo = ["kmongo-base", "kmongo-coroutine"]
 kotest-multiplatform = {id = "io.kotest.multiplatform", version.ref="kotest"}
 kotlin-jvm = {id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
-johnrengelman-shadow = "com.github.johnrengelman.shadow:7.0.0" #allow execute shadowJar task
+johnrengelman-shadow = "com.github.johnrengelman.shadow:8.1.1" #allow execute shadowJar task
 dokka = {id ="org.jetbrains.dokka", version.ref="kotlin"}
 
 #not used

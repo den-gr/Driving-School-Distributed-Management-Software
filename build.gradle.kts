@@ -27,4 +27,12 @@ allprojects {
     repositories {
         mavenCentral()
     }
+
+    tasks.withType<Jar>{
+        archiveClassifier.set("sources")
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
