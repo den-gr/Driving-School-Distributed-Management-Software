@@ -4,7 +4,7 @@ import io.vertx.core.Future
 import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 
-class SmartSleep(private val timeout: Long = 5000) {
+class SmartSleep(private val timeout: Long = 10000) {
 
     fun waitResult(future: Future<HttpResponse<Buffer>>): HttpResponse<Buffer>? {
         future.onFailure { println(it.message) }
