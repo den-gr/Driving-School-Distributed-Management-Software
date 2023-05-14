@@ -10,4 +10,4 @@ ARG DOCTOR_PORT
 ENV DOCTOR_PORT="-Ddoctor_port=${DOCTOR_PORT}"
 
 
-CMD java $MONGO_URI $DOCTOR_PORT -jar ExamService-SNAPSHOT.jar
+CMD java $MONGO_URI $DOCTOR_PORT -jar DoctorService-SNAPSHOT.jar
