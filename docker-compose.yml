@@ -56,11 +56,26 @@ services:
     networks:
       - dsdmsNet
 
+  doctor_service:
+    depends_on:
+      - mongo
+    build:
+      context: ./DoctorService
+      args:
+        - DOCTOR_PORT=${DOCTOR_SERVICE_PORT}
+        - MONGO_URI=${MONGO_URI}
+    image: doctor_service
+    ports:
+      - "${DOCTOR_SERVICE_PORT}:${DOCTOR_SERVICE_PORT}"
+    networks:
+      - dsdmsNet
+
   system_tester:
     depends_on:
       - dossier_service
       - driving_service
       - exam_service
+      - doctor_service
     build:
       context: ./SystemTester
       args:
@@ -70,6 +85,8 @@ services:
         - DRIVING_SERVICE_PORT=${DRIVING_SERVICE_PORT}
         - EXAM_SERVICE_HOST=exam_service
         - EXAM_SERVICE_PORT=${EXAM_SERVICE_PORT}
+        - DOCTOR_SERVICE_HOST=doctor_service
+        - DOCTOR_SERVICE_PORT=${DOCTOR_SERVICE_PORT}
       dockerfile: Dockerfile
     image: system_tester
     networks:

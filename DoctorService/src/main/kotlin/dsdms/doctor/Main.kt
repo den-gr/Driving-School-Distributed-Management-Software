@@ -7,7 +7,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 class Main {
     companion object {
         private const val DEFAULT_MONGO_URI = "mongodb://admin:admin@localhost:27017"
-        private const val DEFAULT_SERVER_PORT = 8020
+        private const val DEFAULT_SERVER_PORT = 8030
 
         @JvmStatic
         fun main(args: Array<String>) {

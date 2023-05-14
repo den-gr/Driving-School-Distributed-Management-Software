@@ -11,6 +11,8 @@ interface VertxProvider {
     fun getDrivingServiceClient(): WebClient
 
     fun getExamServiceClient(): WebClient
+
+    fun getDoctorServiceClient(): WebClient
 }
 
 class VertxProviderImpl : VertxProvider {
@@ -19,6 +21,7 @@ class VertxProviderImpl : VertxProvider {
         const val DEFAULT_DOSSIER_SERVICE_PORT = 8000
         const val DEFAULT_DRIVING_SERVICE_PORT = 8010
         const val DEFAULT_EXAM_SERVICE_PORT = 8020
+        const val DEFAULT_DOCTOR_SERVICE_PORT = 8030
     }
     private val vertx: Vertx = Vertx.vertx()
 
@@ -32,6 +35,10 @@ class VertxProviderImpl : VertxProvider {
 
     override fun getExamServiceClient(): WebClient {
         return createClient(getHost("exam_host"), getPort("exam_port", DEFAULT_EXAM_SERVICE_PORT))
+    }
+
+    override fun getDoctorServiceClient(): WebClient {
+        return createClient(getHost("doctor_host"), getPort("doctor_port", DEFAULT_DOCTOR_SERVICE_PORT))
     }
 
     private fun getHost(hostName: String): String{
