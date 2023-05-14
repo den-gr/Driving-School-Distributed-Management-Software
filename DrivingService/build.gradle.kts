@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
-    alias(libs.plugins.kotest.multiplatform)
-//    alias(libs.plugins.dokka)
     application
 
     id("java-library")

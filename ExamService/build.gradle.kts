@@ -1,5 +1,3 @@
-group = "it.unibo.dsdms.dossier"
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
@@ -9,7 +7,7 @@ plugins {
 
     id("java-library")
 }
-application.mainClass.set("dsdms.dossier.Main")
+application.mainClass.set("dsdms.exam.Main")
 
 dependencies {
     testImplementation(kotlin("test"))
@@ -27,4 +25,3 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveFileName.set("${project.name}-$projectVersion.jar")
     destinationDirectory.set(file("$buildDir/output"))
 }
-
