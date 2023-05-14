@@ -1,12 +1,18 @@
 package dsdms.driving.model.domainServices
 
 import dsdms.driving.database.Repository
+import dsdms.driving.database.mock.ExamService
+import dsdms.driving.database.utils.RepositoryResponseStatus
+import dsdms.driving.handlers.getDomainCode
+import dsdms.driving.handlers.repositoryToDomainConversionTable
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
 import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
 
 class DrivingServiceImpl(private val repository: Repository) : DrivingService {
+    private val examService: ExamService = ExamService()
+
     override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): String? {
         return repository.createDrivingSlot(createRegularDrivingSlot(documents))
     }
@@ -30,6 +36,10 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
         return repository.doesInstructorExist(instructorId)
     }
 
+    /**
+     * TODO: make a call to future Exam Service to request
+     *      info for a possible provisional license for this specific dossier id
+     */
     override suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
         val futureDrivingSlots: List<DrivingSlot> = repository.getFutureDrivingSlots()
 
@@ -44,7 +54,11 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
 
         val forThisDossier: (DrivingSlot) -> Boolean = { el -> el.dossierId == drivingSlotBooking.dossierId }
 
-        return if (vehicleExist(drivingSlotBooking.licensePlate).not() || instructorExist(drivingSlotBooking.instructorId).not())
+        val provisionalLicenseResult: RepositoryResponseStatus = examService.getProvisionalLicenseInfo(drivingSlotBooking.dossierId, drivingSlotBooking.date)
+
+        return if (provisionalLicenseResult != RepositoryResponseStatus.OK)
+                repositoryToDomainConversionTable.getDomainCode(provisionalLicenseResult)
+            else if (vehicleExist(drivingSlotBooking.licensePlate).not() || instructorExist(drivingSlotBooking.instructorId).not())
                 DomainResponseStatus.BAD_VEHICLE_INSTRUCTOR_INFO
             else if (futureDrivingSlots.any(forThisDossier))
                 DomainResponseStatus.OCCUPIED_DRIVING_SLOTS

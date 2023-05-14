@@ -38,6 +38,10 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
             }
     }
 
+    /**
+     * TODO: Insert a route to disable a dossier and delete
+     *      all provisional licenses and theoretical exam passes woth that id
+     */
     private fun setRoutes(router: Router) {
         router.get("/api/:id").handler(::handle)
         router.post("/dossiers").coroutineHandler(handlersImpl::handleDossierRegistration)
