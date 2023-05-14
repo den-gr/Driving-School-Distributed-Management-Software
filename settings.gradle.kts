@@ -15,3 +15,4 @@ gitHooks {
     }
     createHooks(true)
 }
+include(":DoctorService")
