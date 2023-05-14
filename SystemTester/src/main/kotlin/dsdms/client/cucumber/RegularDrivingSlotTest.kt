@@ -35,6 +35,23 @@ class RegularDrivingSlotTest : En {
     init {
         val sleeper = SmartSleep()
 
+        When("i send {word}, {word}, {word}, {word}, {word} to book the driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+            val request = client
+                .post("/drivingSlots")
+                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateInit(vehicle))))
+            val response = sleeper.waitResult(request)
+            checkResponse(response)
+            statusMessage = response?.body().toString()
+            statusCode = response?.statusCode()
+        }
+        Then("i receive {word} with {int}") { response: String, code: Int ->
+            println("statusMessage: $statusMessage")
+            println("statusCode: $statusCode")
+            if (statusCode != 200)
+                assertEquals(response, statusMessage)
+            assertEquals(code, statusCode)
+        }
+
         When("i request occupied driving slots in a {word}") { date: String ->
             val request = client
                 .get("/drivingSlots")
@@ -66,22 +83,6 @@ class RegularDrivingSlotTest : En {
             assertEquals(instructorId, value?.get(2)?.instructorId)
             assertEquals(dossierId, value?.get(2)?.dossierId)
             assertEquals(vehicle, value?.get(2)?.licensePlate.toString())
-        }
-        When("i send {word}, {word}, {word}, {word}, {word} to book the driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
-            val request = client
-                .post("/drivingSlots")
-                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateInit(vehicle))))
-            val response = sleeper.waitResult(request)
-            checkResponse(response)
-            statusMessage = response?.body().toString()
-            statusCode = response?.statusCode()
-        }
-        Then("i receive {word} with {int}") { response: String, code: Int ->
-            println("statusMessage: $statusMessage")
-            println("statusCode: $statusCode")
-            if (statusCode != 200)
-                assertEquals(response, statusMessage)
-            assertEquals(code, statusCode)
         }
     }
 }
