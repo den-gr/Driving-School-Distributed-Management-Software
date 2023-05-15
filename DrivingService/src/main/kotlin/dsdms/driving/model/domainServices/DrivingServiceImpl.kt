@@ -72,4 +72,8 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
     override suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {
         return repository.getOccupiedDrivingSlots(docs)
     }
+
+    override suspend fun deleteDrivingSlot(drivingSlotId: String): DomainResponseStatus {
+        return repositoryToDomainConversionTable.getDomainCode(repository.deleteDrivingSlot(drivingSlotId))
+    }
 }

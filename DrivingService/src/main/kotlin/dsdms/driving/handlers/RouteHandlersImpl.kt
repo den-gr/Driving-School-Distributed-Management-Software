@@ -55,4 +55,14 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
             routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
         }
     }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    override suspend fun deleteDrivingSlot(routingContext: RoutingContext) {
+        GlobalScope.launch {
+            val result = model.drivingService.deleteDrivingSlot(routingContext.request().getParam("id").toString())
+            routingContext.response()
+                .setStatusCode(domainConversionTable.getHttpCode(result))
+                .end(result.toString())
+        }
+    }
 }

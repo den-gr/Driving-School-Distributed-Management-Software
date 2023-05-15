@@ -10,4 +10,6 @@ interface DrivingService {
     suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus
 
     suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot>
+
+    suspend fun deleteDrivingSlot(drivingSlotId: String): DomainResponseStatus
 }
