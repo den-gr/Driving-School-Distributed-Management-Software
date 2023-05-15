@@ -109,9 +109,9 @@ class DossierTest : En {
             statusCode = response.statusCode()
         }
 
-        Then("I received Conflict error message") {
+        Then("I received bad request error message") {
             assertNotNull(statusCode)
-            assertEquals(HTTP_CONFLICT, statusCode)
+            assertEquals(HTTP_BAD_REQUEST, statusCode)
         }
     }
 }

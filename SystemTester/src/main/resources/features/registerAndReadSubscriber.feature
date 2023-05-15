@@ -16,7 +16,7 @@ Feature: registration and reading of new dossier
 
     Scenario Outline: subscriber informations are already available in a valid dossier
         When I send duplicated informations <name>,<surname>,<birthdate>,<fiscal_code> to server
-        Then I received Conflict error message
+        Then I received bad request error message
 
     Examples: basic information
         | name | surname | birthdate | fiscal_code |
