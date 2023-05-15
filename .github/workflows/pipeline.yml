@@ -39,6 +39,10 @@ jobs:
                   driving_service
                   exam_service
                   doctor_service
+            - name: Sleep for 5 seconds
+              uses: GuillaumeFalourd/wait-sleep-action@v1
+              with:
+                time: '5'
             - name: Run tests
               run: ./gradlew SystemTester:run
     release:
