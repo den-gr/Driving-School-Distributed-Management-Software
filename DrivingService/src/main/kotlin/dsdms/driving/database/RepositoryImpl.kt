@@ -1,10 +1,13 @@
 package dsdms.driving.database
 
+import com.mongodb.client.result.DeleteResult
+import dsdms.driving.database.utils.RepositoryResponseStatus
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.entities.Instructor
 import dsdms.driving.model.entities.Vehicle
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
 import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
+import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import java.time.LocalDate
@@ -36,5 +39,21 @@ class RepositoryImpl(drivingService: CoroutineDatabase) : Repository {
 
     override suspend fun doesInstructorExist(instructorId: String): Boolean {
         return instructors.find(Instructor::_id eq instructorId).toList().isNotEmpty()
+    }
+
+    override suspend fun deleteDrivingSlot(drivingSlotId: String): RepositoryResponseStatus {
+        return handleDeleteResult(
+            runBlocking {
+                drivingSlots.deleteOne(DrivingSlot::_id eq drivingSlotId)
+            }
+        )
+    }
+
+    private fun handleDeleteResult(deleteResult: DeleteResult): RepositoryResponseStatus {
+        return if (!deleteResult.wasAcknowledged() || deleteResult.deletedCount.toInt() == 0) {
+            RepositoryResponseStatus.DELETE_ERROR
+        } else {
+            RepositoryResponseStatus.OK
+        }
     }
 }

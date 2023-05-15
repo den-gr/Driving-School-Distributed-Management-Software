@@ -1,5 +1,6 @@
 package dsdms.driving.database
 
+import dsdms.driving.database.utils.RepositoryResponseStatus
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
 import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
@@ -14,4 +15,6 @@ interface Repository {
     suspend fun doesVehicleExist(licensePlate: LicensePlate): Boolean
 
     suspend fun doesInstructorExist(instructorId: String): Boolean
+
+    suspend fun deleteDrivingSlot(drivingSlotId: String): RepositoryResponseStatus
 }
