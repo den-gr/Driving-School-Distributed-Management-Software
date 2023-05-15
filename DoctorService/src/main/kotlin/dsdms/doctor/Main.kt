@@ -1,8 +1,7 @@
 package dsdms.doctor
 
 import io.vertx.core.Vertx
-import org.litote.kmongo.coroutine.coroutine
-import org.litote.kmongo.reactivestreams.KMongo
+import org.litote.kmongo.KMongo
 
 class Main {
     companion object {
@@ -29,7 +28,6 @@ class Main {
 
             val dbConnection = KMongo
                 .createClient(mongoURI)
-                .coroutine
                 .getDatabase("doctor_service") //TODO check db name
             val server = Server(port, dbConnection)
             Vertx.vertx().deployVerticle(server)

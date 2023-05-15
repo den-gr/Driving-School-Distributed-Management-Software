@@ -1,5 +1,11 @@
 package dsdms.doctor
 
+import com.mongodb.client.MongoDatabase
+import dsdms.doctor.database.Repository
+import dsdms.doctor.database.RepositoryImpl
+import dsdms.doctor.handlers.RouteHandlers
+import dsdms.doctor.handlers.RouteHandlersImpl
+import dsdms.doctor.model.ModelImpl
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
@@ -11,10 +17,10 @@ import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
-class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
+class Server(private val port: Int, dbConnection: MongoDatabase) : CoroutineVerticle() {
 
-//    private val repository: Repository = RepositoryImpl(dbConnection)
-//    private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
+    private val repository: Repository = RepositoryImpl(dbConnection)
+    private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
 
     override suspend fun start() {
         val router: Router = Router.router(vertx)
@@ -31,20 +37,7 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
             }
     }
 
-    private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {
-        handler { ctx ->
-            launch(Vertx.currentContext().dispatcher()) {
-                try {
-                    fn(ctx)
-                } catch (e: Exception) {
-                    ctx.fail(e)
-                }
-            }
-        }
-    }
-
     private fun setRoutes(router: Router) {
-//        router.get("/drivingSlots").coroutineHandler(handlersImpl::getOccupiedDrivingSlots)
         router.get("/test").handler(this::testHandler)
     }
 
