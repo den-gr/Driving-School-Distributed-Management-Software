@@ -31,6 +31,7 @@ class RegularDrivingSlotTest : En {
     private var value: List<DrivingSlot>? = null
     private var statusCode: Int? = null
     private var statusMessage: String? = null
+    private var registeredSlot: String? = null
 
     init {
         val sleeper = SmartSleep()
@@ -83,6 +84,42 @@ class RegularDrivingSlotTest : En {
             assertEquals(instructorId, value?.get(2)?.instructorId)
             assertEquals(dossierId, value?.get(2)?.dossierId)
             assertEquals(vehicle, value?.get(2)?.licensePlate.toString())
+        }
+
+        When("i send {word}, {word}, {word}, {word}, {word} to book the bad driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+            val request = client
+                .post("/drivingSlots")
+                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateInit(vehicle))))
+            val response = sleeper.waitResult(request)
+            checkResponse(response)
+            registeredSlot = response?.body().toString()
+            statusCode = response?.statusCode()
+        }
+        Given("the id of the inserted driving slot") {
+            println("id of registered slot: $registeredSlot")
+            assertEquals(HTTP_OK, statusCode)
+        }
+        When("attempting to remove it, i receive code {int}") { code: Int ->
+            val request = client
+                .delete("/drivingSlots/$registeredSlot").send()
+            val response = sleeper.waitResult(request)
+            checkResponse(response)
+            statusMessage = response?.body().toString()
+            statusCode = response?.statusCode()
+
+            println("delete driving slot status message: $statusMessage")
+            assertEquals(code, statusCode)
+        }
+        Then("when attempting to remove it another time \\(wrongly), i receive code {int}") { code: Int ->
+            val request = client
+                .delete("/drivingSlots/$registeredSlot").send()
+            val response = sleeper.waitResult(request)
+            checkResponse(response)
+            statusMessage = response?.body().toString()
+            statusCode = response?.statusCode()
+
+            println("delete driving slot status message: $statusMessage")
+            assertEquals(code, statusCode)
         }
     }
 }
