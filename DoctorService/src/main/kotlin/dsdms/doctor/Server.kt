@@ -6,23 +6,18 @@ import dsdms.doctor.database.RepositoryImpl
 import dsdms.doctor.handlers.RouteHandlers
 import dsdms.doctor.handlers.RouteHandlersImpl
 import dsdms.doctor.model.ModelImpl
-import io.vertx.core.Vertx
-import io.vertx.ext.web.Route
+import io.vertx.core.AbstractVerticle
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
-import io.vertx.kotlin.coroutines.CoroutineVerticle
-import io.vertx.kotlin.coroutines.dispatcher
-import kotlinx.coroutines.launch
-import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
-class Server(private val port: Int, dbConnection: MongoDatabase) : CoroutineVerticle() {
+class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
     private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
 
-    override suspend fun start() {
+    override fun start() {
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
@@ -38,6 +33,9 @@ class Server(private val port: Int, dbConnection: MongoDatabase) : CoroutineVert
     }
 
     private fun setRoutes(router: Router) {
+        router.post("/doctorVisits").handler(handlersImpl::bookDoctorVisit)
+        router.get("/doctorVisits").handler(handlersImpl::getBookedDoctorSlots)
+        router.delete("/doctorVisits/:dossierId").handler(handlersImpl::deleteDoctorSlot)
         router.get("/test").handler(this::testHandler)
     }
 

@@ -45,10 +45,14 @@ class RegularDrivingSlotTest : En {
             statusMessage = response?.body().toString()
             statusCode = response?.statusCode()
         }
+        /**
+         * Status code must be different from HTTP_OK
+         * If test returns HTTP_OK, it returns the ID of the booked driving slot
+         */
         Then("i receive {word} with {int}") { response: String, code: Int ->
             println("statusMessage: $statusMessage")
             println("statusCode: $statusCode")
-            if (statusCode != 200)
+            if (statusCode != HTTP_OK)
                 assertEquals(response, statusMessage)
             assertEquals(code, statusCode)
         }
@@ -110,7 +114,7 @@ class RegularDrivingSlotTest : En {
             println("delete driving slot status message: $statusMessage")
             assertEquals(code, statusCode)
         }
-        Then("when attempting to remove it another time \\(wrongly), i receive code {int}") { code: Int ->
+        Then("when attempting to remove it another time \\(wrongly), i receive code {int} with {word}") { code: Int, message: String->
             val request = client
                 .delete("/drivingSlots/$registeredSlot").send()
             val response = sleeper.waitResult(request)
@@ -118,7 +122,7 @@ class RegularDrivingSlotTest : En {
             statusMessage = response?.body().toString()
             statusCode = response?.statusCode()
 
-            println("delete driving slot status message: $statusMessage")
+            assertEquals(message, statusMessage)
             assertEquals(code, statusCode)
         }
     }
