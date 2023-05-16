@@ -2,14 +2,15 @@ package dsdms.client.cucumber.doctor
 
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
+import dsdms.client.utils.checkResponse
+import dsdms.client.utils.createJson
+import dsdms.doctor.model.entities.DoctorSlot
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import io.vertx.ext.web.client.WebClient
 import org.junit.runner.RunWith
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
@@ -18,22 +19,27 @@ import kotlin.test.assertNotNull
 )
 class DoctorTest : En {
     private val client: WebClient = VertxProviderImpl().getDoctorServiceClient()
-    private var value: Int = -1
+    private var receivedCode: Int? = null
+    private var receivedMessage: String? = null
 
     init{
         val sleeper = SmartSleep()
-        When("I send a request to serverr"){
+        When("sending {word} for registering doctor visit on {word} and {word}") { id: String, date: String, time: String ->
             val request = client
-                .get("/test")
-                .send()
+                .post("/doctorSlots")
+                .sendBuffer(createJson(DoctorSlot(date, time, id)))
             val response = sleeper.waitResult(request)
-            assertNotNull(response)
-            value = response.body().toString().toInt()
 
+            checkResponse(response)
+
+            receivedCode = response?.statusCode()
+            receivedMessage = response?.body().toString()
+
+            println("received message: $receivedMessage")
         }
-
-        Then("I receiived {int}"){value: Int ->
-            assertEquals(777, value)
+        Then("secretary receives {word} with {int}") { message: String, code: Int ->
+            assertEquals(message, receivedMessage)
+            assertEquals(code, receivedCode)
         }
     }
 }
