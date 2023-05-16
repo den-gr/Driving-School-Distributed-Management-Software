@@ -11,7 +11,7 @@ data class DoctorSlot(
 )
 
 
-enum class DoctorDays() {
+enum class DoctorDays {
     TUESDAY,
     FRIDAY
 }
