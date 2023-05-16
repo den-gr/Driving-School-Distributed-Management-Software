@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: Driving School Distributed Management System
+  description: 'The project for the courses "Laboratory of software systems" and "Distributed Systems"'
+servers:
+  - description: Base URL that should be replaced with the gateway URL
+    url: "http://localhost/"
+paths:
+  "/dossiers":
+    post:
+      tags: [DossierService]
+      summary: "Register a new subscriber's dossier"
+      operationId: DossierRegistration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriberDocuments"
+      responses:
+        "200":
+          description: "Dossier is created. Returns id"
+          content:
+            text/plain:
+              example: "64633c11f85fe95eb801c0b6"
+        "400":
+          description: "Bad requst. Possible cases: 1) There are already a valid dossier with this given fiscal code; 2) subscriber age must be greater or equal to 16; 3) Name or surname must not contain numbers"
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum: [AGE_NOT_SUFFICIENT, VALID_DOSSIER_ALREDY_EXISTS, NAME_SURNAME_NOT_STRING]
+
+  # "/dossiers/{id}":
+  #   get:
+  #   post:
+  "/test2":
+    get:
+      tags: [DrivingService]
+      summary: "Get a user by id"
+      operationId: getUser2
+      responses:
+        "200":
+          description: ""
+
+components:
+  schemas:
+    SubscriberDocuments:
+      type: object
+      required: [name, surname, birthdate, fiscal_code]
+      properties:
+        name:
+          type: string
+          example: "Homer"
+        surname:
+          type: string
+          example: "Simpsons"
+        birthdate:
+          type: string
+          format: date
+        fiscal_code:
+          type: string
+          example: "SMPHMR80A01C573O"
