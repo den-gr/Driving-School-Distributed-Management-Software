@@ -20,6 +20,6 @@ class SubscriberControlsImpl: SubscriberControls {
      * At least one given string matches the regex, it means that is a number, not a real string
      */
     override suspend fun isNumeric(vararg string: String): Boolean {
-        return string.any { el -> el.matches(Regex("-?\\\\d+(\\\\.\\\\d+)?")) }
+        return string.any { el -> el.matches(Regex(".*[0-9].*")) }
     }
 }
