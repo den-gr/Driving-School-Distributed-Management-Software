@@ -1,3 +1,9 @@
 package dsdms.doctor.handlers
 
-interface RouteHandlers {}
+import io.vertx.ext.web.RoutingContext
+
+interface RouteHandlers {
+    fun bookDoctorVisit(routingContext: RoutingContext)
+    fun getBookedDoctorSlots(routingContext: RoutingContext)
+    fun deleteDoctorSlot(routingContext: RoutingContext)
+}
