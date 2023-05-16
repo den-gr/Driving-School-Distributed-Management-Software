@@ -19,6 +19,7 @@ dependencies {
     // Allows to add external module classes as dependencies
     implementation(project(":DossierService"))
     implementation(project(":DrivingService"))
+    implementation(project(":DoctorService"))
 }
 
 
