@@ -7,6 +7,7 @@ import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 import org.litote.kmongo.eq
 import org.litote.kmongo.getCollection
+import java.time.LocalDate
 
 class RepositoryImpl(doctorService: MongoDatabase) : Repository {
     private val doctorSlots = doctorService.getCollection<DoctorSlot>("DoctorSlot")
@@ -19,9 +20,14 @@ class RepositoryImpl(doctorService: MongoDatabase) : Repository {
     }
 
     override fun deleteDoctorSlot(dossierId: String): RepositoryResponseStatus {
-        return handleDeleteResult(
-                doctorSlots.deleteOne(DoctorSlot::dossierId eq dossierId)
-        )
+        return handleDeleteResult(doctorSlots.deleteOne(DoctorSlot::dossierId eq dossierId))
+    }
+
+    override fun getAllDoctorSlots(dossierId: String, today: LocalDate?): List<DoctorSlot> {
+        val result = doctorSlots.find(DoctorSlot::dossierId eq dossierId).toList()
+        return if (today != null)
+            result.filter { el -> LocalDate.parse(el.date) >= today }
+        else result
     }
 
     private fun handleDeleteResult(deleteResult: DeleteResult): RepositoryResponseStatus {

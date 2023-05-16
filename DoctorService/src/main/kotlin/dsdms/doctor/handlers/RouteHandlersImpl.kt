@@ -12,13 +12,14 @@ import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
 class RouteHandlersImpl(private val model: Model) : RouteHandlers {
-    override fun bookDoctorVisit(routingContext: RoutingContext) {
+    
+    override suspend fun bookDoctorVisit(routingContext: RoutingContext) {
         try {
             val documents: DoctorSlot = Json.decodeFromString(routingContext.body().asString())
             val verifyResult = model.doctorService.verifyDocuments(documents)
             if (verifyResult == DomainResponseStatus.OK) {
                 val insertResult = model.doctorService.saveDoctorSlot(documents)
-                routingContext.response().setStatusCode(domainConversionTable.getHttpCode(verifyResult)).end("Registered driving slot in: $insertResult")
+                routingContext.response().setStatusCode(domainConversionTable.getHttpCode(verifyResult)).end(insertResult)
             } else {
                 routingContext.response().setStatusCode(domainConversionTable.getHttpCode(verifyResult))
                     .end(verifyResult.name)
