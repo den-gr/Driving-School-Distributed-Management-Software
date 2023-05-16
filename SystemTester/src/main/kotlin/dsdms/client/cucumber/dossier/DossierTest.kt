@@ -68,7 +68,7 @@ class DossierTest : En {
             assertEquals(fiscal_code, retrievedDossier?.fiscal_code)
         }
 
-        When("I send bad informations {word}, {int}, {word}, {word} to server") { name: String, surname: Int, birthdate: String, fiscal_code: String ->
+        When("I try to register invalid subscriber information: {word},{word},{word},{word}") {name: String, surname: String, birthdate: String, fiscal_code: String ->
             val request = client
                 .post("/dossiers")
                 .sendJson(
@@ -87,27 +87,13 @@ class DossierTest : En {
 
             assertNotNull(response)
             statusCode = response.statusCode()
+            value = response.body().toString()
         }
-
-        Then("I received Bad request error message") {
+        Then("I get {word} error type") { error_type: String ->
             assertNotNull(statusCode)
+            assertNotNull(value)
             assertEquals(HTTP_BAD_REQUEST, statusCode)
-//            assertEquals(DomainResponseStatus.)
-        }
-
-        When("I send duplicated informations {word},{word},{word},{word} to server") { name: String, surname: String, birthdate: String, fiscal_code: String ->
-            val request = client
-                .post("/dossiers")
-                .sendBuffer(createJson(SubscriberDocuments(name, surname, LocalDate.parse(birthdate), fiscal_code)))
-            val response = sleeper.waitResult(request)
-
-            assertNotNull(response)
-            statusCode = response.statusCode()
-        }
-
-        Then("I received bad request error message") {
-            assertNotNull(statusCode)
-            assertEquals(HTTP_BAD_REQUEST, statusCode)
+            assertEquals(error_type, value)
         }
     }
 }
