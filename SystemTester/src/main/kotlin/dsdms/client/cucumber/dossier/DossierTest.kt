@@ -33,7 +33,7 @@ class DossierTest : En {
 
     init {
         val sleeper = SmartSleep()
-        When("I send {word}, {word},{word},{word} to server") { name: String, surname: String, birthdate: String, fiscal_code: String ->
+        When("I register subscriber's documents information: {word}, {word},{word},{word}") { name: String, surname: String, birthdate: String, fiscal_code: String ->
             val request = client
                 .post("/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, LocalDate.parse(birthdate), fiscal_code)))
@@ -44,11 +44,11 @@ class DossierTest : En {
             statusCode = response?.statusCode()
             value = response?.body().toString()
         }
-        Then("I received id of registered dossier") {
+        Then("I received an id of registered dossier") {
             assertEquals(HTTP_OK, statusCode)
         }
 
-        When("I send id to server") {
+        When("I search dossier by received id") {
             val request = client
                 .get("/dossiers/$value")
                 .send()
@@ -60,7 +60,7 @@ class DossierTest : En {
             retrievedDossier = Json.decodeFromString(response?.body().toString())
         }
 
-        Then("I received {word},{word},{word},{word} of registered dossier") { name: String, surname: String, birthdate: String, fiscal_code: String ->
+        Then("I find {word},{word},{word},{word} of registered dossier") { name: String, surname: String, birthdate: String, fiscal_code: String ->
             assertNotNull(retrievedDossier)
             assertEquals(name, retrievedDossier?.name)
             assertEquals(surname, retrievedDossier?.surname)

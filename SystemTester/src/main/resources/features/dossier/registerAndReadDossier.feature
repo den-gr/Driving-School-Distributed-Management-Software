@@ -1,9 +1,9 @@
-Feature: registration and reading of new dossier
+Feature: Registration subscriber documents and reading dossier information
     Scenario Outline: subscriber information's are correct
-        When I send <name>, <surname>,<birthdate>,<fiscal_code> to server
-        Then I received id of registered dossier
-        When I send id to server
-        Then I received <name>,<surname>,<birthdate>,<fiscal_code> of registered dossier
+        When I register subscriber's documents information: <name>, <surname>,<birthdate>,<fiscal_code>
+        Then I received an id of registered dossier
+        When I search dossier by received id
+        Then I find <name>,<surname>,<birthdate>,<fiscal_code> of registered dossier
 
     Examples: basic information
         | name | surname | birthdate | fiscal_code |
