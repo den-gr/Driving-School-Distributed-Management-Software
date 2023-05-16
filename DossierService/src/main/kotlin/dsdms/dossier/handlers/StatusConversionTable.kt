@@ -4,11 +4,11 @@ import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.domainServices.DomainResponseStatus
 import java.net.HttpURLConnection
 
+
 val dbConversionTable: Map<RepositoryResponseStatus, Int> = mapOf(
     RepositoryResponseStatus.OK to HttpURLConnection.HTTP_OK,
-    RepositoryResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_NOT_MODIFIED,
-    RepositoryResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_NOT_MODIFIED,
-    RepositoryResponseStatus.MULTIPLE_EQUAL_IDS to HttpURLConnection.HTTP_MULT_CHOICE
+    RepositoryResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
+    RepositoryResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
 )
 
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(

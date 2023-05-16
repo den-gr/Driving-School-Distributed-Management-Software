@@ -1,4 +1,4 @@
-package dsdms.client.cucumber
+package dsdms.client.cucumber.driving
 
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
@@ -23,7 +23,7 @@ import kotlin.test.assertEquals
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
-    features = ["src/main/resources/features/drivingSlotBooking.feature"],
+    features = ["src/main/resources/features/driving/drivingSlotBooking.feature"],
     plugin = ["pretty", "summary"]
 )
 class RegularDrivingSlotTest : En {

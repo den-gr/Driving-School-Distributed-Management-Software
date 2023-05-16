@@ -30,9 +30,7 @@ class RepositoryImpl(dossierServiceDb: CoroutineDatabase) : Repository {
     }
 
     private fun handleUpdateResults(updateResult: UpdateResult): RepositoryResponseStatus {
-        return if (updateResult.matchedCount.toInt() != 1) {
-            RepositoryResponseStatus.MULTIPLE_EQUAL_IDS
-        } else if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged()) {
+        return if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged()) {
             RepositoryResponseStatus.UPDATE_ERROR
         } else {
             RepositoryResponseStatus.OK

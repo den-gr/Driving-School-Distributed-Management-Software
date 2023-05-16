@@ -2,8 +2,8 @@ package dsdms.dossier.model.domainServices
 
 import dsdms.dossier.database.Repository
 import dsdms.dossier.database.utils.RepositoryResponseStatus
-import dsdms.dossier.handlers.subscriberCheck.SubscriberControls
-import dsdms.dossier.handlers.subscriberCheck.SubscriberControlsImpl
+import dsdms.dossier.model.domainServices.subscriberCheck.SubscriberControls
+import dsdms.dossier.model.domainServices.subscriberCheck.SubscriberControlsImpl
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.ExamStatusUpdate
 import dsdms.dossier.model.valueObjects.SubscriberDocuments

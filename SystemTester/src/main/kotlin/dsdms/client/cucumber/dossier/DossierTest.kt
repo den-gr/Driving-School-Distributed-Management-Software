@@ -1,4 +1,4 @@
-package dsdms.client.cucumber
+package dsdms.client.cucumber.dossier
 
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
@@ -21,7 +21,7 @@ import kotlin.test.assertNotNull
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
-    features = ["src/main/resources/features/registerAndReadSubscriber.feature"],
+    features = ["src/main/resources/features/dossier/registerAndReadDossier.feature"],
     plugin = ["pretty", "summary"]
 )
 class DossierTest : En {
@@ -45,22 +45,17 @@ class DossierTest : En {
             value = response?.body().toString()
         }
         Then("I received id of registered dossier") {
-            println("Status code: $statusCode")
             assertEquals(HTTP_OK, statusCode)
-            println("Value: $value")
         }
 
         When("I send id to server") {
-            println("the id: $value")
             val request = client
                 .get("/dossiers/$value")
                 .send()
             val response = sleeper.waitResult(request)
 
             checkResponse(response)
-            println("body: " + response?.body())
             assertEquals(HTTP_OK, response?.statusCode())
-            println("body: " + response?.body())
 
             retrievedDossier = Json.decodeFromString(response?.body().toString())
         }
@@ -97,6 +92,7 @@ class DossierTest : En {
         Then("I received Bad request error message") {
             assertNotNull(statusCode)
             assertEquals(HTTP_BAD_REQUEST, statusCode)
+//            assertEquals(DomainResponseStatus.)
         }
 
         When("I send duplicated informations {word},{word},{word},{word} to server") { name: String, surname: String, birthdate: String, fiscal_code: String ->

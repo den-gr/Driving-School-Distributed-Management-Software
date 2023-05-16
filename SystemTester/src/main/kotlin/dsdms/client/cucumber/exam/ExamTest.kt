@@ -1,4 +1,4 @@
-package dsdms.client.cucumber
+package dsdms.client.cucumber.exam
 
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
@@ -13,16 +13,16 @@ import kotlin.test.assertNotNull
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
-    features = ["src/main/resources/features/doctorTest.feature"],
+    features = ["src/main/resources/features/exam/examTest.feature"],
     plugin = ["pretty", "summary"]
 )
-class DoctorTest : En {
-    private val client: WebClient = VertxProviderImpl().getDoctorServiceClient()
+class ExamTest: En {
+    private val client: WebClient = VertxProviderImpl().getExamServiceClient()
     private var value: Int = -1
 
     init{
         val sleeper = SmartSleep()
-        When("I send a request to serverr"){
+        When("I send a request to server"){
             val request = client
                 .get("/test")
                 .send()
@@ -32,8 +32,8 @@ class DoctorTest : En {
 
         }
 
-        Then("I receiived {int}"){value: Int ->
-            assertEquals(777, value)
+        Then("I received {int}"){value: Int ->
+            assertEquals(999, value)
         }
     }
 }

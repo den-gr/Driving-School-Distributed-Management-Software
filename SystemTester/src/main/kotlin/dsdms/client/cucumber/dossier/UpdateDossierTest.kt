@@ -1,4 +1,4 @@
-package dsdms.client.cucumber
+package dsdms.client.cucumber.dossier
 
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
@@ -24,7 +24,7 @@ import kotlin.test.assertNotNull
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
-    features = ["src/test/resources/features/updateSubscriber.feature"],
+    features = ["src/test/resources/features/dossier/updateDossier.feature"],
     plugin = ["pretty", "summary"]
 )
 class UpdateDossierTest : En {

@@ -1,4 +1,4 @@
-package dsdms.dossier.handlers.subscriberCheck
+package dsdms.dossier.model.domainServices.subscriberCheck
 
 import dsdms.dossier.database.Repository
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
