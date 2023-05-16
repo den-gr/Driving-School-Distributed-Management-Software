@@ -28,7 +28,7 @@ class Main {
 
             val dbConnection = KMongo
                 .createClient(mongoURI)
-                .getDatabase("doctor_service") //TODO check db name
+                .getDatabase("doctor_service")
             val server = Server(port, dbConnection)
             Vertx.vertx().deployVerticle(server)
         }

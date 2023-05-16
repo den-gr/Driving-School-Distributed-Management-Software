@@ -13,9 +13,10 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(libs.bundles.kotlinx)
-    implementation(libs.bundles.kmongo)
     implementation(libs.bundles.vertx.server)
+    implementation(libs.bundles.kmongo)
 
+    implementation(project(":DossierService"))
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
