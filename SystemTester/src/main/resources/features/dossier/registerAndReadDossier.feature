@@ -16,4 +16,5 @@ Feature: registration and reading of new dossier
     Examples: invalid subscriber information
         | name | surname | birthdate | fiscal_code | error_type |
         | Riccardo | Bacca | 1999-03-07 | BCCRCR99C07C573X | VALID_DOSSIER_ALREADY_EXISTS |
+        | Ricca    | Bacca | 2015-03-07 | BCCRCR99C07C573K | AGE_NOT_SUFFICIENT           |
         | b        | 123   | 1999-03-07 | BCCRCR99C07C573L | NAME_SURNAME_NOT_STRING      |
