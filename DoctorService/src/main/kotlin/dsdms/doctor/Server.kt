@@ -1,23 +1,27 @@
 package dsdms.doctor
 
-import com.mongodb.client.MongoDatabase
 import dsdms.doctor.database.Repository
 import dsdms.doctor.database.RepositoryImpl
 import dsdms.doctor.handlers.RouteHandlers
 import dsdms.doctor.handlers.RouteHandlersImpl
 import dsdms.doctor.model.ModelImpl
-import io.vertx.core.AbstractVerticle
+import io.vertx.core.Vertx
+import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.dispatcher
+import kotlinx.coroutines.launch
+import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
-class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerticle() {
+class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
     private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
 
-    override fun start() {
+    override suspend fun start() {
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
@@ -32,14 +36,21 @@ class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerti
             }
     }
 
-    private fun setRoutes(router: Router) {
-        router.post("/doctorVisits").handler(handlersImpl::bookDoctorVisit)
-        router.get("/doctorVisits").handler(handlersImpl::getBookedDoctorSlots)
-        router.delete("/doctorVisits/:dossierId").handler(handlersImpl::deleteDoctorSlot)
-        router.get("/test").handler(this::testHandler)
+    private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {
+        handler { ctx ->
+            launch(Vertx.currentContext().dispatcher()) {
+                try {
+                    fn(ctx)
+                } catch (e: Exception) {
+                    ctx.fail(e)
+                }
+            }
+        }
     }
 
-    private fun testHandler(routingContext: RoutingContext) {
-        routingContext.response().setStatusCode(200).end("777")
+    private fun setRoutes(router: Router) {
+        router.post("/doctorSlots").coroutineHandler(handlersImpl::bookDoctorVisit)
+        router.get("/doctorSlots").coroutineHandler(handlersImpl::getBookedDoctorSlots)
+        router.delete("/doctorSlots/:dossierId").coroutineHandler(handlersImpl::deleteDoctorSlot)
     }
 }

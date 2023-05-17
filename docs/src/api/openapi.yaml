@@ -5,13 +5,13 @@ info:
   description: 'The project for the courses "Laboratory of software systems" and "Distributed Systems"'
 servers:
   - description: Base URL that should be replaced with the gateway URL
-    url: "http://localhost/"
+    url: "http://localhost:8000/"
 paths:
   "/dossiers":
     post:
-      tags: [DossierService]
       summary: "Register a new subscriber's dossier"
       operationId: DossierRegistration
+      tags: [DossierService]
       requestBody:
         content:
           application/json:
@@ -24,16 +24,33 @@ paths:
             text/plain:
               example: "64633c11f85fe95eb801c0b6"
         "400":
-          description: "Bad requst. Possible cases: 1) There are already a valid dossier with this given fiscal code; 2) subscriber age must be greater or equal to 16; 3) Name or surname must not contain numbers"
+          description: "Bad requst. Possible cases: 1) There are already a valid dossier with given fiscal code; 2) The subscriber age are not greater or equal to 16; 3) Subscriber name or surname contains numbers"
           content:
             text/plain:
               schema:
                 type: string
                 enum: [AGE_NOT_SUFFICIENT, VALID_DOSSIER_ALREDY_EXISTS, NAME_SURNAME_NOT_STRING]
 
-  # "/dossiers/{id}":
-  #   get:
-  #   post:
+  "/dossiers/{id}":
+    get:
+      summary: "Get all dossier information"
+      operationId: dossierIdReading
+      tags: [DossierService]
+      parameters:
+        - name: id
+          in: path
+          description: id of the dossier
+          required: true
+          schema:
+              type: string
+              example: "64633c11f85fe95eb801c0b6"
+      responses:
+        "200":
+          description: ""
+      
+        
+
+  #   put:
   "/test2":
     get:
       tags: [DrivingService]
@@ -58,6 +75,7 @@ components:
         birthdate:
           type: string
           format: date
+          example: "1990-03-03"
         fiscal_code:
           type: string
           example: "SMPHMR80A01C573O"

@@ -6,24 +6,29 @@ import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 interface DoctorService {
 
     /**
-     * Verify that wanted date is a DoctorDay, wanted time is between doctor init
-     * and finish time and that in the wanted day, the wanted time is available
+     * @param documents: the new doctor slot to be verified before registering
+     * @throws error 400 for: NOT_DOCTOR_DAY, BAD_TIME, TIME_OCCUPIED and DOSSIER_ALREADY_BOOKED
+     * @throws error 200 for OK
      * @return specific domain response status for each error case
      */
-    fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus
+    suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus
 
     /**
+     * @see verifyDocuments before calling this method
+     * @param documents: the new doctor slot to be registered
      * @return the date in which the doctor slot has been put
      */
-    fun saveDoctorSlot(documents: DoctorSlot): String
+    suspend fun saveDoctorSlot(documents: DoctorSlot): String
 
     /**
+     * @param data: containing the date for which we took occupied driving slots
      * @return list of possible occupied doctor slots in a provided date
      */
-    fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot>
+    suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot>
 
     /**
+     * @param dossierId: id for which to take occupied driving slots
      * @return Domain response status: OK if delete was successful, DELETE_ERROR otherwise
      */
-    fun deleteDoctorSlot(dossierId: String): DomainResponseStatus
+    suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus
 }
