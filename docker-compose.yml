@@ -36,6 +36,8 @@ services:
       args:
         - DRIVING_PORT=${DRIVING_SERVICE_PORT}
         - MONGO_URI=${MONGO_URI}
+        - EXAM_SERVICE_HOST=exam_service
+        - EXAM_SERVICE_PORT=${EXAM_SERVICE_PORT}
     image: driving_service
     ports:
       - "${DRIVING_SERVICE_PORT}:${DRIVING_SERVICE_PORT}"
@@ -50,6 +52,10 @@ services:
       args:
         - EXAM_PORT=${EXAM_SERVICE_PORT}
         - MONGO_URI=${MONGO_URI}
+        - DOSSIER_SERVICE_HOST=dossier_service
+        - DOSSIER_SERVICE_PORT=${DOSSIER_SERVICE_PORT}
+        - DRIVING_SERVICE_HOST=driving_service
+        - DRIVING_SERVICE_PORT=${DRIVING_SERVICE_PORT}
     image: exam_service
     ports:
       - "${EXAM_SERVICE_PORT}:${EXAM_SERVICE_PORT}"
@@ -64,6 +70,10 @@ services:
       args:
         - DOCTOR_PORT=${DOCTOR_SERVICE_PORT}
         - MONGO_URI=${MONGO_URI}
+        - DOSSIER_SERVICE_HOST=dossier_service
+        - DOSSIER_SERVICE_PORT=${DOSSIER_SERVICE_PORT}
+        - EXAM_SERVICE_HOST=exam_service
+        - EXAM_SERVICE_PORT=${EXAM_SERVICE_PORT}
     image: doctor_service
     ports:
       - "${DOCTOR_SERVICE_PORT}:${DOCTOR_SERVICE_PORT}"

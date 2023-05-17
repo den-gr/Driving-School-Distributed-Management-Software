@@ -9,7 +9,9 @@ import dsdms.doctor.model.entities.DoctorDays
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
+import io.vertx.kotlin.coroutines.await
 import kotlinx.datetime.toLocalTime
+import java.net.HttpURLConnection.HTTP_OK
 import java.time.LocalDate
 
 class DoctorServiceImpl(private val repository: Repository) : DoctorService {
@@ -29,14 +31,14 @@ class DoctorServiceImpl(private val repository: Repository) : DoctorService {
         else DomainResponseStatus.OK
     }
 
-    private fun dossierIdExist(dossierId: String): Boolean {
-//        val response = dossierServiceConnection
-//            .getDossierServiceClient()
-//            .get("/dossiers/$dossierId")
-//            .send()
-//
-//        return (response.await().statusCode() == HTTP_OK)
-        return true
+    private suspend fun dossierIdExist(dossierId: String): Boolean {
+        val response = dossierServiceConnection
+            .getDossierServiceClient()
+            .get("/dossiers/$dossierId")
+            .send()
+
+        return (response.await().statusCode() == HTTP_OK)
+//        return true
     }
 
     override suspend fun saveDoctorSlot(documents: DoctorSlot): String {
