@@ -15,12 +15,12 @@ interface RouteHandlers {
      * To get booked doctor slots for a certain dossier id
      * @see DoctorService
      */
-    fun getBookedDoctorSlots(routingContext: RoutingContext)
+    suspend fun getBookedDoctorSlots(routingContext: RoutingContext)
 
     /**
      * To delete a dossier id's booked doctor slot
      * @since each dossierId can book only one doctor slot
      * @see DoctorService
      */
-    fun deleteDoctorSlot(routingContext: RoutingContext)
+    suspend fun deleteDoctorSlot(routingContext: RoutingContext)
 }

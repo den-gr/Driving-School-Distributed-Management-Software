@@ -1,6 +1,5 @@
 package dsdms.doctor
 
-import com.mongodb.client.MongoDatabase
 import dsdms.doctor.database.Repository
 import dsdms.doctor.database.RepositoryImpl
 import dsdms.doctor.handlers.RouteHandlers
@@ -14,9 +13,10 @@ import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.launch
+import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
-class Server(private val port: Int, dbConnection: MongoDatabase) : CoroutineVerticle() {
+class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
     private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
@@ -50,7 +50,7 @@ class Server(private val port: Int, dbConnection: MongoDatabase) : CoroutineVert
 
     private fun setRoutes(router: Router) {
         router.post("/doctorSlots").coroutineHandler(handlersImpl::bookDoctorVisit)
-        router.get("/doctorSlots").handler(handlersImpl::getBookedDoctorSlots)
-        router.delete("/doctorSlots/:dossierId").handler(handlersImpl::deleteDoctorSlot)
+        router.get("/doctorSlots").coroutineHandler(handlersImpl::getBookedDoctorSlots)
+        router.delete("/doctorSlots/:dossierId").coroutineHandler(handlersImpl::deleteDoctorSlot)
     }
 }

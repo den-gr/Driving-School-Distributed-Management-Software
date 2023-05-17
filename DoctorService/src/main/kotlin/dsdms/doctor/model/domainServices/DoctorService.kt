@@ -18,17 +18,17 @@ interface DoctorService {
      * @param documents: the new doctor slot to be registered
      * @return the date in which the doctor slot has been put
      */
-    fun saveDoctorSlot(documents: DoctorSlot): String
+    suspend fun saveDoctorSlot(documents: DoctorSlot): String
 
     /**
      * @param data: containing the date for which we took occupied driving slots
      * @return list of possible occupied doctor slots in a provided date
      */
-    fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot>
+    suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot>
 
     /**
      * @param dossierId: id for which to take occupied driving slots
      * @return Domain response status: OK if delete was successful, DELETE_ERROR otherwise
      */
-    fun deleteDoctorSlot(dossierId: String): DomainResponseStatus
+    suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus
 }

@@ -9,9 +9,7 @@ import dsdms.doctor.model.entities.DoctorDays
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
-import io.vertx.kotlin.coroutines.await
 import kotlinx.datetime.toLocalTime
-import java.net.HttpURLConnection.HTTP_OK
 import java.time.LocalDate
 
 class DoctorServiceImpl(private val repository: Repository) : DoctorService {
@@ -31,24 +29,25 @@ class DoctorServiceImpl(private val repository: Repository) : DoctorService {
         else DomainResponseStatus.OK
     }
 
-    private suspend fun dossierIdExist(dossierId: String): Boolean {
-        val response = dossierServiceConnection
-            .getDossierServiceClient()
-            .get("/dossiers/$dossierId")
-            .send()
-
-        return (response.await().statusCode() == HTTP_OK)
+    private fun dossierIdExist(dossierId: String): Boolean {
+//        val response = dossierServiceConnection
+//            .getDossierServiceClient()
+//            .get("/dossiers/$dossierId")
+//            .send()
+//
+//        return (response.await().statusCode() == HTTP_OK)
+        return true
     }
 
-    override fun saveDoctorSlot(documents: DoctorSlot): String {
+    override suspend fun saveDoctorSlot(documents: DoctorSlot): String {
         return repository.saveDoctorSlot(documents)
     }
 
-    override fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot> {
+    override suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot> {
         return repository.getOccupiedDoctorSlots(data)
     }
 
-    override fun deleteDoctorSlot(dossierId: String): DomainResponseStatus {
+    override suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus {
         return repositoryToDomainConversionTable.getDomainCode(repository.deleteDoctorSlot(dossierId))
     }
 }

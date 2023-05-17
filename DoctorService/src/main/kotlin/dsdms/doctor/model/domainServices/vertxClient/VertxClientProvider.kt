@@ -12,7 +12,7 @@ class VertxClientProvider: VertxClient {
 
     private val vertx: Vertx = Vertx.vertx()
 
-    override fun getDossierServiceClient(): WebClient {
+    override suspend fun getDossierServiceClient(): WebClient {
         return createClient(getHost("dossier_host"), getPort("dossier_port", DEFAULT_DOSSIER_SERVICE_PORT))
     }
 
