@@ -26,7 +26,6 @@ class TestCucumber : En {
         val sleeper = SmartSleep()
 
         Given("I ask {int} id") { id: Int ->
-            println("given $id")
             val request = client
                 .get("/api/$id")
                 .send()

@@ -34,8 +34,6 @@ class DoctorTest : En {
 
             receivedCode = response?.statusCode()
             receivedMessage = response?.body().toString()
-
-            println("received message: $receivedMessage")
         }
         Then("secretary receives {word} with {int}") { message: String, code: Int ->
             assertEquals(message, receivedMessage)

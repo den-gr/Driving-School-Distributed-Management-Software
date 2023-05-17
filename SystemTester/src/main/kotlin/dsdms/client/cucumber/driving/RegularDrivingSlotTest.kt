@@ -50,8 +50,6 @@ class RegularDrivingSlotTest : En {
          * If test returns HTTP_OK, it returns the ID of the booked driving slot
          */
         Then("i receive {word} with {int}") { response: String, code: Int ->
-            println("statusMessage: $statusMessage")
-            println("statusCode: $statusCode")
             if (statusCode != HTTP_OK)
                 assertEquals(response, statusMessage)
             assertEquals(code, statusCode)
@@ -100,7 +98,6 @@ class RegularDrivingSlotTest : En {
             statusCode = response?.statusCode()
         }
         Given("the id of the inserted driving slot") {
-            println("id of registered slot: $registeredSlot")
             assertEquals(HTTP_OK, statusCode)
         }
         When("attempting to remove it, i receive code {int}") { code: Int ->
@@ -111,7 +108,6 @@ class RegularDrivingSlotTest : En {
             statusMessage = response?.body().toString()
             statusCode = response?.statusCode()
 
-            println("delete driving slot status message: $statusMessage")
             assertEquals(code, statusCode)
         }
         Then("when attempting to remove it another time \\(wrongly), i receive code {int} with {word}") { code: Int, message: String->

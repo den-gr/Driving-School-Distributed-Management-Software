@@ -35,7 +35,6 @@ class UpdateDossierTest : En {
 
     init {
         val sleeper = SmartSleep()
-        println(client)
 
         Given("a new registered dossier: {word}, {word}, {word}, {word}") { name: String, surname: String, birthdate: String, fc: String ->
             val request = client
@@ -67,7 +66,6 @@ class UpdateDossierTest : En {
         }
 
         Then("trying to update {word} exam status to true") { type: String ->
-            println(value)
             val request = client
                 .put("/dossiers/$value")
                 .sendBuffer(createJson(ExamStatusUpdate(type, true)))
@@ -79,7 +77,6 @@ class UpdateDossierTest : En {
 
         And("obtaining {word} exam status true as response from server") { _: String ->
             assertNotNull(result)
-            println("Update result: " + result?.body().toString())
             assertEquals(HTTP_OK, result?.statusCode())
         }
     }
