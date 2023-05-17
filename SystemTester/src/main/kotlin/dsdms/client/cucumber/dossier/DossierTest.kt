@@ -28,7 +28,6 @@ class DossierTest : En {
     private val client: WebClient = VertxProviderImpl().getDossierServiceClient()
     private var value: String = ""
     private var retrievedDossier: Dossier? = null
-
     private var statusCode: Int? = null
 
     init {
@@ -66,6 +65,10 @@ class DossierTest : En {
             assertEquals(surname, retrievedDossier?.surname)
             assertEquals(birthdate, retrievedDossier?.birthdate)
             assertEquals(fiscal_code, retrievedDossier?.fiscal_code)
+        }
+
+        And("It has {int} practical exam attempts") {attemps: Int ->
+            assertEquals(attemps, retrievedDossier?.examAttempts?.attempts)
         }
 
         When("I try to register invalid subscriber information: {word},{word},{word},{word}") {name: String, surname: String, birthdate: String, fiscal_code: String ->

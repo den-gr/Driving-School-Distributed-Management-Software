@@ -4,6 +4,7 @@ Feature: Registration subscriber documents and reading dossier information
         Then I received an id of registered dossier
         When I search dossier by received id
         Then I find <name>,<surname>,<birthdate>,<fiscal_code> of registered dossier
+        And It has 0 practical exam attempts
 
     Examples: basic information
         | name | surname | birthdate | fiscal_code |
