@@ -6,8 +6,8 @@ Feature: Test doctor service
     Examples:
     | id | date | time | code | message |
     | d1 | 2023-09-19 | 18:15 | 200 | 2023-09-19 |
-    | d2 | 2023-09-19 | 18:15 | 400 | TIME_OCCUPIED |
+    | d2 | 2023-09-19 | 18:15 | 400 | BAD_TIME |
     | d1 | 2023-09-22 | 19:00 | 400 | DOSSIER_ALREADY_BOOKED |
     | d2 | 2023-09-22 | 20:00 | 400 | BAD_TIME |
     | d2 | 2023-09-24 | 18:15 | 400 | NOT_DOCTOR_DAY |
-#    | d3 | 2023-09-22 | 18:15 | 400 | DOSSIER_NOT_EXIST |
+    | d3 | 2023-09-22 | 18:15 | 400 | DOSSIER_NOT_EXIST |
