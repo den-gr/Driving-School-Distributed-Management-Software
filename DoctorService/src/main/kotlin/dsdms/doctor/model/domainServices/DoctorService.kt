@@ -7,7 +7,7 @@ interface DoctorService {
 
     /**
      * @param documents: the new doctor slot to be verified before registering
-     * @throws error 400 for: NOT_DOCTOR_DAY, BAD_TIME, TIME_OCCUPIED and DOSSIER_ALREADY_BOOKED
+     * @throws error 400 for: NOT_DOCTOR_DAY, BAD_TIME and DOSSIER_ALREADY_BOOKED
      * @throws error 200 for OK
      * @return specific domain response status for each error case
      */

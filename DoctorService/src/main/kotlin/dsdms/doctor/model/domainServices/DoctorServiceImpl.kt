@@ -3,27 +3,23 @@ package dsdms.doctor.model.domainServices
 import dsdms.doctor.database.Repository
 import dsdms.doctor.handlers.getDomainCode
 import dsdms.doctor.handlers.repositoryToDomainConversionTable
-import dsdms.doctor.model.domainServices.vertxClient.VertxClient
-import dsdms.doctor.model.domainServices.vertxClient.VertxClientProvider
 import dsdms.doctor.model.entities.DoctorDays
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
+import io.vertx.ext.web.client.WebClient
 import io.vertx.kotlin.coroutines.await
 import kotlinx.datetime.toLocalTime
 import java.net.HttpURLConnection.HTTP_OK
 import java.time.LocalDate
 
-class DoctorServiceImpl(private val repository: Repository) : DoctorService {
-    private val dossierServiceConnection: VertxClient = VertxClientProvider()
+class DoctorServiceImpl(private val repository: Repository, private val dossierServiceConnection: WebClient) : DoctorService {
 
     override suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
-        return if (DoctorDays.values().any { el -> el.name == kotlinx.datetime.LocalDate.parse(documents.date).dayOfWeek.name}.not())
+        return if (checkDoctorDay(documents.date))
             DomainResponseStatus.NOT_DOCTOR_DAY
-        else if ((documents.time.toLocalTime() >= DoctorTimeSlot.InitTime.time && documents.time.toLocalTime() <= DoctorTimeSlot.FinishTime.time).not())
+        else if (checkDoctorVisitGivenTime(documents.time, documents.date))
             DomainResponseStatus.BAD_TIME
-        else if (getOccupiedDoctorSlots(GetBookedDoctorSlots(documents.date)).any { el -> el.time == documents.time })
-            DomainResponseStatus.TIME_OCCUPIED
         else if (repository.getAllDoctorSlots(documents.dossierId, LocalDate.now()).isNotEmpty())
             DomainResponseStatus.DOSSIER_ALREADY_BOOKED
         else if (dossierIdExist(documents.dossierId).not())
@@ -31,14 +27,28 @@ class DoctorServiceImpl(private val repository: Repository) : DoctorService {
         else DomainResponseStatus.OK
     }
 
+    /**
+     * @param date: the given date from doctor slot documents
+     * @return if wanted date is a Doctor Day (Tuesday or Friday)
+     */
+    private fun checkDoctorDay(date: String): Boolean =
+        DoctorDays.values().any { el -> el.name == LocalDate.parse(date).dayOfWeek.name}.not()
+
+    /**
+     * @param time: wanted time of the visit
+     * @return if given time per the doctor visit is in the correct time slot and is available
+     */
+    private suspend fun checkDoctorVisitGivenTime(time: String, date: String): Boolean =
+        (time.toLocalTime() >= DoctorTimeSlot.InitTime.time && time.toLocalTime() <= DoctorTimeSlot.FinishTime.time).not()
+                || getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).any { el -> el.time == time }
+
+
     private suspend fun dossierIdExist(dossierId: String): Boolean {
         val response = dossierServiceConnection
-            .getDossierServiceClient()
             .get("/dossiers/$dossierId")
             .send()
 
         return (response.await().statusCode() == HTTP_OK)
-//        return true
     }
 
     override suspend fun saveDoctorSlot(documents: DoctorSlot): String {
