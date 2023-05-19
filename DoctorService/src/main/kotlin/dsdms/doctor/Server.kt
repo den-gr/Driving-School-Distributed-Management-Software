@@ -5,6 +5,7 @@ import dsdms.doctor.database.RepositoryImpl
 import dsdms.doctor.handlers.RouteHandlers
 import dsdms.doctor.handlers.RouteHandlersImpl
 import dsdms.doctor.model.ModelImpl
+import dsdms.doctor.model.domainServices.vertxClient.VertxClientProvider
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
@@ -19,13 +20,18 @@ import kotlin.system.exitProcess
 class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
-    private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
+
+    private suspend fun initializeModel(): RouteHandlersImpl {
+        return RouteHandlersImpl(
+            ModelImpl(repository, VertxClientProvider(vertx).getDossierServiceClient())
+        )
+    }
 
     override suspend fun start() {
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
-        setRoutes(router)
+        setRoutes(router, initializeModel())
 
         vertx.createHttpServer()
             .requestHandler(router)
@@ -48,7 +54,7 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
         }
     }
 
-    private fun setRoutes(router: Router) {
+    private fun setRoutes(router: Router, handlersImpl: RouteHandlers) {
         router.post("/doctorSlots").coroutineHandler(handlersImpl::bookDoctorVisit)
         router.get("/doctorSlots").coroutineHandler(handlersImpl::getBookedDoctorSlots)
         router.delete("/doctorSlots/:dossierId").coroutineHandler(handlersImpl::deleteDoctorSlot)
