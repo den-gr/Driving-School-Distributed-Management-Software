@@ -1,5 +1,10 @@
 package dsdms.exam
 
+import dsdms.exam.database.Repository
+import dsdms.exam.database.RepositoryImpl
+import dsdms.exam.handlers.practicalHandlers.PracticalExamHandlers
+import dsdms.exam.handlers.practicalHandlers.PracticalExamHandlersImpl
+import dsdms.exam.model.ModelImpl
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
@@ -13,8 +18,8 @@ import kotlin.system.exitProcess
 
 class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
-//    private val repository: Repository = RepositoryImpl(dbConnection)
-//    private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
+    private val repository: Repository = RepositoryImpl(dbConnection)
+    private val handlersImpl: PracticalExamHandlers = PracticalExamHandlersImpl(ModelImpl(repository))
 
     override suspend fun start() {
         val router: Router = Router.router(vertx)
@@ -44,7 +49,6 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
     }
 
     private fun setRoutes(router: Router) {
-//        router.get("/drivingSlots").coroutineHandler(handlersImpl::getOccupiedDrivingSlots)
         router.get("/test").handler(this::testHandler)
     }
 
