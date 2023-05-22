@@ -4,11 +4,13 @@ import io.vertx.core.Vertx
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 
-class VertxClientProvider(private val vertx: Vertx): VertxClient {
+class VertxClientProvider: VertxClient {
     companion object {
         const val LOCALHOST: String = "localhost"
         const val DEFAULT_DOSSIER_SERVICE_PORT = 8000
     }
+
+    private val vertx: Vertx = Vertx.vertx()
 
     override suspend fun getDossierServiceClient(): WebClient {
         return createClient(getHost("dossier_host"), getPort("dossier_port", DEFAULT_DOSSIER_SERVICE_PORT))
