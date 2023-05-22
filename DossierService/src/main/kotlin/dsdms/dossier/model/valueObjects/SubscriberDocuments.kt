@@ -4,6 +4,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 /**
+ * Represents documents passed to initially create a new dossier
  * fiscal code is implicitly considered as correct
  */
 @Serializable
