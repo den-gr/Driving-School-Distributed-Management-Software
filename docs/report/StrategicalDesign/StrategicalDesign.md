@@ -114,9 +114,14 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazine test
         - Dopo la seconda scadenza, Dossier context viene notificato
 
 **Inbound Communications**:
+- Regiser theoretical exam appeal day (Client → A command)
+- Read list of future theoretical exam appeals (Client -> A query)
+- Read theoretical exam appeal information (Clent -> A query)
+- Register a dossier in Exam Appeal (Client → A command)
 - Creation of a Theoretical Exam pass (Doctor context → A command)
-- Register Dossier in Exam Appeal (Client → A command)
-- Controllo della validità di Provisional License (Driving context → A Query)
+- Create Provisional License (Client -> a command)
+- Read Provisional License info (Client -> a query)
+- Check validity of Provisional License (Driving context → A query)
 
 **Outbound Communications**:
 - Notify the Provisional license is not valid anymore (Dossier context → an event)
