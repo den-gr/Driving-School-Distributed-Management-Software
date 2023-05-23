@@ -6,6 +6,7 @@ import dsdms.doctor.handlers.repositoryToDomainConversionTable
 import dsdms.doctor.model.entities.DoctorDays
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
+import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 import io.vertx.ext.web.client.WebClient
 import io.vertx.kotlin.coroutines.await
@@ -51,7 +52,6 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
     private suspend fun checkTimeAvailability(time: String, date: String): Boolean =
         getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).any { el -> el.time == time }
 
-
     private suspend fun dossierIdExist(dossierId: String): Boolean {
         val response = dossierServiceConnection
             .get("/dossiers/$dossierId")
@@ -70,5 +70,17 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
 
     override suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus {
         return repositoryToDomainConversionTable.getDomainCode(repository.deleteDoctorSlot(dossierId))
+    }
+
+    /**
+     * TODO: call to exam service to create theoretical exam pass if doctor result is VALID
+     */
+    override suspend fun saveDoctorResult(document: DoctorResult): DomainResponseStatus {
+        // val result = examService.notifyDoctorResult(document)
+        // if (result.code == 404)
+        //       return DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
+        // else if (result.code == 200)
+        //      repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
+        return repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
     }
 }

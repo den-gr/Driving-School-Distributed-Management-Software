@@ -58,5 +58,6 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
         router.post("/doctorSlots").coroutineHandler(handlersImpl::bookDoctorVisit)
         router.get("/doctorSlots").coroutineHandler(handlersImpl::getBookedDoctorSlots)
         router.delete("/doctorSlots/:dossierId").coroutineHandler(handlersImpl::deleteDoctorSlot)
+        router.put("/doctorSlots").coroutineHandler(handlersImpl::saveDoctorResult)
     }
 }

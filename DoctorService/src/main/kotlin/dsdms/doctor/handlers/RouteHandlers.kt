@@ -23,4 +23,10 @@ interface RouteHandlers {
      * @see DoctorService
      */
     suspend fun deleteDoctorSlot(routingContext: RoutingContext)
+
+    /**
+     * To save a doctor visit result
+     * @see DoctorService
+     */
+    suspend fun saveDoctorResult(routingContext: RoutingContext)
 }

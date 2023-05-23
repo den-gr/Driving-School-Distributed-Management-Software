@@ -8,6 +8,7 @@ import java.net.HttpURLConnection
 
 val repositoryToDomainConversionTable: Map<RepositoryResponseStatus, DomainResponseStatus> = mapOf(
     RepositoryResponseStatus.OK to DomainResponseStatus.OK,
+    RepositoryResponseStatus.INSERT_ERROR to DomainResponseStatus.INSERT_ERROR
 )
 
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
@@ -17,7 +18,8 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.BAD_TIME to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.TIME_OCCUPIED to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.DOSSIER_ALREADY_BOOKED to HttpURLConnection.HTTP_BAD_REQUEST,
-    DomainResponseStatus.DOSSIER_NOT_EXIST to HttpURLConnection.HTTP_BAD_REQUEST
+    DomainResponseStatus.DOSSIER_NOT_EXIST to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.INSERT_ERROR to HttpURLConnection.HTTP_BAD_REQUEST
 )
 
 fun  Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {

@@ -1,6 +1,7 @@
 package dsdms.doctor.model.domainServices
 
 import dsdms.doctor.model.entities.DoctorSlot
+import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 
 interface DoctorService {
@@ -31,4 +32,12 @@ interface DoctorService {
      * @return Domain response status: OK if delete was successful, DELETE_ERROR otherwise
      */
     suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus
+
+    /**
+     * @param document
+     * @return Domain Response Status:
+     *  - OK if result was acknowledge
+     *  - INSERT_ERROR otherwise
+     */
+    suspend fun saveDoctorResult(document: DoctorResult): DomainResponseStatus
 }
