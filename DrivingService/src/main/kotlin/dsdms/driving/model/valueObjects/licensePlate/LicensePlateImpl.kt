@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("licensePlate")
-class LicensePlateInit : LicensePlate {
+class LicensePlateImpl : LicensePlate {
 
     @JsonProperty
     var numberPlate: String

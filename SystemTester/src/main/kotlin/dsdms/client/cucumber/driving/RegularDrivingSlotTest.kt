@@ -8,7 +8,7 @@ import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.DrivingSlotType
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlateInit
+import dsdms.driving.model.valueObjects.licensePlate.LicensePlateImpl
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
@@ -39,7 +39,7 @@ class RegularDrivingSlotTest : En {
         When("i send {word}, {word}, {word}, {word}, {word} to book the driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             val request = client
                 .post("/drivingSlots")
-                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateInit(vehicle))))
+                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateImpl(vehicle))))
             val response = sleeper.waitResult(request)
             checkResponse(response)
             statusMessage = response?.body().toString()
@@ -91,7 +91,7 @@ class RegularDrivingSlotTest : En {
         When("i send {word}, {word}, {word}, {word}, {word} to book the bad driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             val request = client
                 .post("/drivingSlots")
-                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateInit(vehicle))))
+                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateImpl(vehicle))))
             val response = sleeper.waitResult(request)
             checkResponse(response)
             registeredSlot = response?.body().toString()

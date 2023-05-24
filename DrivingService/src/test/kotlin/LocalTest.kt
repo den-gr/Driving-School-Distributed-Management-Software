@@ -1,6 +1,6 @@
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
 import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlateInit
+import dsdms.driving.model.valueObjects.licensePlate.LicensePlateImpl
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.json.Json
@@ -11,11 +11,11 @@ import kotlin.test.assertTrue
 
 class LocalTest {
     @Test fun regexTestShouldThrowException() {
-        assertThrows<IllegalArgumentException> { LicensePlateInit("FZ340ARR") }
+        assertThrows<IllegalArgumentException> { LicensePlateImpl("FZ340ARR") }
     }
 
     @Test fun regexTest() {
-        val licensePlate: LicensePlate = LicensePlateInit("FZ340AR")
+        val licensePlate: LicensePlate = LicensePlateImpl("FZ340AR")
         assertTrue(licensePlate.verifyStructure("FZ340AR"))
     }
 
