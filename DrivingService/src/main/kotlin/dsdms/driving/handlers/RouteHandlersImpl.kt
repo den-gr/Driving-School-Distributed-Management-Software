@@ -5,7 +5,7 @@ import dsdms.driving.model.domainServices.DomainResponseStatus.NO_SLOT_OCCUPIED
 import dsdms.driving.model.domainServices.DomainResponseStatus.OK
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
-import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
+import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import io.vertx.ext.web.RoutingContext
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -38,7 +38,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     @OptIn(DelicateCoroutinesApi::class)
     override suspend fun getOccupiedDrivingSlots(routingContext: RoutingContext) {
         try {
-            val data: GetDrivingSlotDocs = Json.decodeFromString(routingContext.body().asString())
+            val data: DrivingSlotsRequest = Json.decodeFromString(routingContext.body().asString())
             GlobalScope.launch {
                 val occupiedDrivingSlots: List<DrivingSlot> = model.drivingService.getOccupiedDrivingSlots(data)
                 if (occupiedDrivingSlots.isEmpty()) {

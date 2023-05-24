@@ -7,8 +7,8 @@ import dsdms.driving.handlers.getDomainCode
 import dsdms.driving.handlers.repositoryToDomainConversionTable
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
-import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
+import dsdms.driving.model.valueObjects.DrivingSlotsRequest
+import dsdms.driving.model.valueObjects.LicensePlate
 
 class DrivingServiceImpl(private val repository: Repository) : DrivingService {
     private val examService: ExamService = ExamService()
@@ -69,7 +69,7 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
             else DomainResponseStatus.OK
     }
 
-    override suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {
+    override suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): List<DrivingSlot> {
         return repository.getOccupiedDrivingSlots(docs)
     }
 

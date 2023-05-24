@@ -5,8 +5,8 @@ import dsdms.driving.database.utils.RepositoryResponseStatus
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.entities.Instructor
 import dsdms.driving.model.entities.Vehicle
-import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
+import dsdms.driving.model.valueObjects.DrivingSlotsRequest
+import dsdms.driving.model.valueObjects.LicensePlate
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineDatabase
@@ -21,7 +21,7 @@ class RepositoryImpl(drivingService: CoroutineDatabase) : Repository {
         return newDrivingSlot.apply { drivingSlots.insertOne(newDrivingSlot) }._id
     }
 
-    override suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {
+    override suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): List<DrivingSlot> {
         return if (docs.instructorId == null) {
             drivingSlots.find(DrivingSlot::date eq docs.date.toString()).toList()
         } else {

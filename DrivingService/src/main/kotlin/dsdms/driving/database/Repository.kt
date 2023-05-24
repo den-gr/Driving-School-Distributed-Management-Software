@@ -2,8 +2,8 @@ package dsdms.driving.database
 
 import dsdms.driving.database.utils.RepositoryResponseStatus
 import dsdms.driving.model.entities.DrivingSlot
-import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
+import dsdms.driving.model.valueObjects.DrivingSlotsRequest
+import dsdms.driving.model.valueObjects.LicensePlate
 
 interface Repository {
 
@@ -15,10 +15,10 @@ interface Repository {
 
     /**
      * @param docs: documents necessary to get occupied driving slots
-     * @see GetDrivingSlotDocs
+     * @see DrivingSlotsRequest
      * @return list of booked driving slot (could be empty)
      */
-    suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot>
+    suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): List<DrivingSlot>
 
     /**
      * @return all future booked driving slots, for each dossier id, instructor id and vehicle

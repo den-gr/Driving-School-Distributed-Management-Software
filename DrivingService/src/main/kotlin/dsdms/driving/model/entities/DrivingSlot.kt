@@ -1,7 +1,7 @@
 package dsdms.driving.model.entities
 
 import dsdms.driving.model.valueObjects.DrivingSlotType
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
+import dsdms.driving.model.valueObjects.LicensePlate
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 

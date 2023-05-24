@@ -1,6 +1,6 @@
 package dsdms.driving.model.entities
 
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
+import dsdms.driving.model.valueObjects.LicensePlate
 import kotlinx.serialization.Serializable
 
 @Serializable

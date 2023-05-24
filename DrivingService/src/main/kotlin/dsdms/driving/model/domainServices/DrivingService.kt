@@ -2,7 +2,7 @@ package dsdms.driving.model.domainServices
 
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
-import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
+import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.database.mock.ExamService
 
 interface DrivingService {
@@ -29,9 +29,9 @@ interface DrivingService {
      * @return list of all booked driving slots
      * in a given date and optionally with a specific instructor Id (list could be empty)
      * @param docs: GetDrivingSlotDocs
-     * @see GetDrivingSlotDocs
+     * @see DrivingSlotsRequest
      */
-    suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot>
+    suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): List<DrivingSlot>
 
     /**
      * @param drivingSlotId: specific for the dossier to be deleted from repo

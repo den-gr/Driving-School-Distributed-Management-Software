@@ -1,29 +1,29 @@
-import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlateImpl
+import dsdms.driving.model.valueObjects.DrivingSlotsRequest
+import dsdms.driving.model.valueObjects.LicensePlate
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.json.Json
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class LocalTest {
     @Test fun regexTestShouldThrowException() {
-        assertThrows<IllegalArgumentException> { LicensePlateImpl("FZ340ARR") }
+        assertThrows<IllegalArgumentException> { LicensePlate("FZ340ARR") }
     }
 
     @Test fun regexTest() {
-        val licensePlate: LicensePlate = LicensePlateImpl("FZ340AR")
-        assertTrue(licensePlate.verifyStructure("FZ340AR"))
+        assertDoesNotThrow {  LicensePlate("FZ340AR") }
+        println(LicensePlate("FZ340AR") )
+
     }
 
     @Test fun localDateSerialization() {
         val json = Json.encodeToString(LocalDate.serializer(), LocalDate(2013, 12, 4))
         println(json)
 
-        val prova = Json.encodeToString(GetDrivingSlotDocs.serializer(), GetDrivingSlotDocs(LocalDate.parse("2013-12-04")))
+        val prova = Json.encodeToString(DrivingSlotsRequest.serializer(), DrivingSlotsRequest(LocalDate.parse("2013-12-04")))
 
         assertEquals(prova, "{\"date\":\"2013-12-04\"}")
     }

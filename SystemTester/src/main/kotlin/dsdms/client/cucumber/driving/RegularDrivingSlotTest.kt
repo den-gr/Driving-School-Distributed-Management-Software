@@ -7,8 +7,8 @@ import dsdms.client.utils.createJson
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.DrivingSlotType
-import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
-import dsdms.driving.model.valueObjects.licensePlate.LicensePlateImpl
+import dsdms.driving.model.valueObjects.DrivingSlotsRequest
+import dsdms.driving.model.valueObjects.LicensePlate
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
@@ -39,7 +39,7 @@ class RegularDrivingSlotTest : En {
         When("i send {word}, {word}, {word}, {word}, {word} to book the driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             val request = client
                 .post("/drivingSlots")
-                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateImpl(vehicle))))
+                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlate(vehicle))))
             val response = sleeper.waitResult(request)
             checkResponse(response)
             statusMessage = response?.body().toString()
@@ -58,7 +58,7 @@ class RegularDrivingSlotTest : En {
         When("i request occupied driving slots in a {word}") { date: String ->
             val request = client
                 .get("/drivingSlots")
-                .sendBuffer(createJson(GetDrivingSlotDocs(LocalDate.parse(date))))
+                .sendBuffer(createJson(DrivingSlotsRequest(LocalDate.parse(date))))
             val response = sleeper.waitResult(request)
 
             checkResponse(response)
@@ -71,27 +71,27 @@ class RegularDrivingSlotTest : En {
             assertEquals(time, value?.get(0)?.time.toString())
             assertEquals(instructorId, value?.get(0)?.instructorId)
             assertEquals(dossierId, value?.get(0)?.dossierId)
-            assertEquals(vehicle, value?.get(0)?.licensePlate.toString())
+            assertEquals(vehicle, value?.get(0)?.licensePlate?.numberPlate)
         }
         Then("the second driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(1)?.date.toString())
             assertEquals(time, value?.get(1)?.time.toString())
             assertEquals(instructorId, value?.get(1)?.instructorId)
             assertEquals(dossierId, value?.get(1)?.dossierId)
-            assertEquals(vehicle, value?.get(1)?.licensePlate.toString())
+            assertEquals(vehicle, value?.get(1)?.licensePlate?.numberPlate)
         }
         Then("the third driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(2)?.date.toString())
             assertEquals(time, value?.get(2)?.time.toString())
             assertEquals(instructorId, value?.get(2)?.instructorId)
             assertEquals(dossierId, value?.get(2)?.dossierId)
-            assertEquals(vehicle, value?.get(2)?.licensePlate.toString())
+            assertEquals(vehicle, value?.get(2)?.licensePlate?.numberPlate)
         }
 
         When("i send {word}, {word}, {word}, {word}, {word} to book the bad driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             val request = client
                 .post("/drivingSlots")
-                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlateImpl(vehicle))))
+                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlate(vehicle))))
             val response = sleeper.waitResult(request)
             checkResponse(response)
             registeredSlot = response?.body().toString()

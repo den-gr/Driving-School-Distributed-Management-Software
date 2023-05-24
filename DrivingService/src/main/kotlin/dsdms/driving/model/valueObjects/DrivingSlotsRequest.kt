@@ -4,7 +4,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetDrivingSlotDocs(
+data class DrivingSlotsRequest(
     val date: LocalDate,
     val instructorId: String? = null
 )
