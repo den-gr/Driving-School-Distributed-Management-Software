@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":DossierService"))
     implementation(project(":DrivingService"))
     implementation(project(":DoctorService"))
+    implementation(project(":ExamService"))
 }
 
 

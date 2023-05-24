@@ -1,7 +1,5 @@
 package dsdms.exam.database.utils
 
-import dsdms.exam.model.domainServices.ExamService
-
 enum class RepositoryResponseStatus {
     /**
      * Everything was ok
@@ -14,14 +12,12 @@ enum class RepositoryResponseStatus {
     DELETE_ERROR,
 
     /**
-     * Given dossier id does not have a provisional license
-     * @see ExamService
+     * Not found any theoretical exam pass, for the given dossier id
      */
-    NO_PROVISIONAL_LICENSE,
+    PASS_NOT_FOUND_FOR_ID,
 
     /**
-     * Given dossier id has an invalid provisional license
-     * @see ExamService
+     * New exam day insert, was not acknowledged
      */
-    INVALID_PROVISIONAL_LICENSE
+    INSERT_ERROR
 }

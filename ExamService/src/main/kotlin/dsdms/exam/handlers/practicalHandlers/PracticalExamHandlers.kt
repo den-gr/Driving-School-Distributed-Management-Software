@@ -1,3 +1,4 @@
 package dsdms.exam.handlers.practicalHandlers
 
-interface PracticalExamHandlers {}
+interface PracticalExamHandlers {
+}

@@ -4,6 +4,7 @@ import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttempts
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.coroutine.CoroutineDatabase
@@ -43,6 +44,10 @@ class RepositoryImpl(dossierServiceDb: CoroutineDatabase) : Repository {
                 dossiers.deleteOne(Dossier::_id eq id)
             }
         )
+    }
+
+    override suspend fun updateExamAttempts(dossierId: String, examAttempts: PracticalExamAttempts): RepositoryResponseStatus {
+        return handleUpdateResults(dossiers.updateOne((Dossier::_id eq dossierId), setValue(Dossier::examAttempts, examAttempts)))
     }
 
     private fun handleDeleteResult(deleteResult: DeleteResult): RepositoryResponseStatus {

@@ -23,7 +23,11 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
 
     private suspend fun initializeModel(): RouteHandlersImpl {
         return RouteHandlersImpl(
-            ModelImpl(repository, VertxClientProvider(vertx).getDossierServiceClient())
+            ModelImpl(
+                repository,
+                VertxClientProvider(vertx).getDossierServiceClient(),
+                VertxClientProvider(vertx).getExamServiceClient()
+            )
         )
     }
 

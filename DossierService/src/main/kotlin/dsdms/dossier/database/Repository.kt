@@ -1,6 +1,7 @@
 package dsdms.dossier.database
 import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttempts
 import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 
 interface Repository {
@@ -39,4 +40,12 @@ interface Repository {
      *  - OK
      */
     suspend fun deleteDossier(id: String): RepositoryResponseStatus
+
+    /**
+     * @param dossierId of the dossier to be updated
+     * @return Repository response status:
+     *  - UPDATE_ERROR
+     *  - OK
+     */
+    suspend fun updateExamAttempts(dossierId: String, examAttempts: PracticalExamAttempts): RepositoryResponseStatus
 }
