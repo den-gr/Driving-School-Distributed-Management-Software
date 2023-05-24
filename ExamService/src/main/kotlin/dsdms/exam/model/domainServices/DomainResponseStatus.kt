@@ -24,5 +24,15 @@ enum class DomainResponseStatus {
     /**
      * Not found theoretical exam passes with given dossier id
      */
-    ID_NOT_FOUND
+    ID_NOT_FOUND,
+
+    /**
+     * Wanted exam date to insert, already found
+     */
+    DATE_ALREADY_IN,
+
+    /**
+     * Exam day insert was not acknowledged
+     */
+    INSERT_ERROR
 }
