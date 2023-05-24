@@ -1,3 +1,9 @@
 package dsdms.exam.database
 
-interface Repository {}
+import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
+
+interface Repository {
+    fun dossierAlreadyHasOnePass(dossierId: String): Boolean
+    fun saveNewTheoreticalExamPass(theoreticalExamPass: TheoreticalExamPass): TheoreticalExamPass
+    fun getTheoreticalExamPass(dossierId: String): TheoreticalExamPass?
+}
