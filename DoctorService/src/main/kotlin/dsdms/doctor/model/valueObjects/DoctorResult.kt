@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class DoctorResult(
     val dossierId: String,
     val date: String,
-    val result: ResultTypes
+    val result: String
 )
 
 enum class ResultTypes {
