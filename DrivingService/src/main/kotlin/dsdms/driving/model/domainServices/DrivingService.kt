@@ -16,7 +16,7 @@ interface DrivingService {
      *  - VEHICLE_NOT_FREE -> wanted instructor in specific wanted day and time is not free
      *  - BAD_VEHICLE_INSTRUCTOR_INFO -> given vehicle or instructor does not exists
      */
-    suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): RegisterDrivingSlotResult
+    suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DrivingSlotRegistrationResult
 
     /**
      * @return list of all booked driving slots
@@ -24,7 +24,7 @@ interface DrivingService {
      * @param docs: GetDrivingSlotDocs
      * @see DrivingSlotsRequest
      */
-    suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): GetDrivingSlotsResult
+    suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): DrivingSlotsRequestResult
 
     /**
      * @param drivingSlotId: specific for the dossier to be deleted from repo

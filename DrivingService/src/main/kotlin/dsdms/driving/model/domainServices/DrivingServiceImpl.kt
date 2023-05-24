@@ -12,23 +12,23 @@ import dsdms.driving.model.valueObjects.LicensePlate
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
-data class RegisterDrivingSlotResult(
+data class DrivingSlotRegistrationResult(
     val domainResponseStatus: DomainResponseStatus,
     val drivingSlotId: String? = null
 )
 
-data class GetDrivingSlotsResult(
+data class DrivingSlotsRequestResult(
     val domainResponseStatus: DomainResponseStatus,
     val drivingSlots: String? = null)
 
 class DrivingServiceImpl(private val repository: Repository) : DrivingService {
     private val examService: ExamService = ExamService()
 
-    override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): RegisterDrivingSlotResult {
+    override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DrivingSlotRegistrationResult {
         val verifyResult = verifyDocuments(documents)
         return if (verifyResult == DomainResponseStatus.OK)
-            RegisterDrivingSlotResult(verifyResult, repository.createDrivingSlot(createRegularDrivingSlot(documents)))
-        else RegisterDrivingSlotResult(verifyResult)
+            DrivingSlotRegistrationResult(verifyResult, repository.createDrivingSlot(createRegularDrivingSlot(documents)))
+        else DrivingSlotRegistrationResult(verifyResult)
     }
 
     private fun createRegularDrivingSlot(documents: DrivingSlotBooking): DrivingSlot {
@@ -83,12 +83,12 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
             else DomainResponseStatus.OK
     }
 
-    override suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): GetDrivingSlotsResult {
+    override suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): DrivingSlotsRequestResult {
         val drivingSlots = repository.getOccupiedDrivingSlots(docs)
         return if (drivingSlots.isEmpty())
-            GetDrivingSlotsResult(DomainResponseStatus.NO_SLOT_OCCUPIED)
+            DrivingSlotsRequestResult(DomainResponseStatus.NO_SLOT_OCCUPIED)
         else
-            GetDrivingSlotsResult(DomainResponseStatus.OK, Json.encodeToString(ListSerializer(DrivingSlot.serializer()), drivingSlots))
+            DrivingSlotsRequestResult(DomainResponseStatus.OK, Json.encodeToString(ListSerializer(DrivingSlot.serializer()), drivingSlots))
     }
 
     override suspend fun deleteDrivingSlot(drivingSlotId: String): DomainResponseStatus {

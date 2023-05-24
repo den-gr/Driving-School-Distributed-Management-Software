@@ -19,7 +19,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                 routingContext
                     .response()
                     .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
-                    .end(insertResult.drivingSlotId ?: insertResult.domainResponseStatus.toString())
+                    .end(insertResult.drivingSlotId ?: insertResult.domainResponseStatus.name)
             }
         } catch (ex: SerializationException) {
             routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
@@ -33,7 +33,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                 routingContext
                     .response()
                     .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
-                    .end(result.drivingSlots ?: result.domainResponseStatus.toString())
+                    .end(result.drivingSlots ?: result.domainResponseStatus.name)
             }
         } catch (ex: SerializationException) {
             routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
@@ -46,7 +46,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
             val result = model.drivingService.deleteDrivingSlot(routingContext.request().getParam("id").toString())
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))
-                .end(result.toString())
+                .end(result.name)
         }
     }
 }
