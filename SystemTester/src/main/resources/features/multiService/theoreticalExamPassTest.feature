@@ -18,3 +18,12 @@ Feature: creation and reading of theoretical exam passes
       | d2 | 2023-09-19 | NOT_VALID | 400 | EXAM_PASS_NOT_CREATED | ID_NOT_FOUND | 404 |
       | d3 | 2023-09-20 | NEED_ONE_MORE_VISIT | 400 | EXAM_PASS_NOT_CREATED | ID_NOT_FOUND | 404 |
       | d1 | 2023-09-20 | VALID | 400 | EXAM_PASS_ALREADY_AVAILABLE | NULL | 200 |
+
+  Scenario Outline: deleting a theoretical exam pass previously assigned
+    Given theoretical exam pass for dossier <id>, secretary requests to delete it
+    Then it receives code <code> with message <message>
+
+    Examples:
+      | id | code | message |
+      | d1 | 200 | OK |
+      | d2 | 404 | ID_NOT_FOUND |

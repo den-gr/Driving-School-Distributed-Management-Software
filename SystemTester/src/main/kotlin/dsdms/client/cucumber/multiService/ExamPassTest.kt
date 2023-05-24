@@ -82,5 +82,19 @@ class ExamPassTest : En {
             if (response?.statusCode() != HTTP_OK)
                 assertEquals(message, response?.body().toString())
         }
+        Given("theoretical exam pass for dossier {word}, secretary requests to delete it") { dossierId: String ->
+            val request = examService
+                .delete("/theoreticalExam/pass/$dossierId")
+                .send()
+            val response = sleeper.waitResult(request)
+
+            checkResponse(response)
+            statusCode = response?.statusCode()
+            value = response?.body().toString()
+        }
+        Then("it receives code {int} with message {word}") { code: Int, message: String ->
+            assertEquals(code, statusCode)
+            assertEquals(message, value)
+        }
     }
 }
