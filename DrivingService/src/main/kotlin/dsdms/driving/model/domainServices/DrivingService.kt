@@ -11,7 +11,7 @@ interface DrivingService {
      * @param documents identifying the wanted driving slot to be booked
      * @return the Id of the created driving slot (could be null)
      */
-    suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): String?
+    suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DomainResponse
 
     /**
      * @param drivingSlotBooking document to be verified

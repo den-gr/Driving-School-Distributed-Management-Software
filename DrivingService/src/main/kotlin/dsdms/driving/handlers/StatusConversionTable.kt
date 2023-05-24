@@ -15,7 +15,6 @@ val repositoryToDomainConversionTable: Map<RepositoryResponseStatus, DomainRespo
 
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.OK to HttpURLConnection.HTTP_OK,
-    DomainResponseStatus.NO_SLOT_OCCUPIED to HttpURLConnection.HTTP_OK,
     DomainResponseStatus.INSTRUCTOR_NOT_FREE to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.VEHICLE_NOT_FREE to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.OCCUPIED_DRIVING_SLOTS to HttpURLConnection.HTTP_BAD_REQUEST,

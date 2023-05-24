@@ -10,11 +10,17 @@ import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.LicensePlate
 
+data class DomainResponse(val status: DomainResponseStatus, val result: String? = null)
+
 class DrivingServiceImpl(private val repository: Repository) : DrivingService {
     private val examService: ExamService = ExamService()
 
-    override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): String? {
-        return repository.createDrivingSlot(createRegularDrivingSlot(documents))
+    override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DomainResponse {
+        val verificationResult = verifyDocuments(documents)
+        if (verificationResult == DomainResponseStatus.OK){
+            return DomainResponse(DomainResponseStatus.OK, repository.createDrivingSlot(createRegularDrivingSlot(documents)))
+        }
+        return DomainResponse(verificationResult)
     }
 
     private fun createRegularDrivingSlot(documents: DrivingSlotBooking): DrivingSlot {

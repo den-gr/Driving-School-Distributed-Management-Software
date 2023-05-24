@@ -1,6 +1,7 @@
 package dsdms.driving.handlers
 
 import dsdms.driving.model.Model
+import dsdms.driving.model.domainServices.DomainResponseStatus
 import dsdms.driving.model.domainServices.DomainResponseStatus.NO_SLOT_OCCUPIED
 import dsdms.driving.model.domainServices.DomainResponseStatus.OK
 import dsdms.driving.model.entities.DrivingSlot
@@ -22,14 +23,11 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
         try {
             val documents: DrivingSlotBooking = Json.decodeFromString(routingContext.body().asString())
             GlobalScope.launch {
-                val verifyResult = model.drivingService.verifyDocuments(documents)
-                if (verifyResult == OK) {
-                    val id = model.drivingService.saveNewDrivingSlot(documents)
-                    routingContext.response().setStatusCode(domainConversionTable.getHttpCode(verifyResult)).end(id)
-                } else {
-                    routingContext.response().setStatusCode(domainConversionTable.getHttpCode(verifyResult))
-                        .end(verifyResult.name)
-                }
+                val response = model.drivingService.saveNewDrivingSlot(documents)
+                val payload = if (response.status == OK) response.result else response.status.name
+                routingContext.response()
+                    .setStatusCode(getStatus(response.status))
+                    .end(payload)
             }
         } catch (ex: SerializationException) {
             routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
@@ -47,7 +45,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                         .end(NO_SLOT_OCCUPIED.name)
                 } else {
                     routingContext.response()
-                        .setStatusCode(domainConversionTable.getHttpCode(OK))
+                        .setStatusCode(getStatus(OK))
                         .end(Json.encodeToString(ListSerializer(DrivingSlot.serializer()), occupiedDrivingSlots))
                 }
             }
@@ -61,8 +59,12 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
         GlobalScope.launch {
             val result = model.drivingService.deleteDrivingSlot(routingContext.request().getParam("id").toString())
             routingContext.response()
-                .setStatusCode(domainConversionTable.getHttpCode(result))
+                .setStatusCode(getStatus(result))
                 .end(result.toString())
         }
+    }
+
+    private fun getStatus(domainStatus: DomainResponseStatus): Int{
+        return domainConversionTable.getHttpCode(domainStatus)
     }
 }
