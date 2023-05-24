@@ -8,10 +8,15 @@ class VertxClientProvider(private val vertx: Vertx): VertxClient {
     companion object {
         const val LOCALHOST: String = "localhost"
         const val DEFAULT_DOSSIER_SERVICE_PORT = 8000
+        const val DEFAULT_EXAM_SERVICE_PORT = 8020
     }
 
     override suspend fun getDossierServiceClient(): WebClient {
         return createClient(getHost("dossier_host"), getPort("dossier_port", DEFAULT_DOSSIER_SERVICE_PORT))
+    }
+
+    override suspend fun getExamServiceClient(): WebClient {
+        return createClient(getHost("exam_host"), getPort("exam_port", DEFAULT_EXAM_SERVICE_PORT))
     }
 
     private fun getHost(hostName: String): String{
