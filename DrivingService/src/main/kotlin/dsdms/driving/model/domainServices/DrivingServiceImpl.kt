@@ -9,12 +9,26 @@ import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.GetDrivingSlotDocs
 import dsdms.driving.model.valueObjects.licensePlate.LicensePlate
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
+
+data class RegisterDrivingSlotResult(
+    val domainResponseStatus: DomainResponseStatus,
+    val drivingSlotId: String? = null
+)
+
+data class GetDrivingSlotsResult(
+    val domainResponseStatus: DomainResponseStatus,
+    val drivingSlots: String? = null)
 
 class DrivingServiceImpl(private val repository: Repository) : DrivingService {
     private val examService: ExamService = ExamService()
 
-    override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): String? {
-        return repository.createDrivingSlot(createRegularDrivingSlot(documents))
+    override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): RegisterDrivingSlotResult {
+        val verifyResult = verifyDocuments(documents)
+        return if (verifyResult == DomainResponseStatus.OK)
+            RegisterDrivingSlotResult(verifyResult, repository.createDrivingSlot(createRegularDrivingSlot(documents)))
+        else RegisterDrivingSlotResult(verifyResult)
     }
 
     private fun createRegularDrivingSlot(documents: DrivingSlotBooking): DrivingSlot {
@@ -40,7 +54,7 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
      * TODO: make a call to future Exam Service to request
      *      info for a possible provisional license for this specific dossier id
      */
-    override suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
+    private suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
         val futureDrivingSlots: List<DrivingSlot> = repository.getFutureDrivingSlots()
 
         val dateAndTime: (DrivingSlot) -> Boolean = { el ->
@@ -69,8 +83,12 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
             else DomainResponseStatus.OK
     }
 
-    override suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): List<DrivingSlot> {
-        return repository.getOccupiedDrivingSlots(docs)
+    override suspend fun getOccupiedDrivingSlots(docs: GetDrivingSlotDocs): GetDrivingSlotsResult {
+        val drivingSlots = repository.getOccupiedDrivingSlots(docs)
+        return if (drivingSlots.isEmpty())
+            GetDrivingSlotsResult(DomainResponseStatus.NO_SLOT_OCCUPIED)
+        else
+            GetDrivingSlotsResult(DomainResponseStatus.OK, Json.encodeToString(ListSerializer(DrivingSlot.serializer()), drivingSlots))
     }
 
     override suspend fun deleteDrivingSlot(drivingSlotId: String): DomainResponseStatus {
