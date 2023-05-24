@@ -28,7 +28,13 @@ data class InsertDoctorVisitResult(
 data class BookedDoctorSlots(
     val domainResponseStatus: DomainResponseStatus,
     val doctorSlots: String? = null
-)
+) {
+    fun getDoctorSlots(): List<DoctorSlot> {
+        return if (doctorSlots != null)
+            Json.decodeFromString(ListSerializer(DoctorSlot.serializer()), doctorSlots)
+        else listOf()
+    }
+}
 
 class DoctorServiceImpl(private val repository: Repository, private val dossierServiceConnection: WebClient, private val examServiceConnection: WebClient) : DoctorService {
 
@@ -65,13 +71,8 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
      * @param date: wanted date of the visit
      * @return if given time is available
      */
-    private suspend fun checkTimeAvailability(time: String, date: String): Boolean {
-        val result = getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).doctorSlots
-        return if (result != null)
-            Json.decodeFromString(ListSerializer(DoctorSlot.serializer()), result)
-                .any { el -> el.time == time }
-        else false
-    }
+    private suspend fun checkTimeAvailability(time: String, date: String): Boolean =
+        getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).getDoctorSlots().any { el -> el.time == time }
 
     private suspend fun dossierIdExist(dossierId: String): Boolean {
         return dossierServiceConnection
@@ -94,8 +95,7 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
             BookedDoctorSlots(DomainResponseStatus.NO_SLOT_OCCUPIED)
         else BookedDoctorSlots(
             DomainResponseStatus.OK,
-            Json.encodeToString(ListSerializer(DoctorSlot.serializer()), doctorSlots)
-        )
+            Json.encodeToString(ListSerializer(DoctorSlot.serializer()), doctorSlots))
     }
 
     override suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus {
