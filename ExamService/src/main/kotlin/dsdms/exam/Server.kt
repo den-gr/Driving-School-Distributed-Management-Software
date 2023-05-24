@@ -39,6 +39,7 @@ class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerti
         router.get("/test").handler(this::testHandler)
         router.put("/theoreticalExam/pass").handler(theoreticalExamHandlersImpl::createTheoreticalExamPass)
         router.get("/theoreticalExam/pass/:id").handler(theoreticalExamHandlersImpl::getTheoreticalExamPass)
+        router.delete("/theoreticalExam/pass/:id").handler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
     }
 
     private fun testHandler(routingContext: RoutingContext) {

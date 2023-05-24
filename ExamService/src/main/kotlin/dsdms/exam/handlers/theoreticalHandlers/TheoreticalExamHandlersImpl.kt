@@ -40,4 +40,9 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
             routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK).end(Json.encodeToString(retrievedTheoreticalExamPass))
         }
     }
+
+    override fun deleteTheoreticalExamPass(routingContext: RoutingContext) {
+        val deleteResult: DomainResponseStatus = model.examService.deleteTheoreticalExamPass(routingContext.request().getParam("id").toString())
+        routingContext.response().setStatusCode(domainConversionTable.getHttpCode(deleteResult)).end(deleteResult.toString())
+    }
 }

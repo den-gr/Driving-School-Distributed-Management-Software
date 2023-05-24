@@ -1,6 +1,8 @@
 package dsdms.exam.database
 
 import com.mongodb.client.MongoDatabase
+import com.mongodb.client.result.DeleteResult
+import dsdms.exam.database.utils.RepositoryResponseStatus
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
@@ -19,5 +21,17 @@ class RepositoryImpl(examService: MongoDatabase) : Repository {
 
     override fun getTheoreticalExamPass(dossierId: String): TheoreticalExamPass? {
         return theoreticalExamPassDb.findOne(TheoreticalExamPass::dossierId eq dossierId)
+    }
+
+    override fun deleteTheoreticalExamPass(dossierId: String): RepositoryResponseStatus {
+        return handleDeleteResult(theoreticalExamPassDb.deleteOne(TheoreticalExamPass::dossierId eq dossierId))
+    }
+
+    private fun handleDeleteResult(deleteOne: DeleteResult): RepositoryResponseStatus {
+        return if (deleteOne.wasAcknowledged().not())
+            RepositoryResponseStatus.DELETE_ERROR
+        else if (deleteOne.deletedCount.toInt() == 0)
+            RepositoryResponseStatus.PASS_NOT_FOUND_FOR_ID
+        else RepositoryResponseStatus.OK
     }
 }

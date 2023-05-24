@@ -7,4 +7,5 @@ interface ExamService {
     fun verifyExamPass(documents: ExamPassData): DomainResponseStatus
     fun saveNewTheoreticalExamPass(documents: ExamPassData): TheoreticalExamPass
     fun readTheoreticalExamPass(dossierId: String): TheoreticalExamPass?
+    fun deleteTheoreticalExamPass(dossierId: String): DomainResponseStatus
 }

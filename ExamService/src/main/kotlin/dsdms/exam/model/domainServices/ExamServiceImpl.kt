@@ -1,6 +1,8 @@
 package dsdms.exam.model.domainServices
 
 import dsdms.exam.database.Repository
+import dsdms.exam.handlers.getDomainCode
+import dsdms.exam.handlers.repositoryToDomainConversionTable
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import dsdms.exam.model.valueObjects.ExamPassData
 import kotlinx.datetime.DatePeriod
@@ -25,5 +27,9 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
 
     override fun readTheoreticalExamPass(dossierId: String): TheoreticalExamPass? {
         return repository.getTheoreticalExamPass(dossierId)
+    }
+
+    override fun deleteTheoreticalExamPass(dossierId: String): DomainResponseStatus {
+        return repositoryToDomainConversionTable.getDomainCode(repository.deleteTheoreticalExamPass(dossierId))
     }
 }

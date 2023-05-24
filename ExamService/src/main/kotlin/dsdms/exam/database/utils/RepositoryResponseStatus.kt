@@ -14,14 +14,7 @@ enum class RepositoryResponseStatus {
     DELETE_ERROR,
 
     /**
-     * Given dossier id does not have a provisional license
-     * @see ExamService
+     * Not found any theoretical exam pass, for the given dossier id
      */
-    NO_PROVISIONAL_LICENSE,
-
-    /**
-     * Given dossier id has an invalid provisional license
-     * @see ExamService
-     */
-    INVALID_PROVISIONAL_LICENSE
+    PASS_NOT_FOUND_FOR_ID
 }

@@ -9,6 +9,7 @@ import java.net.HttpURLConnection
 val repositoryToDomainConversionTable: Map<RepositoryResponseStatus, DomainResponseStatus> = mapOf(
     RepositoryResponseStatus.OK to DomainResponseStatus.OK,
     RepositoryResponseStatus.DELETE_ERROR to DomainResponseStatus.DELETE_ERROR,
+    RepositoryResponseStatus.PASS_NOT_FOUND_FOR_ID to DomainResponseStatus.ID_NOT_FOUND
 )
 
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
