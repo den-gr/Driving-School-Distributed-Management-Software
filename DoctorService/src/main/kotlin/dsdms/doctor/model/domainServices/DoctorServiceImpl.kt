@@ -8,13 +8,18 @@ import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
 import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
+import dsdms.doctor.model.valueObjects.ResultTypes
+import dsdms.exam.model.valueObjects.ExamPassData
+import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.WebClient
 import io.vertx.kotlin.coroutines.await
 import kotlinx.datetime.toLocalTime
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection.HTTP_OK
 import java.time.LocalDate
 
-class DoctorServiceImpl(private val repository: Repository, private val dossierServiceConnection: WebClient) : DoctorService {
+class DoctorServiceImpl(private val repository: Repository, private val dossierServiceConnection: WebClient, private val examServiceConnection: WebClient) : DoctorService {
 
     override suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
         return if (checkDoctorDay(documents.date))
@@ -53,11 +58,11 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
         getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).any { el -> el.time == time }
 
     private suspend fun dossierIdExist(dossierId: String): Boolean {
-        val response = dossierServiceConnection
+        return dossierServiceConnection
             .get("/dossiers/$dossierId")
             .send()
-
-        return (response.await().statusCode() == HTTP_OK)
+            .await()
+            .statusCode() == HTTP_OK
     }
 
     override suspend fun saveDoctorSlot(documents: DoctorSlot): String {
@@ -72,15 +77,24 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
         return repositoryToDomainConversionTable.getDomainCode(repository.deleteDoctorSlot(dossierId))
     }
 
-    /**
-     * TODO: call to exam service to create theoretical exam pass if doctor result is VALID
-     */
     override suspend fun saveDoctorResult(document: DoctorResult): DomainResponseStatus {
-        // val result = examService.notifyDoctorResult(document)
-        // if (result.code == 404)
-        //       return DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
-        // else if (result.code == 200)
-        //      repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
-        return repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
+        return if (document.result != ResultTypes.VALID.toString())
+                DomainResponseStatus.EXAM_PASS_NOT_CREATED
+            else if (createTheoreticalExamPass(document))
+                repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
+            else
+                DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
+    }
+
+    private suspend fun createTheoreticalExamPass(document: DoctorResult): Boolean {
+        return examServiceConnection
+            .put("/theoreticalExam/pass")
+            .sendBuffer(createJson(ExamPassData(document.dossierId, document.date)))
+            .await()
+            .statusCode() == HTTP_OK
+    }
+
+    private inline fun <reified T> createJson(docs: T): Buffer? {
+        return Buffer.buffer(Json.encodeToString(docs))
     }
 }
