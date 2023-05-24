@@ -67,7 +67,7 @@ class UpdateDossierTest : En {
 
         Then("trying to update {word} exam status to true") { type: String ->
             val request = client
-                .put("/dossiers/$value")
+                .put("/dossiers/examStatus/$value")
                 .sendBuffer(createJson(ExamStatusUpdate(type, true)))
             val response = sleeper.waitResult(request)
 

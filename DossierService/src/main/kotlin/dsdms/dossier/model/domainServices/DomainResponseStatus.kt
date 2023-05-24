@@ -30,5 +30,13 @@ enum class DomainResponseStatus {
      * Given info about a subscriber are not the correct format
      * @see SubscriberControls
      */
-    NAME_SURNAME_NOT_STRING
+    NAME_SURNAME_NOT_STRING,
+
+    /**
+     * Used when subscriber has already reached limit number of practical exam attempts (3)
+     */
+    MAX_ATTEMPTS_REACHED,
+
+    DELETE_ERROR,
+    UPDATE_ERROR
 }

@@ -5,10 +5,10 @@ import dsdms.dossier.model.domainServices.DomainResponseStatus
 import java.net.HttpURLConnection
 
 
-val dbConversionTable: Map<RepositoryResponseStatus, Int> = mapOf(
-    RepositoryResponseStatus.OK to HttpURLConnection.HTTP_OK,
-    RepositoryResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
-    RepositoryResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
+val repositoryToDomainConversionTable: Map<RepositoryResponseStatus, DomainResponseStatus> = mapOf(
+    RepositoryResponseStatus.OK to DomainResponseStatus.OK,
+    RepositoryResponseStatus.DELETE_ERROR to DomainResponseStatus.DELETE_ERROR,
+    RepositoryResponseStatus.UPDATE_ERROR to DomainResponseStatus.UPDATE_ERROR,
 )
 
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
@@ -16,12 +16,14 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.VALID_DOSSIER_ALREADY_EXISTS to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.ID_NOT_FOUND to HttpURLConnection.HTTP_NOT_FOUND,
     DomainResponseStatus.AGE_NOT_SUFFICIENT to HttpURLConnection.HTTP_BAD_REQUEST,
-    DomainResponseStatus.NAME_SURNAME_NOT_STRING to HttpURLConnection.HTTP_BAD_REQUEST
+    DomainResponseStatus.NAME_SURNAME_NOT_STRING to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
+    DomainResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR
 
 )
 
-fun Map<RepositoryResponseStatus, Int>.getHttpCode(repositoryResponseStatus: RepositoryResponseStatus): Int {
-    return dbConversionTable.getOrDefault(repositoryResponseStatus, HttpURLConnection.HTTP_INTERNAL_ERROR)
+fun Map<RepositoryResponseStatus, DomainResponseStatus>.getDomainCode(repositoryResponseStatus: RepositoryResponseStatus): DomainResponseStatus {
+    return repositoryToDomainConversionTable.getOrDefault(repositoryResponseStatus, DomainResponseStatus.OK)
 }
 
 fun Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {

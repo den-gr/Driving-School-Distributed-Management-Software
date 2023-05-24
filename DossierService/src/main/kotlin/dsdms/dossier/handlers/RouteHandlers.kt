@@ -37,4 +37,15 @@ interface RouteHandlers {
      *  - code 500 for internal error
      */
     suspend fun handleDossierExamStatusUpdate(routingContext: RoutingContext)
+
+    /**
+     * @param routingContext
+     * handles dossier exam attempts update
+     * @see DossierService
+     * @return:
+     *  - code 400 for bad request
+     *  - code 200 for OK
+     *  - code 500 for internal error
+     */
+    suspend fun handleDossierExamAttemptsUpdate(routingContext: RoutingContext)
 }

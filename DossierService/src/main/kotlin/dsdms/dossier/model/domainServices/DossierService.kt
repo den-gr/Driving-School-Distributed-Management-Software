@@ -1,6 +1,5 @@
 package dsdms.dossier.model.domainServices
 
-import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.ExamStatusUpdate
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
@@ -45,5 +44,15 @@ interface DossierService {
      * - UPDATE_ERROR --> some error occurred (result was not acknowledge)
      * - OK otherwise
      */
-    suspend fun updateExamStatus(data: ExamStatusUpdate, id: String): RepositoryResponseStatus
+    suspend fun updateExamStatus(data: ExamStatusUpdate, id: String): DomainResponseStatus
+
+    /**
+     * Decreases practical exam attempts for this specific dossier id
+     * @param dossierId
+     * @return RepositoryResponseStatus: <br/>
+     *
+     * - UPDATE_ERROR --> some error occurred (result was not acknowledge)
+     * - OK otherwise
+     */
+    suspend fun updateExamAttempts(dossierId: String): DomainResponseStatus
 }

@@ -1,6 +1,5 @@
 package dsdms.dossier.handlers
 
-import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.Model
 import dsdms.dossier.model.domainServices.DomainResponseStatus
 import dsdms.dossier.model.valueObjects.ExamStatusUpdate
@@ -53,12 +52,20 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
         try {
             val data: ExamStatusUpdate = Json.decodeFromString(routingContext.body().asString())
             GlobalScope.launch {
-                val updateResult: RepositoryResponseStatus =
+                val updateResult: DomainResponseStatus =
                     model.dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
-                routingContext.response().setStatusCode(dbConversionTable.getHttpCode(updateResult)).end(updateResult.name)
+                routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult)).end(updateResult.name)
             }
         } catch (ex: SerializationException) {
             routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end(ex.message)
+        }
+    }
+
+    override suspend fun handleDossierExamAttemptsUpdate(routingContext: RoutingContext) {
+        GlobalScope.launch {
+            val updateResult: DomainResponseStatus =
+                model.dossierService.updateExamAttempts(routingContext.request().getParam("id").toString())
+            routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult)).end(updateResult.name)
         }
     }
 }
