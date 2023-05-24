@@ -88,7 +88,7 @@ class RegularDrivingSlotTest : En {
             assertEquals(vehicle, value?.get(2)?.licensePlate?.numberPlate)
         }
 
-        When("i send {word}, {word}, {word}, {word}, {word} to book the bad driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        When("i send {word}, {word}, {word}, {word}, {word} to book the wrong driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             val request = client
                 .post("/drivingSlots")
                 .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlate(vehicle))))

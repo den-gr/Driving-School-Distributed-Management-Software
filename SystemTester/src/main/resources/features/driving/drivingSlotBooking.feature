@@ -28,7 +28,7 @@ Feature: Regular driving slot booking
             | 2023-12-04 |
 
     Scenario: instructor wants to delete a bad driving slot previously added
-        When i send 2023-11-05, 09:00, i1, d4, FZ340AR to book the bad driving slot
+        When i send 2023-11-05, 09:00, i1, d4, FZ340AR to book the wrong driving slot
         Given the id of the inserted driving slot
         When attempting to remove it, i receive code 200
         Then when attempting to remove it another time (wrongly), i receive code 400 with DELETE_ERROR
