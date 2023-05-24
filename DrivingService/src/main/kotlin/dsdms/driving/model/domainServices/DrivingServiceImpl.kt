@@ -46,7 +46,7 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
      * TODO: make a call to future Exam Service to request
      *      info for a possible provisional license for this specific dossier id
      */
-    override suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
+    private suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
         val futureDrivingSlots: List<DrivingSlot> = repository.getFutureDrivingSlots()
 
         val dateAndTime: (DrivingSlot) -> Boolean = { el ->

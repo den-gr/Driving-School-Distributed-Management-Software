@@ -9,21 +9,18 @@ interface DrivingService {
 
     /**
      * @param documents identifying the wanted driving slot to be booked
-     * @return the Id of the created driving slot (could be null)
-     */
-    suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DomainResponse
-
-    /**
-     * @param drivingSlotBooking document to be verified
-     * @return Domain Response Status:
+     * @return a pair with Domain Response Status and optional result.
+     * The result is Id of the created driving slot only if DomainResponseStatus is OK otherwise it is null
+     * Domain Response Status can be:
      *  - OK -> all was fine
      *  - INSTRUCTOR_NOT_FREE -> wanted instructor in specific wanted day and time is not free
      *  - OCCUPIED_DRIVING_SLOTS ->that specific dossier has already booked one driving slot
      *  - VEHICLE_NOT_FREE -> wanted instructor in specific wanted day and time is not free
      *  - BAD_VEHICLE_INSTRUCTOR_INFO -> given vehicle or instructor does not exists
+     * @see DomainResponseStatus
      * @see ExamService for other error codes (about provisional license)
      */
-    suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus
+    suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DomainResponse
 
     /**
      * @return list of all booked driving slots
