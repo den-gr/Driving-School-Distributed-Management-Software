@@ -7,5 +7,6 @@ enum class DomainResponseStatus {
     BAD_TIME,
     TIME_OCCUPIED,
     DOSSIER_ALREADY_BOOKED,
-    DOSSIER_NOT_EXIST
+    DOSSIER_NOT_EXIST,
+    INSERT_ERROR
 }

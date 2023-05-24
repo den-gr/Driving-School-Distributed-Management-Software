@@ -6,6 +6,7 @@ import dsdms.doctor.handlers.repositoryToDomainConversionTable
 import dsdms.doctor.model.entities.DoctorDays
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
+import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 import io.vertx.ext.web.client.WebClient
 import io.vertx.kotlin.coroutines.await
@@ -18,8 +19,10 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
     override suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
         return if (checkDoctorDay(documents.date))
             DomainResponseStatus.NOT_DOCTOR_DAY
-        else if (checkDoctorVisitGivenTime(documents.time, documents.date))
+        else if (checkDoctorVisitGivenTime(documents.time))
             DomainResponseStatus.BAD_TIME
+        else if (checkTimeAvailability(documents.time, documents.date))
+            DomainResponseStatus.TIME_OCCUPIED
         else if (repository.getAllDoctorSlots(documents.dossierId, LocalDate.now()).isNotEmpty())
             DomainResponseStatus.DOSSIER_ALREADY_BOOKED
         else if (dossierIdExist(documents.dossierId).not())
@@ -38,10 +41,16 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
      * @param time: wanted time of the visit
      * @return if given time per the doctor visit is in the correct time slot and is available
      */
-    private suspend fun checkDoctorVisitGivenTime(time: String, date: String): Boolean =
+    private fun checkDoctorVisitGivenTime(time: String): Boolean =
         (time.toLocalTime() >= DoctorTimeSlot.InitTime.time && time.toLocalTime() <= DoctorTimeSlot.FinishTime.time).not()
-                || getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).any { el -> el.time == time }
 
+    /**
+     * @param time: wanted time of the visit
+     * @param date: wanted date of the visit
+     * @return if given time is available
+     */
+    private suspend fun checkTimeAvailability(time: String, date: String): Boolean =
+        getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).any { el -> el.time == time }
 
     private suspend fun dossierIdExist(dossierId: String): Boolean {
         val response = dossierServiceConnection
@@ -61,5 +70,17 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
 
     override suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus {
         return repositoryToDomainConversionTable.getDomainCode(repository.deleteDoctorSlot(dossierId))
+    }
+
+    /**
+     * TODO: call to exam service to create theoretical exam pass if doctor result is VALID
+     */
+    override suspend fun saveDoctorResult(document: DoctorResult): DomainResponseStatus {
+        // val result = examService.notifyDoctorResult(document)
+        // if (result.code == 404)
+        //       return DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
+        // else if (result.code == 200)
+        //      repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
+        return repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
     }
 }

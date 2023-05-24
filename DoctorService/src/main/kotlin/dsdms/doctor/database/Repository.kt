@@ -1,7 +1,9 @@
 package dsdms.doctor.database
 
+import com.mongodb.client.result.InsertOneResult
 import dsdms.doctor.database.utils.RepositoryResponseStatus
 import dsdms.doctor.model.entities.DoctorSlot
+import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 import java.time.LocalDate
 
@@ -33,4 +35,10 @@ interface Repository {
      * @return a list of doctor slots booked by the dossierId (eventually filtered by date)
      */
     suspend fun getAllDoctorSlots(dossierId: String, today: LocalDate? = null): List<DoctorSlot>
+
+    /**
+     * @param document: doctor result for a specific dossier id
+     * @return Repository response status: OK or INSERT_ERROR
+     */
+    suspend fun registerDoctorResult(document: DoctorResult): RepositoryResponseStatus
 }

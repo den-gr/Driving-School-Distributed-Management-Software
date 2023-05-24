@@ -3,14 +3,17 @@ package dsdms.doctor.database
 import com.mongodb.client.result.DeleteResult
 import dsdms.doctor.database.utils.RepositoryResponseStatus
 import dsdms.doctor.model.entities.DoctorSlot
+import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.coroutine.insertOne
 import org.litote.kmongo.eq
 import java.time.LocalDate
 
 
 class RepositoryImpl(doctorService: CoroutineDatabase) : Repository {
     private val doctorSlots = doctorService.getCollection<DoctorSlot>("DoctorSlot")
+    private val doctorResults = doctorService.getCollection<DoctorResult>("DoctorResult")
     override suspend fun saveDoctorSlot(documents: DoctorSlot): String {
         return documents.apply { doctorSlots.insertOne(documents) }.date
     }
@@ -28,6 +31,12 @@ class RepositoryImpl(doctorService: CoroutineDatabase) : Repository {
         return if (today != null)
             result.filter { el -> LocalDate.parse(el.date) >= today }
         else result
+    }
+
+    override suspend fun registerDoctorResult(document: DoctorResult): RepositoryResponseStatus {
+        return if (doctorResults.insertOne(document).wasAcknowledged())
+            RepositoryResponseStatus.OK
+        else RepositoryResponseStatus.INSERT_ERROR
     }
 
     private fun handleDeleteResult(deleteResult: DeleteResult): RepositoryResponseStatus {
