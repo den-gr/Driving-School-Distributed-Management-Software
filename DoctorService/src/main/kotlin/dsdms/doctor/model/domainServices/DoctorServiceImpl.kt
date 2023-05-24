@@ -14,14 +14,25 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.WebClient
 import io.vertx.kotlin.coroutines.await
 import kotlinx.datetime.toLocalTime
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection.HTTP_OK
 import java.time.LocalDate
 
+data class InsertDoctorVisitResult(
+    val domainResponseStatus: DomainResponseStatus,
+    val visitDate: String? = null
+)
+
+data class BookedDoctorSlots(
+    val domainResponseStatus: DomainResponseStatus,
+    val doctorSlots: String? = null
+)
+
 class DoctorServiceImpl(private val repository: Repository, private val dossierServiceConnection: WebClient, private val examServiceConnection: WebClient) : DoctorService {
 
-    override suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
+    private suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
         return if (checkDoctorDay(documents.date))
             DomainResponseStatus.NOT_DOCTOR_DAY
         else if (checkDoctorVisitGivenTime(documents.time))
@@ -54,8 +65,13 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
      * @param date: wanted date of the visit
      * @return if given time is available
      */
-    private suspend fun checkTimeAvailability(time: String, date: String): Boolean =
-        getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).any { el -> el.time == time }
+    private suspend fun checkTimeAvailability(time: String, date: String): Boolean {
+        val result = getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).doctorSlots
+        return if (result != null)
+            Json.decodeFromString(ListSerializer(DoctorSlot.serializer()), result)
+                .any { el -> el.time == time }
+        else false
+    }
 
     private suspend fun dossierIdExist(dossierId: String): Boolean {
         return dossierServiceConnection
@@ -65,12 +81,21 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
             .statusCode() == HTTP_OK
     }
 
-    override suspend fun saveDoctorSlot(documents: DoctorSlot): String {
-        return repository.saveDoctorSlot(documents)
+    override suspend fun saveDoctorSlot(documents: DoctorSlot): InsertDoctorVisitResult {
+        val verifyResult = verifyDocuments(documents)
+        return if (verifyResult == DomainResponseStatus.OK)
+            InsertDoctorVisitResult(verifyResult, repository.saveDoctorSlot(documents))
+        else InsertDoctorVisitResult(verifyResult)
     }
 
-    override suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot> {
-        return repository.getOccupiedDoctorSlots(data)
+    override suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): BookedDoctorSlots {
+        val doctorSlots = repository.getOccupiedDoctorSlots(data)
+        return if (doctorSlots.isEmpty())
+            BookedDoctorSlots(DomainResponseStatus.NO_SLOT_OCCUPIED)
+        else BookedDoctorSlots(
+            DomainResponseStatus.OK,
+            Json.encodeToString(ListSerializer(DoctorSlot.serializer()), doctorSlots)
+        )
     }
 
     override suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus {
