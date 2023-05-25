@@ -6,29 +6,38 @@ import dsdms.driving.database.utils.RepositoryResponseStatus
 import dsdms.driving.handlers.getDomainCode
 import dsdms.driving.handlers.repositoryToDomainConversionTable
 import dsdms.driving.model.entities.DrivingSlot
-import dsdms.driving.model.valueObjects.DrivingSlotBooking
-import dsdms.driving.model.valueObjects.DrivingSlotsRequest
-import dsdms.driving.model.valueObjects.LicensePlate
+import dsdms.driving.model.valueObjects.*
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
-data class DrivingSlotRegistrationResult(
-    val domainResponseStatus: DomainResponseStatus,
-    val drivingSlotId: String? = null
-)
 
-data class DrivingSlotsRequestResult(
-    val domainResponseStatus: DomainResponseStatus,
-    val drivingSlots: String? = null)
 
 class DrivingServiceImpl(private val repository: Repository) : DrivingService {
+    companion object {
+        private const val MIN_NUMBER_OF_DRIVING_LESSONS: Int = 10
+    }
     private val examService: ExamService = ExamService()
 
     override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DrivingSlotRegistrationResult {
         val verifyResult = verifyDocuments(documents)
-        return if (verifyResult == DomainResponseStatus.OK)
-            DrivingSlotRegistrationResult(verifyResult, repository.createDrivingSlot(createRegularDrivingSlot(documents)))
-        else DrivingSlotRegistrationResult(verifyResult)
+        if(verifyResult == DomainResponseStatus.OK){
+            if(documents.drivingSlotType == DrivingSlotType.EXAM){
+                return saveNewExamDrivingSlot(documents)
+            }
+            return DrivingSlotRegistrationResult(verifyResult, repository.createDrivingSlot(createRegularDrivingSlot(documents)))
+        }
+        return DrivingSlotRegistrationResult(verifyResult)
+    }
+
+    private suspend fun saveNewExamDrivingSlot(documents: DrivingSlotBooking): DrivingSlotRegistrationResult{
+        val numCompletedDrivingLessons = repository.countPastDrivingSlots(documents.dossierId)
+        if(numCompletedDrivingLessons  < MIN_NUMBER_OF_DRIVING_LESSONS){
+            return DrivingSlotRegistrationResult(DomainResponseStatus.NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM)
+        }else if(!repository.getPracticalExamDays().toList().map(PracticalExamDay::date).contains(documents.date)){
+            //Practical exams can be booked only in practical exam days
+            return DrivingSlotRegistrationResult(DomainResponseStatus.NOT_AN_EXAM_DAY)
+        }
+        return DrivingSlotRegistrationResult(DomainResponseStatus.OK, repository.createDrivingSlot(createRegularDrivingSlot(documents)))
     }
 
     private fun createRegularDrivingSlot(documents: DrivingSlotBooking): DrivingSlot {

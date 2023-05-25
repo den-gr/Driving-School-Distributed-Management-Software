@@ -7,15 +7,19 @@ import dsdms.driving.model.entities.Instructor
 import dsdms.driving.model.entities.Vehicle
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.LicensePlate
+import dsdms.driving.model.valueObjects.PracticalExamDay
 import kotlinx.coroutines.runBlocking
-import org.litote.kmongo.*
+import kotlinx.datetime.LocalDate
+import org.litote.kmongo.and
 import org.litote.kmongo.coroutine.CoroutineDatabase
-import java.time.LocalDate
+import org.litote.kmongo.eq
+import org.litote.kmongo.lt
 
-class RepositoryImpl(drivingService: CoroutineDatabase) : Repository {
-    private val drivingSlots = drivingService.getCollection<DrivingSlot>("DrivingSlot")
-    private val vehicles = drivingService.getCollection<Vehicle>("Vehicle")
-    private val instructors = drivingService.getCollection<Instructor>("Instructor")
+class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
+    private val drivingSlots = drivingServiceDB.getCollection<DrivingSlot>("DrivingSlot")
+    private val vehicles = drivingServiceDB.getCollection<Vehicle>("Vehicle")
+    private val instructors = drivingServiceDB.getCollection<Instructor>("Instructor")
+    private val practicalExamDays = drivingServiceDB.getCollection<PracticalExamDay>("practicalExamDays")
 
     override suspend fun createDrivingSlot(newDrivingSlot: DrivingSlot): String? {
         return newDrivingSlot.apply { drivingSlots.insertOne(newDrivingSlot) }._id
@@ -30,7 +34,11 @@ class RepositoryImpl(drivingService: CoroutineDatabase) : Repository {
     }
 
     override suspend fun getFutureDrivingSlots(): List<DrivingSlot> {
-        return drivingSlots.find().toList().filter { el -> LocalDate.parse(el.date) > LocalDate.now() }
+        return drivingSlots.find().toList().filter { el -> LocalDate.parse(el.date) > now() }
+    }
+
+    override suspend fun countPastDrivingSlots(dossierId: String): Int{
+        return drivingSlots.find(and(DrivingSlot::dossierId eq dossierId, DrivingSlot::date lt now().toString())).toList().count()
     }
 
     override suspend fun doesVehicleExist(licensePlate: LicensePlate): Boolean {
@@ -49,11 +57,23 @@ class RepositoryImpl(drivingService: CoroutineDatabase) : Repository {
         )
     }
 
+    override suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay) {
+       practicalExamDays.insertOne(practicalExamDay)
+    }
+
+    override suspend fun getPracticalExamDays(): List<PracticalExamDay> {
+        return practicalExamDays.find().toList()
+    }
+
     private fun handleDeleteResult(deleteResult: DeleteResult): RepositoryResponseStatus {
         return if (!deleteResult.wasAcknowledged() || deleteResult.deletedCount.toInt() == 0) {
             RepositoryResponseStatus.DELETE_ERROR
         } else {
             RepositoryResponseStatus.OK
         }
+    }
+
+    private fun now(): LocalDate{
+        return LocalDate.parse(java.time.LocalDate.now().toString())
     }
 }

@@ -49,5 +49,13 @@ enum class DomainResponseStatus {
     /**
      * Delete result was not acknowledged-
      */
-    DELETE_ERROR
+    DELETE_ERROR,
+
+    /**
+     * The day that is tried to be set as practical exam day is already a practical exam day
+     */
+    ALREADY_DEFINED_AS_PRACTICAL_EXAM_DAY,
+
+    NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM,
+    NOT_AN_EXAM_DAY
 }

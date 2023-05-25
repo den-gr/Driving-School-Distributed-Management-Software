@@ -52,5 +52,7 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
         router.post("/drivingSlots").coroutineHandler(handlersImpl::registerNewDrivingSlot)
         router.get("/drivingSlots").coroutineHandler(handlersImpl::getOccupiedDrivingSlots)
         router.delete("/drivingSlots/:id").coroutineHandler(handlersImpl::deleteDrivingSlot)
+        router.post("/practicalExamDays").coroutineHandler(handlersImpl::postPracticalExamDay)
+        router.get("/practicalExamDays").coroutineHandler(handlersImpl::getPracticalExamDays)
     }
 }

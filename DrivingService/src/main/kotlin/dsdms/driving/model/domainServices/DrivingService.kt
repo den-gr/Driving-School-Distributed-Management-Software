@@ -3,6 +3,14 @@ package dsdms.driving.model.domainServices
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 
+data class DrivingSlotRegistrationResult(
+    val domainResponseStatus: DomainResponseStatus,
+    val drivingSlotId: String? = null
+)
+
+data class DrivingSlotsRequestResult(
+    val domainResponseStatus: DomainResponseStatus,
+    val drivingSlots: String? = null)
 
 interface DrivingService {
 
@@ -15,6 +23,9 @@ interface DrivingService {
      *  - OCCUPIED_DRIVING_SLOTS ->that specific dossier has already booked one driving slot
      *  - VEHICLE_NOT_FREE -> wanted instructor in specific wanted day and time is not free
      *  - BAD_VEHICLE_INSTRUCTOR_INFO -> given vehicle or instructor does not exists
+     *  If Driving slot is a practical exam:
+     *  - NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM -> dossier has not done enough driving lessons to be able book a practical exam
+     *  - NOT_AN_EXAM_DAY -> the day must set as a practical exam day before booking an exam
      */
     suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DrivingSlotRegistrationResult
 

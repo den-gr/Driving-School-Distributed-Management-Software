@@ -4,6 +4,8 @@ import dsdms.driving.database.utils.RepositoryResponseStatus
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.LicensePlate
+import dsdms.driving.model.valueObjects.PracticalExamDay
+import kotlinx.datetime.LocalDate
 
 interface Repository {
 
@@ -48,4 +50,19 @@ interface Repository {
      *  - OK -> otherwise
      */
     suspend fun deleteDrivingSlot(drivingSlotId: String): RepositoryResponseStatus
+
+    /**
+     * TODO
+     */
+    suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay)
+
+    /**
+     * TODO
+     */
+    suspend fun getPracticalExamDays(): List<PracticalExamDay>
+
+    /**
+     * TODO
+     */
+    suspend fun countPastDrivingSlots(dossierId: String): Int
 }

@@ -22,6 +22,9 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.NO_PROVISIONAL_LICENSE to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.BAD_VEHICLE_INSTRUCTOR_INFO to HttpURLConnection.HTTP_NOT_FOUND,
+    DomainResponseStatus.ALREADY_DEFINED_AS_PRACTICAL_EXAM_DAY to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.NOT_AN_EXAM_DAY to HttpURLConnection.HTTP_BAD_REQUEST
 )
 
 fun  Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {

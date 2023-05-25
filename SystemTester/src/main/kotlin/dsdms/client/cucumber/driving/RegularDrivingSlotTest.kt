@@ -18,7 +18,7 @@ import kotlinx.datetime.LocalTime
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
-import java.net.HttpURLConnection.*
+import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 
 @RunWith(Cucumber::class)
