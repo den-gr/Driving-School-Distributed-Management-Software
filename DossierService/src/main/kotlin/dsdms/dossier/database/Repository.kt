@@ -1,8 +1,8 @@
 package dsdms.dossier.database
 import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.entities.ExamStatusImpl
 import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttempts
-import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 
 interface Repository {
 
@@ -31,7 +31,7 @@ interface Repository {
      *  - UPDATE_ERROR
      *  - OK
      */
-    suspend fun updateExamStatus(newStatus: ExamStatus?, id: String): RepositoryResponseStatus
+    suspend fun updateExamStatus(newStatus: ExamStatusImpl?, id: String): RepositoryResponseStatus
 
     /**
      * @param id of the dossier to be updated

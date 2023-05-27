@@ -21,6 +21,7 @@ import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
@@ -59,15 +60,15 @@ class UpdateDossierTest : En {
         When("i read his {word} exam status is false") { type: String ->
             assertNotNull(retrievedDossier)
             if (type == "theoretical") {
-                retrievedDossier?.examStatus?.let { assertFalse(it.getTheoretical()) }
+                retrievedDossier?.examStatus?.let { assertFalse(it.theoretical) }
             } else {
-                retrievedDossier?.examStatus?.let { assertFalse(it.getPractical()) }
+                retrievedDossier?.examStatus?.let { assertFalse(it.practical) }
             }
         }
 
         Then("trying to update {word} exam status to true") { type: String ->
             val request = client
-                .put("/dossiers/examStatus/$value")
+                .put("/dossiers/$value/examStatus")
                 .sendBuffer(createJson(ExamStatusUpdate(type, true)))
             val response = sleeper.waitResult(request)
 
@@ -75,9 +76,21 @@ class UpdateDossierTest : En {
             result = response
         }
 
-        And("obtaining {word} exam status true as response from server") { _: String ->
+        And("obtaining {word} exam status true as response from server") { type: String ->
             assertNotNull(result)
             assertEquals(HTTP_OK, result?.statusCode())
+
+            val request = client
+                .get("/dossiers/$value")
+                .send()
+            val response = sleeper.waitResult(request)
+            checkResponse(response)
+            retrievedDossier = Json.decodeFromString(response?.body().toString())
+            if (type == "theoretical") {
+                retrievedDossier?.examStatus?.let { assertTrue(it.theoretical) }
+            } else {
+                retrievedDossier?.examStatus?.let { assertTrue(it.practical) }
+            }
         }
     }
 }

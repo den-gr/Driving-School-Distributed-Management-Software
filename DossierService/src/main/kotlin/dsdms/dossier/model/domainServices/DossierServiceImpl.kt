@@ -6,13 +6,11 @@ import dsdms.dossier.handlers.repositoryToDomainConversionTable
 import dsdms.dossier.model.domainServices.subscriberCheck.SubscriberControls
 import dsdms.dossier.model.domainServices.subscriberCheck.SubscriberControlsImpl
 import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.entities.ExamStatusImpl
 import dsdms.dossier.model.valueObjects.ExamStatusUpdate
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
 import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttempts
 import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttemptsImpl
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 data class SaveDossierResult(
     val domainResponseStatus: DomainResponseStatus,
@@ -21,11 +19,7 @@ data class SaveDossierResult(
 
 data class GetDossierResult(
     val domainResponseStatus: DomainResponseStatus,
-    val dossier: String? = null) {
-    fun getDossier(): Dossier? {
-        return dossier?.let { Json.decodeFromString<Dossier>(it) }
-    }
-}
+    val dossier: Dossier? = null)
 
 class DossierServiceImpl(private val repository: Repository): DossierService {
     private val subscriberControls: SubscriberControls = SubscriberControlsImpl()
@@ -38,7 +32,7 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
     }
 
     private suspend fun createDossier(givenDocuments: SubscriberDocuments): String? =
-        repository.createDossier(Dossier(givenDocuments.name, givenDocuments.surname, givenDocuments.birthdate.toString(), givenDocuments.fiscal_code))
+        repository.createDossier(Dossier(givenDocuments.name, givenDocuments.surname, givenDocuments.birthdate.toString(), givenDocuments.fiscal_code, examAttempts = PracticalExamAttemptsImpl(), examStatus = ExamStatusImpl()))
 
     private suspend fun verifyDocuments(documents: SubscriberDocuments): DomainResponseStatus {
         return if (subscriberControls.checkDuplicatedFiscalCode(documents, repository))
@@ -56,21 +50,21 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
         return if (dossier == null)
             GetDossierResult(DomainResponseStatus.ID_NOT_FOUND)
         else
-            GetDossierResult(DomainResponseStatus.OK, Json.encodeToString(dossier))
+            GetDossierResult(DomainResponseStatus.OK, dossier)
     }
 
     override suspend fun updateExamStatus(data: ExamStatusUpdate, id: String): DomainResponseStatus {
-        val newStatus = readDossierFromId(id).getDossier()?.examStatus
-        if (data.exam == "theoretical") {
-            newStatus?.modifyTheoretical(data.newStatus)
+        val status = readDossierFromId(id).dossier?.examStatus
+        val newStatus = if (data.exam == "theoretical") {
+            status?.copy(theoretical = data.newStatus)
         } else {
-            newStatus?.modifyPractical(data.newStatus)
+            status?.copy(practical = data.newStatus)
         }
         return repositoryToDomainConversionTable.getDomainCode(repository.updateExamStatus(newStatus, id))
     }
 
     override suspend fun updateExamAttempts(dossierId: String): DomainResponseStatus {
-        val dossier = readDossierFromId(dossierId).getDossier()
+        val dossier = readDossierFromId(dossierId).dossier
         return if (dossier != null && dossier.examAttempts.verifyAttempts().not()) {
             DomainResponseStatus.MAX_ATTEMPTS_REACHED
         } else repositoryToDomainConversionTable.getDomainCode(repository.updateExamAttempts(dossierId, createExamAttempts(dossier)))

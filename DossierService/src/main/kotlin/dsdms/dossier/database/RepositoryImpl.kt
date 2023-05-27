@@ -4,8 +4,8 @@ import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult
 import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.entities.ExamStatusImpl
 import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttempts
-import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
@@ -26,7 +26,7 @@ class RepositoryImpl(dossierServiceDb: CoroutineDatabase) : Repository {
         return dossiers.find(Dossier::fiscal_code eq cf).toList()
     }
 
-    override suspend fun updateExamStatus(newStatus: ExamStatus?, id: String): RepositoryResponseStatus {
+    override suspend fun updateExamStatus(newStatus: ExamStatusImpl?, id: String): RepositoryResponseStatus {
         return handleUpdateResults(dossiers.updateOne((Dossier::_id eq id), setValue(Dossier::examStatus, newStatus)))
     }
 

@@ -1,10 +1,8 @@
 package dsdms.dossier.model.entities
 
-import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttempts
 import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttemptsImpl
-import dsdms.dossier.model.valueObjects.examStatus.ExamStatus
-import dsdms.dossier.model.valueObjects.examStatus.ExamStatusImpl
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -25,6 +23,10 @@ data class Dossier(
     val fiscal_code: String,
     @Contextual val _id: String? = null,
     val validity: Boolean = true,
-    val examAttempts: PracticalExamAttempts = PracticalExamAttemptsImpl(),
-    val examStatus: ExamStatus = ExamStatusImpl()
+    val examAttempts: PracticalExamAttemptsImpl,
+    val examStatus: ExamStatusImpl
 )
+
+@Serializable
+@SerialName("examStatus")
+data class ExamStatusImpl(val practical: Boolean = false, val theoretical: Boolean = false)

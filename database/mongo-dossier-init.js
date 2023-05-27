@@ -24,11 +24,11 @@ db.Dossier.insertMany([
       fiscal_code: "MFH7594",
       validity: true,
       examAttempts: {
-        attempts: 0
+        attempts: 1
       },
       examStatus: {
-        practical: false,
-        theoretical: false
+        practical: true,
+        theoretical: true
       }
     }
 ]);

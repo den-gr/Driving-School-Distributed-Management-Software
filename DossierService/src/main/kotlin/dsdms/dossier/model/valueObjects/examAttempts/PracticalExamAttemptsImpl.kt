@@ -6,8 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("examAttempts")
 class PracticalExamAttemptsImpl : PracticalExamAttempts {
-
-    private val maxAttempts = 3
+    companion object{
+        private const val maxAttempts = 3
+    }
     override var attempts: Int = 0
         set(value) {
             if (verifyAttempts()) {
