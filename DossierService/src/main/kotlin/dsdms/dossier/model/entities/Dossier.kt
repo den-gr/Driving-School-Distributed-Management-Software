@@ -1,8 +1,7 @@
 package dsdms.dossier.model.entities
 
-import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttemptsImpl
+import dsdms.dossier.model.valueObjects.ExamsProgress
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,8 +11,7 @@ import kotlinx.serialization.Serializable
  * @param birthdate: birthdate of subscriber to verify that he has the minimum age
  * @param fiscal_code: of subscriber for additional info
  * @param validity: representing validity of the dossier (true by default)
- * @param examAttempts: representing practical and theoretical exam attempts, Zero by default
- * @param examStatus: representing practical and theoretical exam status, all false by defaylt
+ * @param examsProgress: representing practical and theoretical exams global states
  */
 @Serializable
 data class Dossier(
@@ -23,10 +21,5 @@ data class Dossier(
     val fiscal_code: String,
     @Contextual val _id: String? = null,
     val validity: Boolean = true,
-    val examAttempts: PracticalExamAttemptsImpl,
-    val examStatus: ExamStatusImpl
+    val examsProgress: ExamsProgress = ExamsProgress()
 )
-
-@Serializable
-@SerialName("examStatus")
-data class ExamStatusImpl(val practical: Boolean = false, val theoretical: Boolean = false)

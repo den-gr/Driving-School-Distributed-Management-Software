@@ -5,23 +5,19 @@ import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
 import dsdms.client.utils.createJson
 import dsdms.dossier.model.entities.Dossier
-import dsdms.dossier.model.valueObjects.ExamStatusUpdate
-import dsdms.dossier.model.valueObjects.SubscriberDocuments
+import dsdms.dossier.model.valueObjects.*
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
-import kotlinx.datetime.LocalDate
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
 import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
@@ -30,26 +26,17 @@ import kotlin.test.assertTrue
 )
 class UpdateDossierTest : En {
     private val client: WebClient = VertxProviderImpl().getDossierServiceClient()
-    private var value: String = ""
+    private var dossier: String = ""
     private var retrievedDossier: Dossier? = null
     private var result: HttpResponse<Buffer>? = null
 
     init {
         val sleeper = SmartSleep()
 
-        Given("a new registered dossier: {word}, {word}, {word}, {word}") { name: String, surname: String, birthdate: String, fc: String ->
+        Given("an already registered dossier with id {word}") { dossierId: String ->
+            dossier = dossierId
             val request = client
-                .post("/dossiers")
-                .sendBuffer(createJson(SubscriberDocuments(name, surname, LocalDate.parse(birthdate), fc)))
-            val response = sleeper.waitResult(request)
-
-            checkResponse(response)
-            value = response?.body().toString()
-        }
-
-        Then("i request the dossier from server with obtained id") {
-            val request = client
-                .get("/dossiers/$value")
+                .get("/dossiers/$dossierId")
                 .send()
             val response = sleeper.waitResult(request)
             checkResponse(response)
@@ -57,39 +44,39 @@ class UpdateDossierTest : En {
             retrievedDossier = Json.decodeFromString(response?.body().toString())
         }
 
-        When("i read his {word} exam status is false") { type: String ->
+        When("i read his {word} exam progress state is {word}") { type: String, state: String->
             assertNotNull(retrievedDossier)
-            if (type == "theoretical") {
-                retrievedDossier?.examStatus?.let { assertFalse(it.theoretical) }
+            if (type == Exam.THEORETICAL.name) {
+                retrievedDossier?.examsProgress?.let { assertEquals(TheoreticalExamState.valueOf(state), it.theoreticalExamState) }
             } else {
-                retrievedDossier?.examStatus?.let { assertFalse(it.practical) }
+                retrievedDossier?.examsProgress?.let { assertEquals(PracticalExamState.valueOf(state), it.practicalExamState) }
             }
         }
 
-        Then("trying to update {word} exam status to true") { type: String ->
+        Then("trying to register {word} exam state as passed") { type: String->
             val request = client
-                .put("/dossiers/$value/examStatus")
-                .sendBuffer(createJson(ExamStatusUpdate(type, true)))
+                .put("/dossiers/$dossier/examStatus")
+                .sendBuffer(createJson(ExamResult(Exam.valueOf(type), ExamOutcome.PASSED)))
             val response = sleeper.waitResult(request)
 
             checkResponse(response)
             result = response
         }
 
-        And("obtaining {word} exam status true as response from server") { type: String ->
+        And("obtaining {word} exam state equal to {word}") { type: String, newState: String->
             assertNotNull(result)
             assertEquals(HTTP_OK, result?.statusCode())
 
             val request = client
-                .get("/dossiers/$value")
+                .get("/dossiers/$dossier")
                 .send()
             val response = sleeper.waitResult(request)
             checkResponse(response)
             retrievedDossier = Json.decodeFromString(response?.body().toString())
-            if (type == "theoretical") {
-                retrievedDossier?.examStatus?.let { assertTrue(it.theoretical) }
+            if (type == Exam.THEORETICAL.name) {
+                retrievedDossier?.examsProgress?.let { assertEquals(TheoreticalExamState.valueOf(newState), it.theoreticalExamState) }
             } else {
-                retrievedDossier?.examStatus?.let { assertTrue(it.practical) }
+                retrievedDossier?.examsProgress?.let { assertEquals(PracticalExamState.valueOf(newState), it.practicalExamState) }
             }
         }
     }

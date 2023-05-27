@@ -2,7 +2,8 @@ package dsdms.dossier.handlers
 
 import dsdms.dossier.model.Model
 import dsdms.dossier.model.domainServices.DomainResponseStatus
-import dsdms.dossier.model.valueObjects.ExamStatusUpdate
+import dsdms.dossier.model.valueObjects.ExamResult
+
 import kotlinx.serialization.encodeToString
 import io.vertx.ext.web.RoutingContext
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -51,7 +52,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     override suspend fun handleDossierExamStatusUpdate(routingContext: RoutingContext) {
         GlobalScope.launch {
             try {
-                val data: ExamStatusUpdate = Json.decodeFromString(routingContext.body().asString())
+                val data: ExamResult = Json.decodeFromString(routingContext.body().asString())
                 val updateResult: DomainResponseStatus =
                     model.dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
                 routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult))
@@ -62,11 +63,11 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
         }
     }
 
-    override suspend fun handleDossierExamAttemptsUpdate(routingContext: RoutingContext) {
-        GlobalScope.launch {
-            val updateResult: DomainResponseStatus =
-                model.dossierService.updateExamAttempts(routingContext.request().getParam("id").toString())
-            routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult)).end(updateResult.name)
-        }
-    }
+//    override suspend fun handleDossierExamAttemptsUpdate(routingContext: RoutingContext) {
+//        GlobalScope.launch {
+//            val updateResult: DomainResponseStatus =
+//                model.dossierService.updateExamAttempts(routingContext.request().getParam("id").toString())
+//            routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult)).end(updateResult.name)
+//        }
+//    }
 }

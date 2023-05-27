@@ -5,7 +5,9 @@ import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
 import dsdms.client.utils.createJson
 import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.valueObjects.PracticalExamState
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
+import dsdms.dossier.model.valueObjects.TheoreticalExamState
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
@@ -67,8 +69,9 @@ class DossierTest : En {
             assertEquals(fiscal_code, retrievedDossier?.fiscal_code)
         }
 
-        And("It has {int} practical exam attempts") {attemps: Int ->
-            assertEquals(attemps, retrievedDossier?.examAttempts?.attempts)
+        And("It has not done both practical and theoretical exams") {
+            assertEquals(TheoreticalExamState.TO_DO, retrievedDossier?.examsProgress?.theoreticalExamState)
+            assertEquals(PracticalExamState.NOT_DONE, retrievedDossier?.examsProgress?.practicalExamState)
         }
 
         When("I try to register invalid subscriber information: {word},{word},{word},{word}") {name: String, surname: String, birthdate: String, fiscal_code: String ->

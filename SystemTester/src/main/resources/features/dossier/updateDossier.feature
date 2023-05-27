@@ -1,12 +1,11 @@
 Feature: Update subscriber informations
   Scenario Outline: updating examStatus
-    Given a new registered dossier: <name>, <surname>, <birthdate>, <fc>
-    Then i request the dossier from server with obtained id
-    When i read his <type> exam status is false
-    Then trying to update <type> exam status to true
-    And obtaining <type> exam status true as response from server
+    Given an already registered dossier with id d1
+    When i read his <type> exam progress state is <exam_state_before>
+    Then trying to register <type> exam state as passed
+    And obtaining <type> exam state equal to <exam_state_after>
 
   Examples:
-    | type | name | surname | birthdate | fc |
-    | theoretical | Mario | Rossi | 1999-03-07 | 123CDF |
-    | practical | Luca | Bianchi | 1999-03-07 | 456EFG |
+    | type | exam_state_before | exam_state_after |
+    | THEORETICAL | TO_DO | DONE                  |
+    | PRACTICAL | NOT_DONE| PASSED                |

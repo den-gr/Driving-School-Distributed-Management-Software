@@ -1,7 +1,5 @@
 import com.mongodb.client.MongoCollection
 import dsdms.dossier.model.entities.Dossier
-import dsdms.dossier.model.entities.ExamStatusImpl
-import dsdms.dossier.model.valueObjects.examAttempts.PracticalExamAttemptsImpl
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -29,7 +27,7 @@ internal class LocalTest {
     @Disabled
     @Test
     fun assertInsertTest() {
-        val den = Dossier("den", "grush", "1999-03-07","DNFG123", examAttempts = PracticalExamAttemptsImpl(), examStatus = ExamStatusImpl())
+        val den = Dossier("den", "grush", "1999-03-07","DNFG123")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
         assertNull(result)
@@ -38,7 +36,7 @@ internal class LocalTest {
     @Disabled
     @Test
     fun updateTest() {
-        val den = Dossier("den", "grush", "1999-03-07","DNFG123456789", examAttempts = PracticalExamAttemptsImpl(), examStatus = ExamStatusImpl())
+        val den = Dossier("den", "grush", "1999-03-07","DNFG123456789")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
         println(result.toString())
@@ -59,7 +57,6 @@ internal class LocalTest {
     fun findOne(){
         val dos = dossiers.findOne(Dossier::_id eq "d2")
         println(dos)
-        println(dos?.examAttempts)
         val ser = mjson.encodeToString(dos)
         println("\nserialize ${mjson.encodeToString(dos)}")
         println("\ndeserialize ${mjson.decodeFromString<Dossier>(ser)}")
@@ -68,7 +65,7 @@ internal class LocalTest {
 
     @Test
     fun deserializationTest(){
-        val dossierJson = """{"name":"Homer","surname":"Simpsons","birthdate":"1990-03-03","fiscal_code":"SMPHMR80A01C573O","_id":"64633c11f85fe95eb801c0b6","validity":true,"examAttempts":{"attempts":1},"examStatus":{"practical":true,"theoretical":true}}"""
+        val dossierJson = """{"name":"Homer","surname":"Simpsons","birthdate":"1990-03-03","fiscal_code":"SMPHMR80A01C573O","_id":"64633c11f85fe95eb801c0b6","validity":true,"examsProgress":{"theoreticalExamState":"TO_DO","practicalExamState":"NOT_DONE"}}"""
         val dossier: Dossier? = mjson.decodeFromString(dossierJson)
         assertEquals(dossierJson, mjson.encodeToString(dossier))
     }
