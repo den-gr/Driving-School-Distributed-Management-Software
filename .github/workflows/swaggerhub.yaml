@@ -1,0 +1,25 @@
+name: swaggerhub publish
+
+on:
+  push:
+    paths:
+      - 'docs/src/api/openapi.yaml'
+      
+jobs:
+ swagger:
+  runs-on: ubuntu-latest
+  env:
+    FILE: docs/src/api/openapi.yaml
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    - name: Validate OpenAPI definition
+      uses: char0n/swagger-editor-validate@v1
+      with:
+        definition-file: ${{ env.FILE }}
+    - name: Install SwaggerHub CLI
+      run: npm install -g swaggerhub-cli     
+    - name: Upload Swagger File
+      run: |
+        export SWAGGERHUB_API_KEY=${{ secrets.SWAGGERHUB_TOKEN }}
+        swaggerhub api:update DenGuzawr22/DSDMS/latest --file ${{ env.FILE }}

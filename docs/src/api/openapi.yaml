@@ -24,41 +24,86 @@ paths:
             text/plain:
               example: "64633c11f85fe95eb801c0b6"
         "400":
-          description: "Bad requst. Possible cases: 1) There are already a valid dossier with given fiscal code; 2) The subscriber age are not greater or equal to 16; 3) Subscriber name or surname contains numbers"
+          description: "Bad request. Possible cases: 1) There are already a valid dossier with given fiscal code; 2) The subscriber age are not greater or equal to 16; 3) Subscriber name or surname contains numbers"
           content:
             text/plain:
               schema:
                 type: string
                 enum: [AGE_NOT_SUFFICIENT, VALID_DOSSIER_ALREDY_EXISTS, NAME_SURNAME_NOT_STRING]
+        "500":
+          $ref: '#/components/responses/ServerError'
 
   "/dossiers/{id}":
     get:
-      summary: "Get all dossier information"
-      operationId: dossierIdReading
+      summary: "Get the dossier information"
+      operationId: DossierIdReading
       tags: [DossierService]
+      parameters:
+        - $ref: '#/components/parameters/DossierId'
+      responses:
+        "200":
+          description: "Return all dossier information"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dossier"
+        "500":
+          $ref: '#/components/responses/ServerError'
+
+  "/dossiers/{id}/examStatus":
+      put:
+        summary: "Update practical or theoretical exam status"
+        operationId: updateExamStatus
+        tags: [DossierService]
+        parameters:
+          - $ref: '#/components/parameters/DossierId'
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamResult"
+        responses:
+          "200":
+            description: "Successful exam state update"
+          "400":
+            $ref: '#/components/responses/BadRequest'
+          "409":
+            description: "Conflict: illegal update request"
+            content:
+              text/plain:
+                schema:
+                  type: string
+                  enum: [ UPDATE_ERROR ]
+          "500":
+            $ref: '#/components/responses/ServerError'
+
+
+
+
+
+
+
+
+          #   put:
+  "/api/{id}":
+    get:
+      summary: "Get a user by id"
+      operationId: test
       parameters:
         - name: id
           in: path
-          description: id of the dossier
           required: true
           schema:
-              type: string
-              example: "64633c11f85fe95eb801c0b6"
+            type: string
+            example: "10"
       responses:
         "200":
           description: ""
-      
-        
+          content:
+            text/plaintext:
+              schema:
+                type: string
 
-  #   put:
-  "/test2":
-    get:
-      tags: [DrivingService]
-      summary: "Get a user by id"
-      operationId: getUser2
-      responses:
-        "200":
-          description: ""
 
 components:
   schemas:
@@ -79,3 +124,74 @@ components:
         fiscal_code:
           type: string
           example: "SMPHMR80A01C573O"
+    Dossier:
+      allOf:
+        - $ref: '#/components/schemas/SubscriberDocuments'
+        - type: object
+          required: [_id, validity, examAttempts]
+          properties:
+            _id:
+              type: string
+              example: "64633c11f85fe95eb801c0b6"
+            validity:
+              type: boolean
+            examsStatus:
+              $ref: '#/components/schemas/ExamsStatus'
+
+    ExamsStatus:
+      type: object
+      required: [theoreticalExamState,practicalExamState]
+      properties:
+        theoreticalExamState:
+          type: string
+          enum: [TO_DO, PASSED]
+        practicalExamState:
+          type: string
+          enum: [TO_DO, FIRST_PROVISIONAL_LICENCE_INVALID, SECOND_PROVISIONAL_LICENCE_INVALID, PASSED]
+    ExamResult:
+      type: object
+      required: [exam, outcome]
+      properties:
+        exam:
+          type: string
+          enum: [THEORETICAL, PRACTICAL]
+        outcome:
+          type: string
+          enum: [PASSED, FAIL]
+
+##### PARAMETERS ######
+  parameters:
+    DossierId:
+      name: id
+      in: path
+      description: id of the dossier
+      required: true
+      schema:
+        type: string
+        example: "d1"
+##### RESPONSES ######
+  responses:
+    ServerError:
+      description: Internal server error that typically happen when there are an error in server source code
+      content:
+        text/plain:
+          example: "IllegalStateException message"
+    BadRequest:
+      description: The request to the server not conform to the requested format
+      content:
+        text/plain:
+          example: "Exception message"
+#    PracticalExamAttempts:
+#      type: object
+#      required: [attempts]
+#      properties:
+#        attempts:
+#          type: integer
+#    ExamStatus:
+#      type: object
+#      required: [theoreticalExam, practicalExam]
+#      properties:
+#        practical:
+#          type: boolean
+#        theoretical:
+#          type: boolean

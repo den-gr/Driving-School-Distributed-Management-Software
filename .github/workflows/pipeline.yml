@@ -18,33 +18,33 @@ jobs:
                 os: [ ubuntu-latest ] #windows-latest
         runs-on: ${{ matrix.os }}
         steps:
-            - run: echo "Hello World"
-            - name: Checkout
-              uses: actions/checkout@v3
-            - uses: actions/setup-java@v1
-              with:
-                java-version: "16"
-            - name: Setup kotlin
-              uses: fwilhe2/setup-kotlin@main
-              with:
-                version: 1.7.20
-            - name: gradle build
-              run: ./gradlew build
-            - name: Docker compose
-              uses: isbang/compose-action@v1.4.1
-              with:
-                down-flags: "--volumes"
-                services: |
-                  dossier_service
-                  driving_service
-                  exam_service
-                  doctor_service
-            - name: Sleep for 5 seconds
-              uses: GuillaumeFalourd/wait-sleep-action@v1
-              with:
-                time: '5'
-            - name: Run tests
-              run: ./gradlew SystemTester:run
+          - run: echo "Hello World"
+          - name: Checkout
+            uses: actions/checkout@v3
+          - uses: actions/setup-java@v1
+            with:
+              java-version: "16"
+          - name: Setup kotlin
+            uses: fwilhe2/setup-kotlin@main
+            with:
+              version: 1.7.20
+          - name: gradle build
+            run: ./gradlew build
+          - name: Docker compose
+            uses: isbang/compose-action@v1.4.1
+            with:
+              down-flags: "--volumes"
+              services: |
+                dossier_service
+                driving_service
+                exam_service
+                doctor_service
+          - name: Sleep for 5 seconds
+            uses: GuillaumeFalourd/wait-sleep-action@v1
+            with:
+              time: '5'
+          - name: Run tests
+            run: ./gradlew SystemTester:run
     release:
         if: github.ref == 'refs/heads/main'
         needs: BuildAndTest
@@ -61,3 +61,24 @@ jobs:
             run: |
               npm install
               npx semantic-release
+            id: ver
+        outputs:
+          newVersion: ${{ steps.ver.outputs.nextVer }}
+    swagger:
+        needs: release
+        runs-on: ubuntu-latest
+        env:
+          FILE: docs/src/api/openapi.yaml
+        steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v3
+          - name: Validate OpenAPI definition
+            uses: char0n/swagger-editor-validate@v1
+            with:
+              definition-file: ${{ env.FILE }}
+          - name: Install SwaggerHub CLI
+            run: npm install -g swaggerhub-cli
+          - name: Upload Swagger File
+            run: |
+              export SWAGGERHUB_API_KEY=${{ secrets.SWAGGERHUB_TOKEN }}
+              swaggerhub api:create DenGuzawr22/DSDMS/${{ needs.release.outputs.newVersion }} --file ${{ env.FILE }} --visibility public
