@@ -50,7 +50,7 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
     }
 
     override suspend fun updateExamStatus(result: ExamResult, id: String): DomainResponseStatus {
-        val examsProgress = readDossierFromId(id).dossier?.examsProgress
+        val examsProgress = readDossierFromId(id).dossier?.examsStatus
         return try {
             val newExamState = getNewExamProgressState(result,examsProgress)
             repositoryToDomainConversionTable.getDomainCode(repository.updateExamStatus(newExamState, id))
@@ -59,17 +59,17 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
         }
     }
 
-    private fun getNewExamProgressState(result: ExamResult, currentExamsProgress: ExamsProgress?):ExamsProgress?{
+    private fun getNewExamProgressState(result: ExamResult, currentExamsStatus: ExamsStatus?):ExamsStatus?{
         return if (result.exam == Exam.THEORETICAL) {
             if(result.outcome == ExamOutcome.PASSED){
-                currentExamsProgress?.registerTheoreticalExamPassed()
+                currentExamsStatus?.registerTheoreticalExamPassed()
             }else{
                 throw IllegalStateException("Theoretical exam fail is not manged")
             }
         } else if(result.exam == Exam.PRACTICAL && result.outcome == ExamOutcome.PASSED){
-            currentExamsProgress?.registerPracticalExamPassed()
+            currentExamsStatus?.registerPracticalExamPassed()
         }else{
-            currentExamsProgress?.registerProvisionalLicenceInvalidation()
+            currentExamsStatus?.registerProvisionalLicenceInvalidation()
         }
     }
 

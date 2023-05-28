@@ -65,7 +65,7 @@ internal class LocalTest {
 
     @Test
     fun deserializationTest(){
-        val dossierJson = """{"name":"Homer","surname":"Simpsons","birthdate":"1990-03-03","fiscal_code":"SMPHMR80A01C573O","_id":"64633c11f85fe95eb801c0b6","validity":true,"examsProgress":{"theoreticalExamState":"TO_DO","practicalExamState":"NOT_DONE"}}"""
+        val dossierJson = """{"name":"Homer","surname":"Simpsons","birthdate":"1990-03-03","fiscal_code":"SMPHMR80A01C573O","_id":"64633c11f85fe95eb801c0b6","validity":true,"examsStatus":{"theoreticalExamState":"TO_DO","practicalExamState":"TO_DO"}}"""
         val dossier: Dossier? = mjson.decodeFromString(dossierJson)
         assertEquals(dossierJson, mjson.encodeToString(dossier))
     }

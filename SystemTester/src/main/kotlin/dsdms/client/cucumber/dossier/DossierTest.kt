@@ -70,8 +70,8 @@ class DossierTest : En {
         }
 
         And("It has not done both practical and theoretical exams") {
-            assertEquals(TheoreticalExamState.TO_DO, retrievedDossier?.examsProgress?.theoreticalExamState)
-            assertEquals(PracticalExamState.NOT_DONE, retrievedDossier?.examsProgress?.practicalExamState)
+            assertEquals(TheoreticalExamState.TO_DO, retrievedDossier?.examsStatus?.theoreticalExamState)
+            assertEquals(PracticalExamState.TO_DO, retrievedDossier?.examsStatus?.practicalExamState)
         }
 
         When("I try to register invalid subscriber information: {word},{word},{word},{word}") {name: String, surname: String, birthdate: String, fiscal_code: String ->

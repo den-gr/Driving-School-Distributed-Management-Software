@@ -1,6 +1,6 @@
 package dsdms.dossier.model.entities
 
-import dsdms.dossier.model.valueObjects.ExamsProgress
+import dsdms.dossier.model.valueObjects.ExamsStatus
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  * @param birthdate: birthdate of subscriber to verify that he has the minimum age
  * @param fiscal_code: of subscriber for additional info
  * @param validity: representing validity of the dossier (true by default)
- * @param examsProgress: representing practical and theoretical exams global states
+ * @param examsStatus: representing practical and theoretical exams global states
  */
 @Serializable
 data class Dossier(
@@ -21,5 +21,5 @@ data class Dossier(
     val fiscal_code: String,
     @Contextual val _id: String? = null,
     val validity: Boolean = true,
-    val examsProgress: ExamsProgress = ExamsProgress()
+    val examsStatus: ExamsStatus = ExamsStatus()
 )

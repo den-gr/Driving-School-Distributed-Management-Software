@@ -4,30 +4,32 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals
 import dsdms.dossier.model.valueObjects.PracticalExamState.*
-import dsdms.dossier.model.valueObjects.TheoreticalExamState.DONE
+import dsdms.dossier.model.valueObjects.TheoreticalExamState.PASSED
 import dsdms.dossier.model.valueObjects.TheoreticalExamState.TO_DO
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalStateException
 
-class ExamsProgressTest {
+class ExamsStatusTest {
 
     @Test
     fun checkDefaultState(){
-        assertEquals(ExamsProgress().practicalExamState, NOT_DONE)
-        assertEquals(ExamsProgress().theoreticalExamState, TO_DO)
+        assertEquals(ExamsStatus().practicalExamState, PracticalExamState.TO_DO)
+        assertEquals(ExamsStatus().theoreticalExamState, TO_DO)
     }
 
     @Test
     fun setCorrectStates(){
         assertDoesNotThrow {
-            val tmp =  ExamsProgress().registerTheoreticalExamPassed()
-            assertEquals(tmp.theoreticalExamState, DONE)
+            val tmp =  ExamsStatus().registerTheoreticalExamPassed()
+            assertEquals(tmp.theoreticalExamState, PASSED)
             tmp.registerPracticalExamPassed()
         }
-        val intermediateState = ExamsProgress()
+        val intermediateState = ExamsStatus()
             .registerTheoreticalExamPassed()
             .registerProvisionalLicenceInvalidation()
-        assertEquals(intermediateState.theoreticalExamState, TO_DO)
+        assertEquals(intermediateState.theoreticalExamState,
+            TO_DO
+        )
         assertDoesNotThrow {
             intermediateState.registerTheoreticalExamPassed().registerProvisionalLicenceInvalidation()
         }
@@ -39,18 +41,18 @@ class ExamsProgressTest {
     @Test
     fun setIncorrectStates(){
         assertThrows<IllegalStateException> {
-            ExamsProgress().registerPracticalExamPassed()
+            ExamsStatus().registerPracticalExamPassed()
         }
 
         assertThrows<IllegalStateException> {
-            ExamsProgress()
+            ExamsStatus()
                 .registerTheoreticalExamPassed()
                 .registerProvisionalLicenceInvalidation()
                 .registerPracticalExamPassed()
         }
 
         assertThrows<IllegalStateException> {
-            var exams = ExamsProgress().registerTheoreticalExamPassed().registerProvisionalLicenceInvalidation()
+            var exams = ExamsStatus().registerTheoreticalExamPassed().registerProvisionalLicenceInvalidation()
             assertEquals(exams.practicalExamState,FIRST_PROVISIONAL_LICENCE_INVALID)
             exams = exams.registerTheoreticalExamPassed().registerProvisionalLicenceInvalidation()
             assertEquals(exams.practicalExamState, SECOND_PROVISIONAL_LICENCE_INVALID)

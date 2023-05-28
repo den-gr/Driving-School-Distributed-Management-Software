@@ -47,9 +47,9 @@ class UpdateDossierTest : En {
         When("i read his {word} exam progress state is {word}") { type: String, state: String->
             assertNotNull(retrievedDossier)
             if (type == Exam.THEORETICAL.name) {
-                retrievedDossier?.examsProgress?.let { assertEquals(TheoreticalExamState.valueOf(state), it.theoreticalExamState) }
+                retrievedDossier?.examsStatus?.let { assertEquals(TheoreticalExamState.valueOf(state), it.theoreticalExamState) }
             } else {
-                retrievedDossier?.examsProgress?.let { assertEquals(PracticalExamState.valueOf(state), it.practicalExamState) }
+                retrievedDossier?.examsStatus?.let { assertEquals(PracticalExamState.valueOf(state), it.practicalExamState) }
             }
         }
 
@@ -74,9 +74,9 @@ class UpdateDossierTest : En {
             checkResponse(response)
             retrievedDossier = Json.decodeFromString(response?.body().toString())
             if (type == Exam.THEORETICAL.name) {
-                retrievedDossier?.examsProgress?.let { assertEquals(TheoreticalExamState.valueOf(newState), it.theoreticalExamState) }
+                retrievedDossier?.examsStatus?.let { assertEquals(TheoreticalExamState.valueOf(newState), it.theoreticalExamState) }
             } else {
-                retrievedDossier?.examsProgress?.let { assertEquals(PracticalExamState.valueOf(newState), it.practicalExamState) }
+                retrievedDossier?.examsStatus?.let { assertEquals(PracticalExamState.valueOf(newState), it.practicalExamState) }
             }
         }
     }

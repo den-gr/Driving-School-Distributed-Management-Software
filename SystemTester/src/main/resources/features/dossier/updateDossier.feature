@@ -7,5 +7,5 @@ Feature: Update subscriber informations
 
   Examples:
     | type | exam_state_before | exam_state_after |
-    | THEORETICAL | TO_DO | DONE                  |
-    | PRACTICAL | NOT_DONE| PASSED                |
+    | THEORETICAL | TO_DO      | PASSED           |
+    | PRACTICAL   | TO_DO      | PASSED           |
