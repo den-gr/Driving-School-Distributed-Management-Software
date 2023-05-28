@@ -72,18 +72,4 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
             currentExamsStatus?.registerProvisionalLicenceInvalidation()
         }
     }
-
-//    override suspend fun updateExamAttempts(dossierId: String): DomainResponseStatus {
-//        val dossier = readDossierFromId(dossierId).dossier
-//        return if (dossier != null && dossier.examAttempts.verifyAttempts().not()) {
-//            DomainResponseStatus.MAX_ATTEMPTS_REACHED
-//        } else repositoryToDomainConversionTable.getDomainCode(repository.updateExamAttempts(dossierId, createExamAttempts(dossier)))
-//    }
-
-//    private fun createExamAttempts(dossier: Dossier?): PracticalExamAttempts {
-//        val examAttempts: PracticalExamAttempts = PracticalExamAttemptsImpl()
-//        if (dossier != null)
-//            examAttempts.attempts = dossier.examAttempts.attempts.plus(1)
-//        return examAttempts
-//    }
 }

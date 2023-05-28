@@ -18,7 +18,7 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.AGE_NOT_SUFFICIENT to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.NAME_SURNAME_NOT_STRING to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
-    DomainResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR
+    DomainResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_CONFLICT
 
 )
 
