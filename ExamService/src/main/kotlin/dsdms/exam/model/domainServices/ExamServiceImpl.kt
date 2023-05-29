@@ -3,12 +3,14 @@ package dsdms.exam.model.domainServices
 import dsdms.exam.database.Repository
 import dsdms.exam.handlers.getDomainCode
 import dsdms.exam.handlers.repositoryToDomainConversionTable
-import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamDay
+import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamAppeal
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import dsdms.exam.model.valueObjects.ExamPassData
+import dsdms.exam.model.valueObjects.TheoreticalExamAppealUpdate
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.plus
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -16,6 +18,10 @@ data class InsertTheoreticalExamPassResult(
     val domainResponseStatus: DomainResponseStatus,
     val theoreticalExamPass: String? = null
 )
+
+data class NextTheoreticalExamAppeals(
+    val domainResponseStatus: DomainResponseStatus,
+    val examAppeals: String? = null)
 
 class ExamServiceImpl(private val repository: Repository) : ExamService {
     private fun verifyExamPass(documents: ExamPassData): DomainResponseStatus {
@@ -49,11 +55,37 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
         return repositoryToDomainConversionTable.getDomainCode(repository.deleteTheoreticalExamPass(dossierId))
     }
 
-    override fun insertNewExamDay(newExamDay: TheoreticalExamDay): DomainResponseStatus {
-        return if (repository.getFutureTheoreticalExamDays().any { el -> el.date == newExamDay.date })
+    override fun insertNewExamAppeal(newExamDay: TheoreticalExamAppeal): DomainResponseStatus {
+        return if (repository.getFutureTheoreticalExamAppeals().any { el -> el.date == newExamDay.date })
             DomainResponseStatus.DATE_ALREADY_IN
         else
             repositoryToDomainConversionTable.getDomainCode(repository.insertTheoreticalExamDay(newExamDay))
+    }
+
+    override fun getNextExamAppeals(): NextTheoreticalExamAppeals {
+        val examAppeals = repository.getFutureTheoreticalExamAppeals()
+        return if (examAppeals.isEmpty())
+            NextTheoreticalExamAppeals(DomainResponseStatus.NO_EXAM_APPEALS)
+        else
+            NextTheoreticalExamAppeals(DomainResponseStatus.OK, Json.encodeToString(ListSerializer(TheoreticalExamAppeal.serializer()), examAppeals))
+    }
+
+    override fun putDossierInExamAppeal(theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus {
+        val examAppeal: TheoreticalExamAppeal? = repository.getFutureTheoreticalExamAppeals().find { el -> el.date == theoreticalExamAppealUpdate.date }
+
+        return if (examAppeal == null)
+            DomainResponseStatus.APPEAL_NOT_FOUND
+        else {
+            if (examAppeal.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId))
+                DomainResponseStatus.DOSSIER_ALREADY_PUT
+            else if (examAppeal.registeredDossiers.count() < examAppeal.numberOfPlaces)
+                repositoryToDomainConversionTable.getDomainCode(
+                    repository.updateExamAppeal(
+                        examAppeal.date,
+                        examAppeal.registeredDossiers.plus(theoreticalExamAppealUpdate.dossierId)
+                    ))
+            else DomainResponseStatus.PLACES_FINISHED
+        }
     }
 }
 
