@@ -3,8 +3,8 @@ package dsdms.exam
 import com.mongodb.client.MongoDatabase
 import dsdms.exam.database.Repository
 import dsdms.exam.database.RepositoryImpl
-import dsdms.exam.handlers.practicalHandlers.PracticalExamHandlers
-import dsdms.exam.handlers.practicalHandlers.PracticalExamHandlersImpl
+import dsdms.exam.handlers.practicalHandlers.ProvisionalLicenseHandlers
+import dsdms.exam.handlers.practicalHandlers.ProvisionalLicenseHandlersImpl
 import dsdms.exam.handlers.theoreticalHandlers.TheoreticalExamHandlers
 import dsdms.exam.handlers.theoreticalHandlers.TheoreticalExamHandlersImpl
 import dsdms.exam.model.ModelImpl
@@ -17,7 +17,7 @@ import kotlin.system.exitProcess
 class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
-    private val practicalExamHandlersImpl: PracticalExamHandlers = PracticalExamHandlersImpl(ModelImpl(repository))
+    private val provisionalLicenseHandlersImpl: ProvisionalLicenseHandlers = ProvisionalLicenseHandlersImpl(ModelImpl(repository))
     private val theoreticalExamHandlersImpl: TheoreticalExamHandlers = TheoreticalExamHandlersImpl(ModelImpl(repository))
 
     override fun start() {
@@ -42,6 +42,8 @@ class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerti
         router.delete("/theoreticalExam/pass/:id").handler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
 
         router.post("/theoreticalExam/examDay").handler(theoreticalExamHandlersImpl::createNewTheoreticalExamDay)
+
+        router.post("/provisionalLicences").handler(provisionalLicenseHandlersImpl::registerProvisionalLicence)
     }
 
     private fun testHandler(routingContext: RoutingContext) {
