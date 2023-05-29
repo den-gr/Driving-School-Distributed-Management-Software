@@ -19,5 +19,10 @@ enum class RepositoryResponseStatus {
     /**
      * New exam day insert, was not acknowledged
      */
-    INSERT_ERROR
+    INSERT_ERROR,
+
+    /**
+     * Update for list of dossiers into a theoretical exam appeal finished with some errors
+     */
+    UPDATE_ERROR
 }

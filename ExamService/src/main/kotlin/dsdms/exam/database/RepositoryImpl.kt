@@ -3,17 +3,19 @@ package dsdms.exam.database
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.InsertOneResult
+import com.mongodb.client.result.UpdateResult
 import dsdms.exam.database.utils.RepositoryResponseStatus
-import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamDay
+import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamAppeal
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import org.litote.kmongo.getCollection
+import org.litote.kmongo.setValue
 import java.time.LocalDate
 
 class RepositoryImpl(examService: MongoDatabase) : Repository {
     private val theoreticalExamPassDb = examService.getCollection<TheoreticalExamPass>("TheoreticalExamPass")
-    private val theoreticalExamDays = examService.getCollection<TheoreticalExamDay>("TheoreticalExamDay")
+    private val theoreticalExamAppeals = examService.getCollection<TheoreticalExamAppeal>("TheoreticalExamAppeal")
 
     override fun dossierAlreadyHasOnePass(dossierId: String): Boolean {
         return theoreticalExamPassDb.find(TheoreticalExamPass::dossierId eq dossierId).toList().isNotEmpty()
@@ -31,12 +33,25 @@ class RepositoryImpl(examService: MongoDatabase) : Repository {
         return handleDeleteResult(theoreticalExamPassDb.deleteOne(TheoreticalExamPass::dossierId eq dossierId))
     }
 
-    override fun getFutureTheoreticalExamDays(): List<TheoreticalExamDay> {
-        return theoreticalExamDays.find().toList().filter { el -> LocalDate.parse(el.date) > LocalDate.now() }
+    override fun getFutureTheoreticalExamAppeals(): List<TheoreticalExamAppeal> {
+        return theoreticalExamAppeals.find().toList().filter { el -> LocalDate.parse(el.date) > LocalDate.now() }
     }
 
-    override fun insertTheoreticalExamDay(newExamDay: TheoreticalExamDay): RepositoryResponseStatus {
-        return handleInsertResult(theoreticalExamDays.insertOne(newExamDay))
+    override fun insertTheoreticalExamDay(newExamDay: TheoreticalExamAppeal): RepositoryResponseStatus {
+        return handleInsertResult(theoreticalExamAppeals.insertOne(newExamDay))
+    }
+
+    override fun updateExamAppeal(appealDate: String, appealList: List<String>): RepositoryResponseStatus {
+        return handleUpdateResult(theoreticalExamAppeals
+            .updateOne((TheoreticalExamAppeal::date eq appealDate), setValue(TheoreticalExamAppeal::registeredDossiers, appealList)))
+    }
+
+    private fun handleUpdateResult(updateResult: UpdateResult): RepositoryResponseStatus {
+        return if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged()) {
+            RepositoryResponseStatus.UPDATE_ERROR
+        } else {
+            RepositoryResponseStatus.OK
+        }
     }
 
     private fun handleInsertResult(insertOne: InsertOneResult): RepositoryResponseStatus {
