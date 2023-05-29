@@ -3,8 +3,6 @@ package dsdms.exam
 import com.mongodb.client.MongoDatabase
 import dsdms.exam.database.Repository
 import dsdms.exam.database.RepositoryImpl
-import dsdms.exam.handlers.practicalHandlers.PracticalExamHandlers
-import dsdms.exam.handlers.practicalHandlers.PracticalExamHandlersImpl
 import dsdms.exam.handlers.theoreticalHandlers.TheoreticalExamHandlers
 import dsdms.exam.handlers.theoreticalHandlers.TheoreticalExamHandlersImpl
 import dsdms.exam.model.ModelImpl
@@ -17,7 +15,6 @@ import kotlin.system.exitProcess
 class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
-    private val practicalExamHandlersImpl: PracticalExamHandlers = PracticalExamHandlersImpl(ModelImpl(repository))
     private val theoreticalExamHandlersImpl: TheoreticalExamHandlers = TheoreticalExamHandlersImpl(ModelImpl(repository))
 
     override fun start() {
@@ -37,11 +34,14 @@ class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerti
 
     private fun setRoutes(router: Router) {
         router.get("/test").handler(this::testHandler)
-        router.put("/theoreticalExam/pass").handler(theoreticalExamHandlersImpl::createTheoreticalExamPass)
-        router.get("/theoreticalExam/pass/:id").handler(theoreticalExamHandlersImpl::getTheoreticalExamPass)
-        router.delete("/theoreticalExam/pass/:id").handler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
 
-        router.post("/theoreticalExam/examDay").handler(theoreticalExamHandlersImpl::createNewTheoreticalExamDay)
+        router.put("/theoreticalExam/pass").handler(theoreticalExamHandlersImpl::createTheoreticalExamPass)
+        router.get("/theoreticalExam/:id/pass").handler(theoreticalExamHandlersImpl::getTheoreticalExamPass)
+        router.delete("/theoreticalExam/:id/pass").handler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
+
+        router.post("/theoreticalExam/examAppeal").handler(theoreticalExamHandlersImpl::createNewTheoreticalExamAppeal)
+        router.get("/theoreticalExam/examAppeal").handler(theoreticalExamHandlersImpl::getNextTheoreticalExamAppeals)
+        router.put("/theoreticalExam/examAppeal").handler(theoreticalExamHandlersImpl::putDossierInExamAppeal)
     }
 
     private fun testHandler(routingContext: RoutingContext) {
