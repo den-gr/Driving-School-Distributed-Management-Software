@@ -34,5 +34,30 @@ enum class DomainResponseStatus {
     /**
      * Exam day insert was not acknowledged
      */
-    INSERT_ERROR
+    INSERT_ERROR,
+
+    /**
+     * Requesting next exam appeals, but no one found
+     */
+    NO_EXAM_APPEALS,
+
+    /**
+     * Attempting to insert a dossier in a not existent exam appeal
+     */
+    APPEAL_NOT_FOUND,
+
+    /**
+     * Attempting to register a new Dossier in a full theoretical exam appeal
+     */
+    PLACES_FINISHED,
+
+    /**
+     * There was an error in updating exam appeal to insert a dossier id into it
+     */
+    UPDATE_ERROR,
+
+    /**
+     * Dossier id already in list for a theoretical exam appeal
+     */
+    DOSSIER_ALREADY_PUT
 }

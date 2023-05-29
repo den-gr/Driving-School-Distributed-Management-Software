@@ -10,16 +10,22 @@ val repositoryToDomainConversionTable: Map<RepositoryResponseStatus, DomainRespo
     RepositoryResponseStatus.OK to DomainResponseStatus.OK,
     RepositoryResponseStatus.DELETE_ERROR to DomainResponseStatus.DELETE_ERROR,
     RepositoryResponseStatus.PASS_NOT_FOUND_FOR_ID to DomainResponseStatus.ID_NOT_FOUND,
-    RepositoryResponseStatus.INSERT_ERROR to DomainResponseStatus.INSERT_ERROR
+    RepositoryResponseStatus.INSERT_ERROR to DomainResponseStatus.INSERT_ERROR,
+    RepositoryResponseStatus.UPDATE_ERROR to DomainResponseStatus.UPDATE_ERROR
 )
 
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.OK to HttpURLConnection.HTTP_OK,
     DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE to HttpURLConnection.HTTP_BAD_REQUEST,
-    DomainResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
     DomainResponseStatus.ID_NOT_FOUND to HttpURLConnection.HTTP_NOT_FOUND,
     DomainResponseStatus.INSERT_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
-    DomainResponseStatus.DATE_ALREADY_IN to HttpURLConnection.HTTP_BAD_REQUEST
+    DomainResponseStatus.DATE_ALREADY_IN to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.NO_EXAM_APPEALS to HttpURLConnection.HTTP_NO_CONTENT,
+    DomainResponseStatus.APPEAL_NOT_FOUND to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.PLACES_FINISHED to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
+    DomainResponseStatus.DOSSIER_ALREADY_PUT to HttpURLConnection.HTTP_BAD_REQUEST
 )
 
 fun  Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {
