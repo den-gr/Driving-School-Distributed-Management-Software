@@ -59,5 +59,10 @@ enum class DomainResponseStatus {
     /**
      * Dossier id already in list for a theoretical exam appeal
      */
-    DOSSIER_ALREADY_PUT
+    DOSSIER_ALREADY_PUT,
+
+    /**
+     * There are already a valid provisional license associated with dossier
+     */
+    PROVISIONAL_LICENSE_ALREADY_EXISTS
 }

@@ -5,17 +5,17 @@ import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.InsertOneResult
 import com.mongodb.client.result.UpdateResult
 import dsdms.exam.database.utils.RepositoryResponseStatus
+import dsdms.exam.model.entities.ProvisionalLicense
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamAppeal
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
-import org.litote.kmongo.eq
-import org.litote.kmongo.findOne
-import org.litote.kmongo.getCollection
-import org.litote.kmongo.setValue
+import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
+import org.litote.kmongo.*
 import java.time.LocalDate
 
 class RepositoryImpl(examService: MongoDatabase) : Repository {
     private val theoreticalExamPassDb = examService.getCollection<TheoreticalExamPass>("TheoreticalExamPass")
     private val theoreticalExamAppeals = examService.getCollection<TheoreticalExamAppeal>("TheoreticalExamAppeal")
+    private val provisionalLicenseHolders = examService.getCollection<ProvisionalLicenseHolder>("ProvisionalLicenseHolders")
 
     override fun dossierAlreadyHasOnePass(dossierId: String): Boolean {
         return theoreticalExamPassDb.find(TheoreticalExamPass::dossierId eq dossierId).toList().isNotEmpty()
@@ -44,6 +44,14 @@ class RepositoryImpl(examService: MongoDatabase) : Repository {
     override fun updateExamAppeal(appealDate: String, appealList: List<String>): RepositoryResponseStatus {
         return handleUpdateResult(theoreticalExamAppeals
             .updateOne((TheoreticalExamAppeal::date eq appealDate), setValue(TheoreticalExamAppeal::registeredDossiers, appealList)))
+    }
+
+    override fun saveProvisionalLicenseHolder(provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus {
+        return handleInsertResult(provisionalLicenseHolders.insertOne(provisionalLicenseHolder))
+    }
+
+    override fun findProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder? {
+        return provisionalLicenseHolders.findOne {ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId}
     }
 
     private fun handleUpdateResult(updateResult: UpdateResult): RepositoryResponseStatus {
