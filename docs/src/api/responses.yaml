@@ -1,0 +1,10 @@
+ServerError:
+  description: Internal server error that typically happen when there are an error in server source code
+  content:
+    text/plain:
+      example: "IllegalStateException message"
+BadRequest:
+  description: The request to the server not conform to the requested format
+  content:
+    text/plain:
+      example: "Exception message"

@@ -67,7 +67,7 @@ jobs:
     swagger:
       runs-on: ubuntu-latest
       env:
-        SRCFILE: ./docs/src/openapi.yaml
+        SRCFILE: ./docs/src/api/openapi.yaml
         FILE: ./build/openapi/openapi.yaml
       steps:
         - name: Checkout Repository

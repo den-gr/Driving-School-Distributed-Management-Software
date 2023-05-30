@@ -1,0 +1,8 @@
+DossierId:
+  name: id
+  in: path
+  description: id of the dossier
+  required: true
+  schema:
+    type: string
+    example: "d1"
