@@ -78,12 +78,6 @@ paths:
             $ref: '#/components/responses/ServerError'
 
 
-
-
-
-
-
-
           #   put:
   "/api/{id}":
     get:
@@ -181,17 +175,3 @@ components:
       content:
         text/plain:
           example: "Exception message"
-#    PracticalExamAttempts:
-#      type: object
-#      required: [attempts]
-#      properties:
-#        attempts:
-#          type: integer
-#    ExamStatus:
-#      type: object
-#      required: [theoreticalExam, practicalExam]
-#      properties:
-#        practical:
-#          type: boolean
-#        theoretical:
-#          type: boolean
