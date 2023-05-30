@@ -10,5 +10,8 @@
       </option>
     </inspection_tool>
     <inspection_tool class="KotlinConstantConditions" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnusedSymbol" enabled="true" level="INFORMATION" enabled_by_default="true" editorAttributes="INFORMATION_ATTRIBUTES">
+      <scope name="Project Files" level="TYPO" enabled="true" />
+    </inspection_tool>
   </profile>
 </component>

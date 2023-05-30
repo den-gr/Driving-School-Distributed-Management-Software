@@ -4,15 +4,13 @@ import dsdms.dossier.model.Model
 import dsdms.dossier.model.domainServices.DomainResponseStatus
 import dsdms.dossier.model.valueObjects.ExamResult
 
-import kotlinx.serialization.encodeToString
 import io.vertx.ext.web.RoutingContext
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
-import java.net.HttpURLConnection.HTTP_BAD_REQUEST
+import java.net.HttpURLConnection
 
 @OptIn(DelicateCoroutinesApi::class)
 class RouteHandlersImpl(val model: Model) : RouteHandlers {
@@ -30,8 +28,8 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                     .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
                     .end(insertResult.dossierId ?: insertResult.domainResponseStatus.name)
 
-            } catch (ex: SerializationException) {
-                routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end(ex.message)
+            } catch (ex: Exception) {
+                handleException(ex, routingContext)
             }
         }
     }
@@ -57,17 +55,22 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                     model.dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
                 routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult))
                     .end(updateResult.name)
-            } catch (ex: SerializationException) {
-                routingContext.response().setStatusCode(HTTP_BAD_REQUEST).end(ex.message)
+            } catch (ex: Exception) {
+                handleException(ex, routingContext)
             }
         }
     }
 
-//    override suspend fun handleDossierExamAttemptsUpdate(routingContext: RoutingContext) {
-//        GlobalScope.launch {
-//            val updateResult: DomainResponseStatus =
-//                model.dossierService.updateExamAttempts(routingContext.request().getParam("id").toString())
-//            routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult)).end(updateResult.name)
-//        }
-//    }
+    @OptIn(ExperimentalSerializationApi::class)
+    private fun handleException(ex: Exception, routingContext: RoutingContext){
+        println("Error message: ${ex.message}")
+        when(ex){
+            is SerializationException, is MissingFieldException -> {
+                routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
+            }
+            else ->{
+                routingContext.response().setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR).end(ex.message)
+            }
+        }
+    }
 }

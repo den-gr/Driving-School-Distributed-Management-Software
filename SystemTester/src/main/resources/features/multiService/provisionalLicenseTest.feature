@@ -1,11 +1,9 @@
 Feature: creation of provisional license
   Scenario: provisional license creation after successful theoretical exam
     Given a new registered dossier
-    And a new exam appeal 2023-10-12
-    When the subscriber passes the exam
-    Then secretary creates new provisional license
-    And it receives code 200 with Id of the created object
-    Then dossier service is notified to update theoretical exam status
+    And a new exam appeal on 2023-10-12
+    When the dossier is registered to exam appeal
+    Then the subscriber passes the theoretical exam so secretary creates new provisional license
 
   Scenario: reading information about previously created provisional license
     Given Id of the provisional license
