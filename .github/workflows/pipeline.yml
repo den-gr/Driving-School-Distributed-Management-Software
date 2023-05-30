@@ -65,6 +65,7 @@ jobs:
         outputs:
           newVersion: ${{ steps.ver.outputs.nextVer }}
     swagger:
+      needs: release
       runs-on: ubuntu-latest
       env:
         SRCFILE: ./docs/src/api/openapi.yaml
