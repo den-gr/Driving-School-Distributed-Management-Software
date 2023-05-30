@@ -107,6 +107,60 @@ paths:
                 schema:
                   type: string
                   enum: [ DOSSIER_NOT_EXIST, DOSSIER_ALREADY_BOOKED, TIME_OCCUPIED, BAD_TIME, NOT_DOCTOR_DAY ]
+      get:
+        summary: "Get booked doctor slots"
+        operationId: getBookedDoctorSlots
+        tags: [DoctorService]
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBookedDoctorSlots"
+        responses:
+          "200":
+            description: "Ok. Possible cases:
+              1) No slots occupied in the given date
+              2) Slots occupied given as a response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/DoctorSlot"
+              text/plain:
+                schema:
+                  type: string
+                  enum: [NO_SLOT_OCCUPIED, OK]
+          "400":
+            description: "Bad request: there was an error during serialization of given object"
+      put:
+        summary: "Register doctor visit result"
+        operationId: saveDoctorResult
+        tags: [DoctorService]
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DoctorResult"
+        responses:
+          "200":
+            description: "Result has been acknowledged"
+          "400":
+            description: "Bad request. Possible cases:
+              1) Serialization exception
+              2) Insert error from server"
+
+  "/doctorSlots/{id}":
+    delete:
+      summary: "Delete booked doctor slot for a dossier id"
+      operationId: deleteDoctorSlot
+      tags: [DoctorService]
+      parameters:
+        - $ref: '#/components/parameters/DossierId'
+      responses:
+        "200":
+          description: "Ok. Delete was successful"
+        "400":
+          description: "Bad request. There was some delete error"
+
 
   "/api/{id}":
     get:
@@ -195,7 +249,26 @@ components:
         dossierId:
           type: string
           example: "64633c11f85fe95eb801c0b6"
-
+    GetBookedDoctorSlots:
+      type: object
+      required: [date]
+      properties:
+        date:
+          type: string
+          example: "2023-10-12"
+    DoctorResult:
+      type: object
+      required: [dossierId, date, result]
+      properties:
+        date:
+          type: string
+          example: "2023-10-12"
+        dossierId:
+          type: string
+          example: "64633c11f85fe95eb801c0b6"
+        result:
+          type: string
+          enum: [VALID, NEED_ONE_MORE_VISIT, NOT_VALID]
 
   parameters:
     DossierId:
