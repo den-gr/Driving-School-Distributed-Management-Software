@@ -3,9 +3,10 @@ package dsdms.exam.model.entities.theoreticalExam
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TheoreticalExamDay(
+data class TheoreticalExamAppeal(
     val date: String,
     val numberOfPlaces: Int,
+    val registeredDossiers: List<String> = listOf(),
     val initTime: String = "10:00",
     val finishTime: String = "13:00"
 )

@@ -31,7 +31,7 @@ interface Repository {
 
     /**
      * @param dossierId: the id of a specific dossier
-     * @param today: optional parameters to give the actual date used to take all doctor slots only after today
+     * @param today: optional parameters to take all doctor slots only after given date
      * @return a list of doctor slots booked by the dossierId (eventually filtered by date)
      */
     suspend fun getAllDoctorSlots(dossierId: String, today: LocalDate? = null): List<DoctorSlot>

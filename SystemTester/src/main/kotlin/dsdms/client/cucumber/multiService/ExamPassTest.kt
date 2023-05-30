@@ -45,7 +45,7 @@ class ExamPassTest : En {
         }
         And("theoretical exam pass is registered for dossier {word}") { dossierId: String ->
             val request = examService
-                .get("/theoreticalExam/pass/$dossierId")
+                .get("/theoreticalExam/$dossierId/pass")
                 .send()
             val response = sleeper.waitResult(request)
 
@@ -70,7 +70,7 @@ class ExamPassTest : En {
         }
         And("theoretical exam pass is not being created for {word}, receiving message {word} and code {int}") { id: String, message: String, code: Int ->
             val request = examService
-                .get("/theoreticalExam/pass/$id")
+                .get("/theoreticalExam/$id/pass")
                 .send()
             val response = sleeper.waitResult(request)
 
@@ -84,7 +84,7 @@ class ExamPassTest : En {
         }
         Given("theoretical exam pass for dossier {word}, secretary requests to delete it") { dossierId: String ->
             val request = examService
-                .delete("/theoreticalExam/pass/$dossierId")
+                .delete("/theoreticalExam/$dossierId/pass")
                 .send()
             val response = sleeper.waitResult(request)
 

@@ -37,11 +37,14 @@ class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerti
 
     private fun setRoutes(router: Router) {
         router.get("/test").handler(this::testHandler)
-        router.put("/theoreticalExam/pass").handler(theoreticalExamHandlersImpl::createTheoreticalExamPass)
-        router.get("/theoreticalExam/pass/:id").handler(theoreticalExamHandlersImpl::getTheoreticalExamPass)
-        router.delete("/theoreticalExam/pass/:id").handler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
 
-        router.post("/theoreticalExam/examDay").handler(theoreticalExamHandlersImpl::createNewTheoreticalExamDay)
+        router.put("/theoreticalExam/pass").handler(theoreticalExamHandlersImpl::createTheoreticalExamPass)
+        router.get("/theoreticalExam/:id/pass").handler(theoreticalExamHandlersImpl::getTheoreticalExamPass)
+        router.delete("/theoreticalExam/:id/pass").handler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
+
+        router.post("/theoreticalExam/examAppeal").handler(theoreticalExamHandlersImpl::createNewTheoreticalExamAppeal)
+        router.get("/theoreticalExam/examAppeal").handler(theoreticalExamHandlersImpl::getNextTheoreticalExamAppeals)
+        router.put("/theoreticalExam/examAppeal").handler(theoreticalExamHandlersImpl::putDossierInExamAppeal)
 
         router.post("/provisionalLicences").handler(provisionalLicenseHandlersImpl::registerProvisionalLicence)
     }
