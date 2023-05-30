@@ -47,7 +47,6 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
         router.post("/dossiers").coroutineHandler(handlersImpl::handleDossierRegistration)
         router.get("/dossiers/:id").coroutineHandler(handlersImpl::handleDossierIdReading)
         router.put("/dossiers/:id/examStatus").coroutineHandler(handlersImpl::handleDossierExamStatusUpdate)
-//        router.put("/dossiers/:id/examAttempts").coroutineHandler(handlersImpl::handleDossierExamAttemptsUpdate)
     }
 
     private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {

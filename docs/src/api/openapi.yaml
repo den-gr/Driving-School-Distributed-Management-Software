@@ -29,7 +29,7 @@ paths:
             text/plain:
               schema:
                 type: string
-                enum: [AGE_NOT_SUFFICIENT, VALID_DOSSIER_ALREDY_EXISTS, NAME_SURNAME_NOT_STRING]
+                enum: [AGE_NOT_SUFFICIENT, VALID_DOSSIER_ALREADY_EXISTS, NAME_SURNAME_NOT_STRING]
         "500":
           $ref: '#/components/responses/ServerError'
 
@@ -77,14 +77,37 @@ paths:
           "500":
             $ref: '#/components/responses/ServerError'
 
+  "/doctorSlots":
+      post:
+        summary: "Book a doctor visit"
+        operationId: bookDoctorVisit
+        tags: [DoctorService]
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DoctorSlot"
+        responses:
+          "200":
+            description: "Registration successful"
+            content:
+              text/plain:
+                schema:
+                  type: string
+                  enum: [ OK ]
+          "400":
+            description: "Bad request. Possible cases:
+              1) Given dossier to book doctor slot not exist
+              2) Given dossier has already booked a doctor slot in the future
+              3) Given time is occupied by another doctor slot
+              4) Given time does not respects doctors times
+              5) Given day for the visit, is not a doctor day"
+            content:
+              text/plain:
+                schema:
+                  type: string
+                  enum: [ DOSSIER_NOT_EXIST, DOSSIER_ALREADY_BOOKED, TIME_OCCUPIED, BAD_TIME, NOT_DOCTOR_DAY ]
 
-
-
-
-
-
-
-          #   put:
   "/api/{id}":
     get:
       summary: "Get a user by id"
@@ -137,7 +160,6 @@ components:
               type: boolean
             examsStatus:
               $ref: '#/components/schemas/ExamsStatus'
-
     ExamsStatus:
       type: object
       required: [theoreticalExamState,practicalExamState]
@@ -158,8 +180,23 @@ components:
         outcome:
           type: string
           enum: [PASSED, FAIL]
+    DoctorSlot:
+      type: object
+      required: [date, time, dossierId]
+      properties:
+        date:
+          type: string
+          example: "2023-10-12"
+          enum: [TUESDAY, FRIDAY]
+        time:
+          type: string
+          example: "9:30"
+          description: "Must be between 18:00 and 19:30"
+        dossierId:
+          type: string
+          example: "64633c11f85fe95eb801c0b6"
 
-##### PARAMETERS ######
+
   parameters:
     DossierId:
       name: id
@@ -169,7 +206,8 @@ components:
       schema:
         type: string
         example: "d1"
-##### RESPONSES ######
+
+
   responses:
     ServerError:
       description: Internal server error that typically happen when there are an error in server source code

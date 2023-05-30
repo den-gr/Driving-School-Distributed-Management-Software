@@ -62,12 +62,4 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
             }
         }
     }
-
-//    override suspend fun handleDossierExamAttemptsUpdate(routingContext: RoutingContext) {
-//        GlobalScope.launch {
-//            val updateResult: DomainResponseStatus =
-//                model.dossierService.updateExamAttempts(routingContext.request().getParam("id").toString())
-//            routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult)).end(updateResult.name)
-//        }
-//    }
 }
