@@ -32,11 +32,6 @@
     summary: "Get booked doctor slots"
     operationId: getBookedDoctorSlots
     tags: [DoctorService]
-    requestBody:
-      content:
-        application/json:
-          schema:
-            $ref: "./schemas.yaml#/GetBookedDoctorSlots"
     responses:
       "200":
         description: "Ok. Possible cases:
