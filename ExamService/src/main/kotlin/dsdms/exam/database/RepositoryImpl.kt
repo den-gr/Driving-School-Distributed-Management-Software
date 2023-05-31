@@ -1,6 +1,5 @@
 package dsdms.exam.database
 
-import com.mongodb.client.MongoDatabase
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.InsertOneResult
 import com.mongodb.client.result.UpdateResult
@@ -9,49 +8,52 @@ import dsdms.exam.model.entities.ProvisionalLicense
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamAppeal
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
-import org.litote.kmongo.*
+import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.div
+import org.litote.kmongo.eq
+import org.litote.kmongo.setValue
 import java.time.LocalDate
 
-class RepositoryImpl(examService: MongoDatabase) : Repository {
+class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     private val theoreticalExamPassDb = examService.getCollection<TheoreticalExamPass>("TheoreticalExamPass")
     private val theoreticalExamAppeals = examService.getCollection<TheoreticalExamAppeal>("TheoreticalExamAppeal")
     private val provisionalLicenseHolders = examService.getCollection<ProvisionalLicenseHolder>("ProvisionalLicenseHolders")
 
-    override fun dossierAlreadyHasOnePass(dossierId: String): Boolean {
+    override suspend fun dossierAlreadyHasOnePass(dossierId: String): Boolean {
         return theoreticalExamPassDb.find(TheoreticalExamPass::dossierId eq dossierId).toList().isNotEmpty()
     }
 
-    override fun saveNewTheoreticalExamPass(theoreticalExamPass: TheoreticalExamPass): TheoreticalExamPass {
+    override suspend fun saveNewTheoreticalExamPass(theoreticalExamPass: TheoreticalExamPass): TheoreticalExamPass {
         return theoreticalExamPass.apply { theoreticalExamPassDb.insertOne(theoreticalExamPass) }
     }
 
-    override fun getTheoreticalExamPass(dossierId: String): TheoreticalExamPass? {
+    override suspend fun getTheoreticalExamPass(dossierId: String): TheoreticalExamPass? {
         return theoreticalExamPassDb.findOne(TheoreticalExamPass::dossierId eq dossierId)
     }
 
-    override fun deleteTheoreticalExamPass(dossierId: String): RepositoryResponseStatus {
+    override suspend fun deleteTheoreticalExamPass(dossierId: String): RepositoryResponseStatus {
         return handleDeleteResult(theoreticalExamPassDb.deleteOne(TheoreticalExamPass::dossierId eq dossierId))
     }
 
-    override fun getFutureTheoreticalExamAppeals(): List<TheoreticalExamAppeal> {
+    override suspend fun getFutureTheoreticalExamAppeals(): List<TheoreticalExamAppeal> {
         return theoreticalExamAppeals.find().toList().filter { el -> LocalDate.parse(el.date) > LocalDate.now() }
     }
 
-    override fun insertTheoreticalExamDay(newExamDay: TheoreticalExamAppeal): RepositoryResponseStatus {
+    override suspend fun insertTheoreticalExamDay(newExamDay: TheoreticalExamAppeal): RepositoryResponseStatus {
         return handleInsertResult(theoreticalExamAppeals.insertOne(newExamDay))
     }
 
-    override fun updateExamAppeal(appealDate: String, appealList: List<String>): RepositoryResponseStatus {
+    override suspend fun updateExamAppeal(appealDate: String, appealList: List<String>): RepositoryResponseStatus {
         return handleUpdateResult(theoreticalExamAppeals
             .updateOne((TheoreticalExamAppeal::date eq appealDate), setValue(TheoreticalExamAppeal::registeredDossiers, appealList)))
     }
 
-    override fun saveProvisionalLicenseHolder(provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus {
+    override suspend fun saveProvisionalLicenseHolder(provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus {
         return handleInsertResult(provisionalLicenseHolders.insertOne(provisionalLicenseHolder))
     }
 
-    override fun findProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder? {
-        return provisionalLicenseHolders.findOne {ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId}
+    override suspend fun findProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder? {
+        return provisionalLicenseHolders.findOne (ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId)
     }
 
     private fun handleUpdateResult(updateResult: UpdateResult): RepositoryResponseStatus {

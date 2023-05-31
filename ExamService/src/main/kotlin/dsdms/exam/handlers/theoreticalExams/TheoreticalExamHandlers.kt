@@ -4,10 +4,10 @@ import dsdms.exam.handlers.Handlers
 import io.vertx.ext.web.RoutingContext
 
 interface TheoreticalExamHandlers : Handlers {
-    fun createTheoreticalExamPass(routingContext: RoutingContext)
-    fun getTheoreticalExamPass(routingContext: RoutingContext)
-    fun deleteTheoreticalExamPass(routingContext: RoutingContext)
-    fun createNewTheoreticalExamAppeal(routingContext: RoutingContext)
-    fun getNextTheoreticalExamAppeals(routingContext: RoutingContext)
-    fun putDossierInExamAppeal(routingContext: RoutingContext)
+    suspend fun createTheoreticalExamPass(routingContext: RoutingContext)
+    suspend fun getTheoreticalExamPass(routingContext: RoutingContext)
+    suspend fun deleteTheoreticalExamPass(routingContext: RoutingContext)
+    suspend fun createNewTheoreticalExamAppeal(routingContext: RoutingContext)
+    suspend fun getNextTheoreticalExamAppeals(routingContext: RoutingContext)
+    suspend fun putDossierInExamAppeal(routingContext: RoutingContext)
 }

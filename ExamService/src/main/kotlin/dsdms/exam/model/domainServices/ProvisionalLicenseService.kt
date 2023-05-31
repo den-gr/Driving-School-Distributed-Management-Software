@@ -8,7 +8,7 @@ interface ProvisionalLicenseService {
      * PROVISIONAL_LICENSE_ALREADY_EXISTS
      * OK
      */
-    fun registerProvisionalLicense(provisionalLicense: ProvisionalLicense): DomainResponseStatus
+    suspend fun registerProvisionalLicense(provisionalLicense: ProvisionalLicense): DomainResponseStatus
 
-    fun getProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder?
+    suspend fun getProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder?
 }

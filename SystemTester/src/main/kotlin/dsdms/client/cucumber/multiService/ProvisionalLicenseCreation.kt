@@ -4,6 +4,8 @@ import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
 import dsdms.client.utils.createJson
+import dsdms.dossier.model.entities.Dossier
+import dsdms.dossier.model.valueObjects.ExamsStatus
 import dsdms.exam.model.entities.ProvisionalLicense
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamAppeal
 import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
@@ -33,9 +35,10 @@ class ProvisionalLicenseCreation : En {
     private val sleeper = SmartSleep()
 
     private var statusCode: Int? = null
-    private var dossierId: String = "d1"
+    private var dossierId: String = "d99"
     private var examDate: LocalDate? = null
     private var provisionalLicenseHolder: ProvisionalLicenseHolder? = null
+    private var examStatus: ExamsStatus? = null
 
 
     init {
@@ -78,6 +81,19 @@ class ProvisionalLicenseCreation : En {
             assertEquals(attempts, provisionalLicenseHolder?.practicalExamAttempts)
             assertEquals(LocalDate.parse(startDate), provisionalLicenseHolder?.provisionalLicense?.startValidity)
             assertEquals(LocalDate.parse(endDate), provisionalLicenseHolder?.provisionalLicense?.endValidity)
+        }
+        When("secretary requests dossier exam status information") {
+            val request = dossierService.get("/dossiers/$dossierId").send()
+            val response = sleeper.waitResult(request)
+            checkResponse(response)
+            println(response?.body())
+            assertEquals(HTTP_OK, response?.statusCode())
+            val dossier: Dossier = Json.decodeFromString(response?.body().toString())
+            examStatus = dossier.examsStatus
+        }
+        Then("theoretical exam state is {word} and practical exam state is {word}") {thResult: String, prResult: String ->
+           assertEquals(thResult,examStatus!!.theoreticalExamState.name)
+           assertEquals(prResult,examStatus!!.practicalExamState.name)
         }
     }
 

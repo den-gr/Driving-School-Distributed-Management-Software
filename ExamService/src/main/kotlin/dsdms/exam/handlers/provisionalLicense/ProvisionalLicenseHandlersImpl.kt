@@ -6,6 +6,9 @@ import dsdms.exam.model.Model
 import dsdms.exam.model.domainServices.DomainResponseStatus
 import dsdms.exam.model.entities.ProvisionalLicense
 import io.vertx.ext.web.RoutingContext
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -16,21 +19,25 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
         encodeDefaults = true
     }
 
-    override fun registerProvisionalLicence(routingContext: RoutingContext) {
-        try {
-            val provisionalLicense: ProvisionalLicense = cjson.decodeFromString(routingContext.body().asString())
-            val response = model.provisionalLicenseService.registerProvisionalLicense(provisionalLicense)
-            if(response == DomainResponseStatus.OK){
-                routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK).end(response.name)
-            }else{
-                routingContext.response().setStatusCode(domainConversionTable.getHttpCode(response)).end(response.name)
+    @OptIn(DelicateCoroutinesApi::class)
+    override suspend fun registerProvisionalLicence(routingContext: RoutingContext) {
+        GlobalScope.launch {
+            try {
+                val provisionalLicense: ProvisionalLicense = cjson.decodeFromString(routingContext.body().asString())
+                val response = model.provisionalLicenseService.registerProvisionalLicense(provisionalLicense)
+                if (response == DomainResponseStatus.OK) {
+                    routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK).end(response.name)
+                } else {
+                    routingContext.response().setStatusCode(domainConversionTable.getHttpCode(response))
+                        .end(response.name)
+                }
+            } catch (ex: Exception) {
+                handleException(ex, routingContext)
             }
-        }catch (ex: Exception){
-            handleException(ex, routingContext)
         }
     }
 
-    override fun getProvisionalLicenseHolder(routingContext: RoutingContext) {
+    override suspend fun getProvisionalLicenseHolder(routingContext: RoutingContext) {
         try{
             val dossierId = routingContext.request().getParam("id").toString()
             val provisionalLicenseHandler = model.provisionalLicenseService.getProvisionalLicenseHolder(dossierId)

@@ -6,10 +6,10 @@ import dsdms.exam.model.valueObjects.ExamPassData
 import dsdms.exam.model.valueObjects.TheoreticalExamAppealUpdate
 
 interface ExamService {
-    fun saveNewTheoreticalExamPass(documents: ExamPassData): InsertTheoreticalExamPassResult
-    fun readTheoreticalExamPass(dossierId: String): TheoreticalExamPass?
-    fun deleteTheoreticalExamPass(dossierId: String): DomainResponseStatus
-    fun insertNewExamAppeal(newExamDay: TheoreticalExamAppeal): DomainResponseStatus
-    fun getNextExamAppeals(): NextTheoreticalExamAppeals
-    fun putDossierInExamAppeal(theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus
+    suspend fun saveNewTheoreticalExamPass(documents: ExamPassData): InsertTheoreticalExamPassResult
+    suspend fun readTheoreticalExamPass(dossierId: String): TheoreticalExamPass?
+    suspend fun deleteTheoreticalExamPass(dossierId: String): DomainResponseStatus
+    suspend fun insertNewExamAppeal(newExamDay: TheoreticalExamAppeal): DomainResponseStatus
+    suspend fun getNextExamAppeals(): NextTheoreticalExamAppeals
+    suspend fun putDossierInExamAppeal(theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus
 }

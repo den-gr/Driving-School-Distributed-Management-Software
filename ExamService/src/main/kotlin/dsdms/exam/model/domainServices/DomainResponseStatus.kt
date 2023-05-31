@@ -64,5 +64,10 @@ enum class DomainResponseStatus {
     /**
      * There are already a valid provisional license associated with dossier
      */
-    PROVISIONAL_LICENSE_ALREADY_EXISTS
+    PROVISIONAL_LICENSE_ALREADY_EXISTS,
+
+    /**
+     * Update exam status in dossier context finish with an error
+     */
+    EXAM_STATUS_ERROR
 }

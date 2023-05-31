@@ -49,7 +49,7 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
             GetDossierResult(DomainResponseStatus.OK, dossier)
     }
 
-    override suspend fun updateExamStatus(result: ExamResult, id: String): DomainResponseStatus {
+    override suspend fun updateExamStatus(result: ExamResultEvent, id: String): DomainResponseStatus {
         val examsProgress = readDossierFromId(id).dossier?.examsStatus
         return try {
             val newExamState = getNewExamProgressState(result,examsProgress)
@@ -59,7 +59,7 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
         }
     }
 
-    private fun getNewExamProgressState(result: ExamResult, currentExamsStatus: ExamsStatus?):ExamsStatus?{
+    private fun getNewExamProgressState(result: ExamResultEvent, currentExamsStatus: ExamsStatus?):ExamsStatus?{
         return if (result.exam == Exam.THEORETICAL) {
             if(result.outcome == ExamOutcome.PASSED){
                 currentExamsStatus?.registerTheoreticalExamPassed()

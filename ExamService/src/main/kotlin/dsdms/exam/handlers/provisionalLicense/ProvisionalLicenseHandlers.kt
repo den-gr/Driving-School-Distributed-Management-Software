@@ -4,6 +4,6 @@ import dsdms.exam.handlers.Handlers
 import io.vertx.ext.web.RoutingContext
 
 interface ProvisionalLicenseHandlers : Handlers {
-    fun registerProvisionalLicence(routingContext: RoutingContext)
-    fun getProvisionalLicenseHolder(routingContext: RoutingContext)
+    suspend fun registerProvisionalLicence(routingContext: RoutingContext)
+    suspend fun getProvisionalLicenseHolder(routingContext: RoutingContext)
 }

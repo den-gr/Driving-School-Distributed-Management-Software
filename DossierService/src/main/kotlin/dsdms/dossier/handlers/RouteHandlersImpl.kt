@@ -2,7 +2,7 @@ package dsdms.dossier.handlers
 
 import dsdms.dossier.model.Model
 import dsdms.dossier.model.domainServices.DomainResponseStatus
-import dsdms.dossier.model.valueObjects.ExamResult
+import dsdms.dossier.model.valueObjects.ExamResultEvent
 
 import io.vertx.ext.web.RoutingContext
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -54,7 +54,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     override suspend fun handleDossierExamStatusUpdate(routingContext: RoutingContext) {
         GlobalScope.launch {
             try {
-                val data: ExamResult = Json.decodeFromString(routingContext.body().asString())
+                val data: ExamResultEvent = Json.decodeFromString(routingContext.body().asString())
                 val updateResult: DomainResponseStatus =
                     model.dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
                 routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult))

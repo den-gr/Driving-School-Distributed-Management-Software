@@ -6,14 +6,14 @@ import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
 
 interface Repository {
-    fun dossierAlreadyHasOnePass(dossierId: String): Boolean
-    fun saveNewTheoreticalExamPass(theoreticalExamPass: TheoreticalExamPass): TheoreticalExamPass
-    fun getTheoreticalExamPass(dossierId: String): TheoreticalExamPass?
-    fun deleteTheoreticalExamPass(dossierId: String): RepositoryResponseStatus
-    fun getFutureTheoreticalExamAppeals(): List<TheoreticalExamAppeal>
-    fun insertTheoreticalExamDay(newExamDay: TheoreticalExamAppeal): RepositoryResponseStatus
-    fun updateExamAppeal(appealDate: String, appealList: List<String>): RepositoryResponseStatus
+    suspend fun dossierAlreadyHasOnePass(dossierId: String): Boolean
+    suspend fun saveNewTheoreticalExamPass(theoreticalExamPass: TheoreticalExamPass): TheoreticalExamPass
+    suspend fun getTheoreticalExamPass(dossierId: String): TheoreticalExamPass?
+    suspend fun deleteTheoreticalExamPass(dossierId: String): RepositoryResponseStatus
+    suspend fun getFutureTheoreticalExamAppeals(): List<TheoreticalExamAppeal>
+    suspend fun insertTheoreticalExamDay(newExamDay: TheoreticalExamAppeal): RepositoryResponseStatus
+    suspend fun updateExamAppeal(appealDate: String, appealList: List<String>): RepositoryResponseStatus
 
-    fun saveProvisionalLicenseHolder(provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus
-    fun findProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder?
+    suspend fun saveProvisionalLicenseHolder(provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus
+    suspend fun findProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder?
 }

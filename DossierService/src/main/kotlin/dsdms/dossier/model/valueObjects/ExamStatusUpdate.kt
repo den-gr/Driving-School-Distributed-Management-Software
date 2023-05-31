@@ -16,7 +16,7 @@ enum class ExamOutcome{
  * @param outcome: could be PASSED or FAIL
  */
 @Serializable
-data class ExamResult(
+data class ExamResultEvent(
     val exam: Exam,
     val outcome: ExamOutcome
 )

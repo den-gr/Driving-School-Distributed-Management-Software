@@ -24,13 +24,13 @@ data class NextTheoreticalExamAppeals(
     val examAppeals: String? = null)
 
 class ExamServiceImpl(private val repository: Repository) : ExamService {
-    private fun verifyExamPass(documents: ExamPassData): DomainResponseStatus {
+    private suspend fun verifyExamPass(documents: ExamPassData): DomainResponseStatus {
         return if (repository.dossierAlreadyHasOnePass(documents.dossierId))
             DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
         else DomainResponseStatus.OK
     }
 
-    private fun createTheoreticalExamPass(documents: ExamPassData): TheoreticalExamPass =
+    private suspend fun createTheoreticalExamPass(documents: ExamPassData): TheoreticalExamPass =
         repository.saveNewTheoreticalExamPass(
             TheoreticalExamPass(
                 documents.dossierId,
@@ -39,7 +39,7 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
             )
         )
 
-    override fun saveNewTheoreticalExamPass(documents: ExamPassData): InsertTheoreticalExamPassResult {
+    override suspend fun saveNewTheoreticalExamPass(documents: ExamPassData): InsertTheoreticalExamPassResult {
         val verifyResult = verifyExamPass(documents)
         return if (verifyResult == DomainResponseStatus.OK)
             InsertTheoreticalExamPassResult(verifyResult, Json.encodeToString(createTheoreticalExamPass(documents)))
@@ -47,22 +47,22 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
 
     }
 
-    override fun readTheoreticalExamPass(dossierId: String): TheoreticalExamPass? {
+    override suspend fun readTheoreticalExamPass(dossierId: String): TheoreticalExamPass? {
         return repository.getTheoreticalExamPass(dossierId)
     }
 
-    override fun deleteTheoreticalExamPass(dossierId: String): DomainResponseStatus {
+    override suspend fun deleteTheoreticalExamPass(dossierId: String): DomainResponseStatus {
         return repositoryToDomainConversionTable.getDomainCode(repository.deleteTheoreticalExamPass(dossierId))
     }
 
-    override fun insertNewExamAppeal(newExamDay: TheoreticalExamAppeal): DomainResponseStatus {
+    override suspend fun insertNewExamAppeal(newExamDay: TheoreticalExamAppeal): DomainResponseStatus {
         return if (repository.getFutureTheoreticalExamAppeals().any { el -> el.date == newExamDay.date })
             DomainResponseStatus.DATE_ALREADY_IN
         else
             repositoryToDomainConversionTable.getDomainCode(repository.insertTheoreticalExamDay(newExamDay))
     }
 
-    override fun getNextExamAppeals(): NextTheoreticalExamAppeals {
+    override suspend fun getNextExamAppeals(): NextTheoreticalExamAppeals {
         val examAppeals = repository.getFutureTheoreticalExamAppeals()
         return if (examAppeals.isEmpty())
             NextTheoreticalExamAppeals(DomainResponseStatus.NO_EXAM_APPEALS)
@@ -70,7 +70,7 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
             NextTheoreticalExamAppeals(DomainResponseStatus.OK, Json.encodeToString(ListSerializer(TheoreticalExamAppeal.serializer()), examAppeals))
     }
 
-    override fun putDossierInExamAppeal(theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus {
+    override suspend fun putDossierInExamAppeal(theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus {
         val examAppeal: TheoreticalExamAppeal? = repository.getFutureTheoreticalExamAppeals().find { el -> el.date == theoreticalExamAppealUpdate.date }
 
         return if (examAppeal == null)

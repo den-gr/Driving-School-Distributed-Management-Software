@@ -56,7 +56,7 @@ class UpdateDossierTest : En {
         Then("trying to register {word} exam state as passed") { type: String->
             val request = client
                 .put("/dossiers/$dossier/examStatus")
-                .sendBuffer(createJson(ExamResult(Exam.valueOf(type), ExamOutcome.PASSED)))
+                .sendBuffer(createJson(ExamResultEvent(Exam.valueOf(type), ExamOutcome.PASSED)))
             val response = sleeper.waitResult(request)
 
             checkResponse(response)
