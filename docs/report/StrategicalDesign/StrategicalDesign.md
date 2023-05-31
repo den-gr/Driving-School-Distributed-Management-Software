@@ -124,8 +124,7 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazine test
 - Check validity of Provisional License (Driving context → A query)
 
 **Outbound Communications**:
-- Notify the Provisional license is not valid anymore (Dossier context → an event)
-- Get Practical Driving slots for a Dossier to count them (Driving context → a query)
+- Notify start validity or invalidity of the Provisional license (Dossier context → an event)
 
 ### Doctor context
 
