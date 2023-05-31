@@ -83,3 +83,32 @@ DoctorResult:
     result:
       type: string
       enum: [VALID, NEED_ONE_MORE_VISIT, NOT_VALID]
+DrivingSlot:
+  type: object
+  required: [date, time, instructorId, dossierId, licensePlate, slotType]
+  properties:
+    date:
+      type: string
+      example: "2023-10-12"
+    dossierId:
+      type: string
+      example: "64633c11f85fe95eb801c0b6"
+    time:
+      type: string
+      example: "9:30"
+    instructorId:
+      type: string
+      example: "64633c11f85fe95eb801c0b6"
+    licensePlate:
+      type: LicensePlate
+      example: "FZ340AR"
+    slotType:
+      type: string
+      enum: [ORDINARY, EXAM]
+PracticalExamDay:
+  type: object
+  required: [date]
+  properties:
+    date:
+      type: string
+      example: "2023-10-12"

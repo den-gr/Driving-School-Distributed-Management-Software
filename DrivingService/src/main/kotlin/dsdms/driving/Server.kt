@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
-class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
+class     Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
     private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))

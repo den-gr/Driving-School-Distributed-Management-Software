@@ -15,3 +15,12 @@ Date:
   schema:
     type: string
     example: "2023-12-10"
+
+DrivingSlotId:
+  name: drivingSlotId
+  in: path
+  description: id of a driving slot
+  required: true
+  schema:
+    type: string
+    example: "fnodjdsk5bt5ofn"
