@@ -38,7 +38,7 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
         GlobalScope.launch {
             try {
                 val result: BookedDoctorSlots = model.doctorService
-                    .getOccupiedDoctorSlots(Json.decodeFromString(routingContext.body().asString()))
+                    .getOccupiedDoctorSlots(routingContext.request().getParam("date").toString())
 
                 routingContext.response()
                     .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))

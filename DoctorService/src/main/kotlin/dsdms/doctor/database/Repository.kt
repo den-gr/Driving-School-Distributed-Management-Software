@@ -1,10 +1,8 @@
 package dsdms.doctor.database
 
-import com.mongodb.client.result.InsertOneResult
 import dsdms.doctor.database.utils.RepositoryResponseStatus
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.valueObjects.DoctorResult
-import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 import java.time.LocalDate
 
 
@@ -17,10 +15,10 @@ interface Repository {
     suspend fun saveDoctorSlot(documents: DoctorSlot): String
 
     /**
-     * @param data: the date from which we want to obtain occupied doctor slots
+     * @param date: the date from which we want to obtain occupied doctor slots
      * @return lists (eventually empty) of occupied driving slots in a certain date
      */
-    suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot>
+    suspend fun getOccupiedDoctorSlots(date: String): List<DoctorSlot>
 
     /**
      * @since each dossier can book only one doctor slot

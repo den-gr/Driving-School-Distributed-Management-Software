@@ -11,3 +11,7 @@ Feature: Reading and writing doctor slots
     | d2 | 2023-09-22 | 20:00 | 400 | BAD_TIME |
     | d2 | 2023-09-24 | 18:30 | 400 | NOT_DOCTOR_DAY |
     | d3 | 2023-09-22 | 18:30 | 400 | DOSSIER_NOT_EXIST |
+
+  Scenario: secretary wants to see booked doctor slots
+    When it sends 2023-09-19
+    Then receives list of doctor slots, containing one doctor slot for dossier d1 at 18:15

@@ -2,7 +2,6 @@ package dsdms.doctor.model.domainServices
 
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.valueObjects.DoctorResult
-import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 
 interface DoctorService {
 
@@ -13,10 +12,10 @@ interface DoctorService {
     suspend fun saveDoctorSlot(documents: DoctorSlot): InsertDoctorVisitResult
 
     /**
-     * @param data: containing the date for which we took occupied driving slots
+     * @param date: containing the date for which we took occupied driving slots
      * @return list of possible occupied doctor slots in a provided date
      */
-    suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): BookedDoctorSlots
+    suspend fun getOccupiedDoctorSlots(date: String): BookedDoctorSlots
 
     /**
      * @param dossierId: id for which to take occupied driving slots
