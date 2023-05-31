@@ -8,13 +8,7 @@ db.Dossier.insertMany([
       birthdate: "1999-03-07",
       fiscal_code: "MR45G3",
       validity: true,
-      examAttempts: {
-        attempts: 0
-      },
-      examStatus: {
-        practical: false,
-        theoretical: false
-      }
+      examsStatus: {theoreticalExamState: "TO_DO", practicalExamState: "TO_DO"}
     },
     {
       _id: "d2",
@@ -23,13 +17,16 @@ db.Dossier.insertMany([
       birthdate: "1999-03-07",
       fiscal_code: "MFH7594",
       validity: true,
-      examAttempts: {
-        attempts: 1
-      },
-      examStatus: {
-        practical: true,
-        theoretical: true
-      }
+      examsStatus: {theoreticalExamState: "TO_DO", practicalExamState: "TO_DO"}
+    },
+    {
+      _id: "d99",
+      name: "prova3",
+      surname: "prova3",
+      birthdate: "1989-03-07",
+      fiscal_code: "MFH7594KK",
+      validity: true,
+      examsStatus: {theoreticalExamState: "TO_DO", practicalExamState: "TO_DO"}
     }
 ]);
 
