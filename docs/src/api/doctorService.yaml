@@ -28,25 +28,6 @@
             schema:
               type: string
               enum: [ DOSSIER_NOT_EXIST, DOSSIER_ALREADY_BOOKED, TIME_OCCUPIED, BAD_TIME, NOT_DOCTOR_DAY ]
-  get:
-    summary: "Get booked doctor slots"
-    operationId: getBookedDoctorSlots
-    tags: [DoctorService]
-    responses:
-      "200":
-        description: "Ok. Possible cases:
-              1) No slots occupied in the given date
-              2) Slots occupied given as a response"
-        content:
-          application/json:
-            schema:
-              $ref: "./schemas.yaml#/DoctorSlot"
-          text/plain:
-            schema:
-              type: string
-              enum: [NO_SLOT_OCCUPIED, OK]
-      "400":
-        description: "Bad request: there was an error during serialization of given object"
   put:
     summary: "Register doctor visit result"
     operationId: saveDoctorResult
@@ -76,3 +57,26 @@
         description: "Ok. Delete was successful"
       "400":
         description: "Bad request. There was some delete error"
+
+"/doctorSlots/{date}":
+  get:
+    summary: "Get booked doctor slots"
+    operationId: getBookedDoctorSlots
+    tags: [DoctorService]
+    parameters:
+      - $ref: './parameters.yaml#/Date'
+    responses:
+      "200":
+        description: "Ok. Possible cases:
+              1) No slots occupied in the given date
+              2) Slots occupied given as a response"
+        content:
+          application/json:
+            schema:
+              $ref: "./schemas.yaml#/DoctorSlot"
+          text/plain:
+            schema:
+              type: string
+              enum: [NO_SLOT_OCCUPIED, OK]
+      "400":
+        description: "Bad request: there was an error during serialization of given object"

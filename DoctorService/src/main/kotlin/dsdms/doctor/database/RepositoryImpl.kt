@@ -4,9 +4,7 @@ import com.mongodb.client.result.DeleteResult
 import dsdms.doctor.database.utils.RepositoryResponseStatus
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.valueObjects.DoctorResult
-import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 import org.litote.kmongo.coroutine.CoroutineDatabase
-import org.litote.kmongo.coroutine.insertOne
 import org.litote.kmongo.eq
 import java.time.LocalDate
 
@@ -18,8 +16,8 @@ class RepositoryImpl(doctorService: CoroutineDatabase) : Repository {
         return documents.apply { doctorSlots.insertOne(documents) }.date
     }
 
-    override suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): List<DoctorSlot> {
-        return doctorSlots.find(DoctorSlot::date eq data.date).toList()
+    override suspend fun getOccupiedDoctorSlots(date: String): List<DoctorSlot> {
+        return doctorSlots.find(DoctorSlot::date eq date).toList()
     }
 
     override suspend fun deleteDoctorSlot(dossierId: String): RepositoryResponseStatus {

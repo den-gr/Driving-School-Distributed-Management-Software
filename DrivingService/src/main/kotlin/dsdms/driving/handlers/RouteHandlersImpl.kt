@@ -1,11 +1,14 @@
 package dsdms.driving.handlers
 
 import dsdms.driving.model.Model
+import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.PracticalExamDay
+import io.vertx.core.MultiMap
 import io.vertx.ext.web.RoutingContext
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
@@ -35,20 +38,24 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     override suspend fun getOccupiedDrivingSlots(routingContext: RoutingContext) {
         GlobalScope.launch {
             try {
-                val result = model.drivingService.getOccupiedDrivingSlots(
-                    Json.decodeFromString(
-                        routingContext.body().asString()
-                    )
-                )
+                val result = model
+                    .drivingService
+                    .getOccupiedDrivingSlots(parseHeaderValues(routingContext.queryParams()))
                 routingContext
                     .response()
                     .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
                     .end(result.drivingSlots ?: result.domainResponseStatus.name)
-
             } catch (ex: Exception) {
                 handleException(ex, routingContext)
             }
         }
+    }
+
+    private fun parseHeaderValues(headers: MultiMap): DrivingSlotsRequest {
+        return DrivingSlotsRequest(
+            LocalDate.parse(headers.get("date")),
+            headers.get("instructorId")
+        )
     }
 
     @OptIn(DelicateCoroutinesApi::class)

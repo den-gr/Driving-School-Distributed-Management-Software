@@ -1,0 +1,102 @@
+"/drivingSlots":
+  post:
+    summary: "register driving slot"
+    operationId: registerNewDrivingSlot
+    tags: [DrivingService]
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "./schemas.yaml#/DrivingSlot"
+    responses:
+      "200":
+        description: "Driving slot is created. Returns id"
+        content:
+          text/plain:
+            example: "64633c11f85fe95eb801c0b6"
+      "400":
+        description: "Bad request. Possible cases:
+              1) Instructor was not available
+              2) That specific dossier has already booked one driving slot
+              3) Wanted instructor in specific wanted day and time is not free
+              4) The day must set as a practical exam day before booking an exam
+              5) Dossier has not done enough driving lessons to be able book a practical exam"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ INSTRUCTOR_NOT_FREE, OCCUPIED_DRIVING_SLOTS, VEHICLE_NOT_FREE, NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM, NOT_AN_EXAM_DAY ]
+      "404":
+        description: "Given info about vehicle or instructor not found"
+      "500":
+        $ref: './responses.yaml#/ServerError'
+  get:
+    summary: "get occupied driving slots"
+    operationId: getOccupiedDrivingSlots
+    tags: [DrivingService]
+    responses:
+      "200":
+        description: "Always returns this code with also driving slot list if there was some"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ OK, NO_SLOT_OCCUPIED ]
+          application/json:
+            schema:
+              $ref: "./schemas.yaml#/DrivingSlot"
+
+"/drivingSlots/{drivingSlotId}":
+  delete:
+    summary: "Delete booked driving slot"
+    operationId: deleteDrivingSlot
+    tags: [DrivingService]
+    parameters:
+      - $ref: './parameters.yaml#/DrivingSlotId'
+    responses:
+      "200":
+        description: "Ok. Delete was successful"
+      "400":
+        description: "Bad request. There was some delete error"
+
+"/practicalExamDays":
+  get:
+    summary: "Get practical exam days"
+    operationId: getPracticalExamDays
+    tags: [DrivingService]
+    responses:
+      "200":
+        description: "Ok. Possible cases"
+        content:
+          application/json:
+            schema:
+              $ref: "./schemas.yaml#/PracticalExamDay"
+  post:
+    summary: "insert a new practical exam day"
+    operationId: postPracticalExamDay
+    tags: [DrivingService]
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "./schemas.yaml#/PracticalExamDay"
+    responses:
+      "200":
+        description: "OK. Exam day was added."
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ OK ]
+      "400":
+        description: "Bad request. Practical exam day was already defined"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ ALREADY_DEFINED_AS_PRACTICAL_EXAM_DAY ]
+      "500":
+        $ref: './responses.yaml#/ServerError'
+
+
+

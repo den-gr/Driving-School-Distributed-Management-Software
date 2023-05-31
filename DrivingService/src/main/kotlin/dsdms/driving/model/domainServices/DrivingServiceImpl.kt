@@ -10,8 +10,6 @@ import dsdms.driving.model.valueObjects.*
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
-
-
 class DrivingServiceImpl(private val repository: Repository) : DrivingService {
     companion object {
         private const val MIN_NUMBER_OF_DRIVING_LESSONS: Int = 10

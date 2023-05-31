@@ -7,7 +7,6 @@ import dsdms.client.utils.createJson
 import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.DrivingSlotType
-import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.LicensePlate
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
@@ -57,8 +56,7 @@ class RegularDrivingSlotTest : En {
 
         When("i request occupied driving slots in a {word}") { date: String ->
             val request = client
-                .get("/drivingSlots")
-                .sendBuffer(createJson(DrivingSlotsRequest(LocalDate.parse(date))))
+                .get("/drivingSlots?date=$date").send()
             val response = sleeper.waitResult(request)
 
             checkResponse(response)

@@ -7,7 +7,6 @@ import dsdms.doctor.model.entities.DoctorDays
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
 import dsdms.doctor.model.valueObjects.DoctorResult
-import dsdms.doctor.model.valueObjects.GetBookedDoctorSlots
 import dsdms.doctor.model.valueObjects.ResultTypes
 import dsdms.exam.model.valueObjects.ExamPassData
 import io.vertx.core.buffer.Buffer
@@ -72,7 +71,7 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
      * @return if given time is available
      */
     private suspend fun checkTimeAvailability(time: String, date: String): Boolean =
-        getOccupiedDoctorSlots(GetBookedDoctorSlots(date)).getDoctorSlots().any { el -> el.time == time }
+        getOccupiedDoctorSlots(date).getDoctorSlots().any { el -> el.time == time }
 
     private suspend fun dossierIdExist(dossierId: String): Boolean {
         return dossierServiceConnection
@@ -89,8 +88,8 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
         else InsertDoctorVisitResult(verifyResult)
     }
 
-    override suspend fun getOccupiedDoctorSlots(data: GetBookedDoctorSlots): BookedDoctorSlots {
-        val doctorSlots = repository.getOccupiedDoctorSlots(data)
+    override suspend fun getOccupiedDoctorSlots(date: String): BookedDoctorSlots {
+        val doctorSlots = repository.getOccupiedDoctorSlots(date)
         return if (doctorSlots.isEmpty())
             BookedDoctorSlots(DomainResponseStatus.NO_SLOT_OCCUPIED)
         else BookedDoctorSlots(
