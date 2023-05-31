@@ -3,10 +3,10 @@ package dsdms.exam
 import com.mongodb.client.MongoDatabase
 import dsdms.exam.database.Repository
 import dsdms.exam.database.RepositoryImpl
-import dsdms.exam.handlers.practicalHandlers.ProvisionalLicenseHandlers
-import dsdms.exam.handlers.practicalHandlers.ProvisionalLicenseHandlersImpl
-import dsdms.exam.handlers.theoreticalHandlers.TheoreticalExamHandlers
-import dsdms.exam.handlers.theoreticalHandlers.TheoreticalExamHandlersImpl
+import dsdms.exam.handlers.provisionalLicense.ProvisionalLicenseHandlers
+import dsdms.exam.handlers.provisionalLicense.ProvisionalLicenseHandlersImpl
+import dsdms.exam.handlers.theoreticalExams.TheoreticalExamHandlers
+import dsdms.exam.handlers.theoreticalExams.TheoreticalExamHandlersImpl
 import dsdms.exam.model.ModelImpl
 import io.vertx.core.AbstractVerticle
 import io.vertx.ext.web.Router
@@ -47,6 +47,7 @@ class Server(private val port: Int, dbConnection: MongoDatabase) : AbstractVerti
         router.put("/theoreticalExam/examAppeal").handler(theoreticalExamHandlersImpl::putDossierInExamAppeal)
 
         router.post("/provisionalLicences").handler(provisionalLicenseHandlersImpl::registerProvisionalLicence)
+        router.get("/provisionalLicences/:id").handler(provisionalLicenseHandlersImpl::getProvisionalLicenseHolder)
     }
 
     private fun testHandler(routingContext: RoutingContext) {

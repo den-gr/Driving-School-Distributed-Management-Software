@@ -1,4 +1,4 @@
-package dsdms.exam.handlers.theoreticalHandlers
+package dsdms.exam.handlers.theoreticalExams
 
 import dsdms.exam.handlers.domainConversionTable
 import dsdms.exam.handlers.getHttpCode
@@ -57,16 +57,4 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
         routingContext.response().setStatusCode(domainConversionTable.getHttpCode(result)).end(result.name)
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
-    private fun handleException(ex: Exception, routingContext: RoutingContext){
-        println("Error message: ${ex.message}")
-        when(ex){
-            is SerializationException, is MissingFieldException -> {
-                routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
-            }
-            else ->{
-                routingContext.response().setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR).end(ex.message)
-            }
-        }
-    }
 }

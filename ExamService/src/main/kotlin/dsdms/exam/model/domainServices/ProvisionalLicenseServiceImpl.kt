@@ -15,6 +15,10 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository): Provisi
             repository.saveProvisionalLicenseHolder(ProvisionalLicenseHolder(provisionalLicense = provisionalLicense)))
     }
 
+    override fun getProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder? {
+        return repository.findProvisionalLicenseHolder(dossierId)
+    }
+
     private fun areThereAnotherProvisionalLicense(dossierId: String): Boolean{
         return repository.findProvisionalLicenseHolder(dossierId) != null
     }
