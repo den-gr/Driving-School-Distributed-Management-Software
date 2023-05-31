@@ -100,8 +100,7 @@ DrivingSlot:
       type: string
       example: "64633c11f85fe95eb801c0b6"
     licensePlate:
-      type: LicensePlate
-      example: "FZ340AR"
+      $ref: './schemas.yaml#/licensePlate'
     slotType:
       type: string
       enum: [ORDINARY, EXAM]
@@ -112,3 +111,10 @@ PracticalExamDay:
     date:
       type: string
       example: "2023-10-12"
+licensePlate:
+  type: object
+  required: [numberPlate]
+  properties:
+    numberPlate:
+      type: string
+      example: "FZ340AR"
