@@ -76,7 +76,8 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
         return if (examAppeal == null)
             DomainResponseStatus.APPEAL_NOT_FOUND
         else {
-            if (examAppeal.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId))
+            if (examAppeal.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId) ||
+                repository.getFutureTheoreticalExamAppeals().any { el -> el.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId) })
                 DomainResponseStatus.DOSSIER_ALREADY_PUT
             else if (examAppeal.registeredDossiers.count() < examAppeal.numberOfPlaces)
                 repositoryToDomainConversionTable.getDomainCode(

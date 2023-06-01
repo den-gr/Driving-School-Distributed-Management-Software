@@ -1,0 +1,201 @@
+"/theoreticalExam/pass":
+  put:
+    summary: "create theoretical exam pass"
+    operationId: createTheoreticalExamPass
+    tags: [ExamService]
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "./schemas.yaml#/ExamPassData"
+    responses:
+      "200":
+        description: "OK. Given json body for updated theoretical exam pass."
+      "400":
+        description: "Bad request. Exam pass already available for this dossier id or missing field in given json body"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ EXAM_PASS_ALREADY_AVAILABLE ]
+      "500":
+        $ref: './responses.yaml#/ServerError'
+
+"/theoreticalExam/{id}/pass":
+  get:
+    summary: "get theoretical exam pass"
+    operationId: getTheoreticalExamPass
+    tags: [ExamService]
+    parameters:
+      - $ref: './parameters.yaml#/DossierId'
+    responses:
+      "200":
+        description: "Ok"
+        content:
+          application/json:
+            schema:
+              $ref: "./schemas.yaml#/TheoreticalExamPass"
+      "404":
+        description: "Not found any theoretical exam passes for given dossier id"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ ID_NOT_FOUND ]
+  delete:
+    summary: "delete theoretical exam pass for a given dossier id"
+    operationId: deleteTheoreticalExamPass
+    tags: [ExamService]
+    parameters:
+      - $ref: './parameters.yaml#/DossierId'
+    responses:
+      "200":
+        description: "OK. Delete was successful"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ OK ]
+      "500":
+        description: "Delete error from server"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ DELETE_ERROR ]
+      "404":
+        description: "Pass not found for given dossier id"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ ID_NOT_FOUND ]
+
+"/theoreticalExam/examAppeal":
+  post:
+    summary: "insert a new theoretical exam appeal"
+    operationId: createNewTheoreticalExamAppeal
+    tags: [ ExamService ]
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "./schemas.yaml#/TheoreticalExamAppeal"
+    responses:
+      "200":
+        description: "Ok. Insert was successful"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ OK ]
+      "400":
+        description: "Bad request. Date previously inserted or missing field in given json"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ DATE_ALREADY_IN ]
+      "500":
+        description: "Insert error"
+        $ref: './responses.yaml#/ServerError'
+  get:
+    summary: "Get next theoretical exam appeals"
+    operationId: getNextTheoreticalExamAppeals
+    tags: [ExamService]
+    responses:
+      "200":
+        description: "Always returns ok, if some was found, with list of available exam appeals"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [OK, NO_EXAM_APPEALS]
+          application/json:
+            schema:
+              $ref: "./schemas.yaml#/TheoreticalExamAppeal"
+  put:
+    summary: "put a dossier id into an exam appeal"
+    operationId: putDossierInExamAppeal
+    tags: [ExamService]
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "./schemas.yaml#/TheoreticalExamAppealUpdate"
+    responses:
+      "200":
+        description: "OK. Update was successful"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [OK]
+      "400":
+        description: "Bad request. Possible cases: 
+            1) Wanted date for exam appeal was not found
+            2) Dossier is already registered in exam appeal
+            3) Wanted exam appeal is actually full"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [PLACES_FINISHED, DOSSIER_ALREADY_PUT, APPEAL_NOT_FOUND]
+      "500":
+        description: "Internal error. There was some server error during update operation"
+
+"/provisionalLicenses":
+  post:
+    summary: "register a new provisional license"
+    operationId: registerProvisionalLicense
+    tags: [ExamService]
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "./schemas.yaml#/ProvisionalLicense"
+    responses:
+      "200":
+        description: "Ok"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ OK ]
+      "400":
+        description: "Bad request, missing field in given json"
+      "409":
+        description: "Provisional license already exists"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ PROVISIONAL_LICENSE_ALREADY_EXISTS ]
+      "500":
+        $ref: './responses.yaml#/ServerError'
+
+"/provisionalLicenses/{id}":
+  get:
+    summary: "Get provisional license holder"
+    operationId: getProvisionalLicenseHolder
+    tags: [ ExamService ]
+    parameters:
+      - $ref: './parameters.yaml#/DossierId'
+    responses:
+      "200":
+        description: "Ok"
+        content:
+          application/json:
+            schema:
+              $ref: "./schemas.yaml#/ProvisionalLicenseHolder"
+      "404":
+        description: "Not found any provisional licenses for given dossier id"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ ID_NOT_FOUND ]
+      "400":
+        description: "Bad request, missing field in given json"
+      "500":
+        $ref: './responses.yaml#/ServerError'

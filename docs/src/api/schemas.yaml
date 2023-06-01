@@ -118,3 +118,65 @@ licensePlate:
     numberPlate:
       type: string
       example: "FZ340AR"
+ExamPassData:
+  type: object
+  required: [dossierId, date]
+  properties:
+    date:
+      type: string
+      example: "2023-10-12"
+    dossierId:
+      type: string
+      example: "64633c11f85fe95eb801c0b6"
+TheoreticalExamPass:
+  type: object
+  required: [dossierId, releaseDate, expiryDate]
+  properties:
+    releaseDate:
+      type: string
+      example: "2023-10-12"
+    expiryDate:
+      type: string
+      example: "2023-10-12"
+    dossierId:
+      type: string
+      example: "64633c11f85fe95eb801c0b6"
+TheoreticalExamAppeal:
+  type: object
+  required: [date, numberOfPlaces]
+  properties:
+    date:
+      type: string
+      example: "2023-10-12"
+    numberOfPlaces:
+      type: number
+      example: "10"
+TheoreticalExamAppealUpdate:
+  type: object
+  required: [date, dossierId]
+  properties:
+    date:
+      type: string
+      example: "2023-10-12"
+    dossierId:
+      type: string
+      example: "64633c11f85fe95eb801c0b6"
+ProvisionalLicense:
+  type: object
+  required: [dossierId, startValidity]
+  properties:
+    dossierId:
+      type: string
+      example: "64633c11f85fe95eb801c0b6"
+    startValidity:
+      type: string
+      example: "2023-10-12"
+ProvisionalLicenseHolder:
+  type: object
+  required: [ practicalExamAttempts, provisionalLicense]
+  properties:
+    practicalExamAttempts:
+      type: number
+    provisionalLicense:
+      $ref: './schemas.yaml#/ProvisionalLicense'
+

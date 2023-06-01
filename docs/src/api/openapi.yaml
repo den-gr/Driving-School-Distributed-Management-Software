@@ -17,6 +17,23 @@ paths:
     $ref: './doctorService.yaml#/~1doctorSlots'
   "/doctorSlots/{id}":
     $ref: './doctorService.yaml#/~1doctorSlots~1%7Bid%7D'
+  "/drivingSlots":
+    $ref: './drivingService.yaml#/~1drivingSlots'
+  "/drivingSlots/{drivingSlotId}":
+    $ref: './drivingService.yaml#/~1drivingSlots~1%7BdrivingSlotId%7D'
+  "/practicalExamDays":
+    $ref: './drivingService.yaml#/~1practicalExamDays'
+  "/theoreticalExam/pass":
+    $ref: './examService.yaml#/~1theoreticalExam~1pass'
+  "/theoreticalExam/{id}/pass":
+    $ref: './examService.yaml#/~1theoreticalExam~1%7Bid%7D~1pass'
+  "/theoreticalExam/examAppeal":
+    $ref: './examService.yaml#/~1theoreticalExam~1examAppeal'
+  "/provisionalLicenses":
+    $ref: './examService.yaml#/~1provisionalLicenses'
+  "/provisionalLicenses/{id}":
+    $ref: './examService.yaml#/~1provisionalLicenses~1%7Bid%7D'
+
 
   "/api/{id}":
     get:

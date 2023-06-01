@@ -37,17 +37,21 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun getProvisionalLicenseHolder(routingContext: RoutingContext) {
-        try{
-            val dossierId = routingContext.request().getParam("id").toString()
-            val provisionalLicenseHandler = model.provisionalLicenseService.getProvisionalLicenseHolder(dossierId)
-            if (provisionalLicenseHandler == null){
-                routingContext.response()
-                    .setStatusCode(domainConversionTable.getHttpCode(DomainResponseStatus.ID_NOT_FOUND))
-                    .end(DomainResponseStatus.ID_NOT_FOUND.name)
-            }else routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK).end(cjson.encodeToString(provisionalLicenseHandler))
-        }catch (ex: Exception){
-            handleException(ex, routingContext)
+        GlobalScope.launch {
+            try {
+                val dossierId = routingContext.request().getParam("id").toString()
+                val provisionalLicenseHandler = model.provisionalLicenseService.getProvisionalLicenseHolder(dossierId)
+                if (provisionalLicenseHandler == null) {
+                    routingContext.response()
+                        .setStatusCode(domainConversionTable.getHttpCode(DomainResponseStatus.ID_NOT_FOUND))
+                        .end(DomainResponseStatus.ID_NOT_FOUND.name)
+                } else routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK)
+                    .end(cjson.encodeToString(provisionalLicenseHandler))
+            } catch (ex: Exception) {
+                handleException(ex, routingContext)
+            }
         }
     }
 }
