@@ -5,9 +5,6 @@ import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.PracticalExamDay
 import io.vertx.core.MultiMap
 import io.vertx.ext.web.RoutingContext
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.MissingFieldException
@@ -18,36 +15,32 @@ import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
 class RouteHandlersImpl(val model: Model) : RouteHandlers {
-    @OptIn(DelicateCoroutinesApi::class)
-    override suspend fun registerNewDrivingSlot(routingContext: RoutingContext) {
-        GlobalScope.launch {
-            try {
-                val insertResult =
-                    model.drivingService.saveNewDrivingSlot(Json.decodeFromString(routingContext.body().asString()))
-                routingContext
-                    .response()
-                    .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
-                    .end(insertResult.drivingSlotId ?: insertResult.domainResponseStatus.name)
 
-            } catch (ex: Exception) {
-                handleException(ex, routingContext)
-            }
+    override suspend fun registerNewDrivingSlot(routingContext: RoutingContext) {
+        try {
+            val insertResult =
+                model.drivingService.saveNewDrivingSlot(Json.decodeFromString(routingContext.body().asString()))
+            routingContext
+                .response()
+                .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
+                .end(insertResult.drivingSlotId ?: insertResult.domainResponseStatus.name)
+
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
         }
     }
-    @OptIn(DelicateCoroutinesApi::class)
+
     override suspend fun getOccupiedDrivingSlots(routingContext: RoutingContext) {
-        GlobalScope.launch {
-            try {
-                val result = model
-                    .drivingService
-                    .getOccupiedDrivingSlots(parseHeaderValues(routingContext.queryParams()))
-                routingContext
-                    .response()
-                    .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
-                    .end(result.drivingSlots ?: result.domainResponseStatus.name)
-            } catch (ex: Exception) {
-                handleException(ex, routingContext)
-            }
+        try {
+            val result = model
+                .drivingService
+                .getOccupiedDrivingSlots(parseHeaderValues(routingContext.queryParams()))
+            routingContext
+                .response()
+                .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
+                .end(result.drivingSlots ?: result.domainResponseStatus.name)
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
         }
     }
 
@@ -58,34 +51,37 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
         )
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun deleteDrivingSlot(routingContext: RoutingContext) {
-        GlobalScope.launch {
+        try {
             val result = model.drivingService.deleteDrivingSlot(routingContext.request().getParam("id").toString())
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))
                 .end(result.name)
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun postPracticalExamDay(routingContext: RoutingContext) {
-        GlobalScope.launch {
+        try {
             val result = model.practicalExamDomainService.registerPracticalExamDay(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))
                 .end(result.name)
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun getPracticalExamDays(routingContext: RoutingContext) {
-        GlobalScope.launch {
+        try {
             val response = model.practicalExamDomainService.getPracticalExamDays()
             val result = Json.encodeToString(ListSerializer(PracticalExamDay.serializer()), response.result.orEmpty())
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(response.status))
                 .end(result)
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
         }
     }
 
