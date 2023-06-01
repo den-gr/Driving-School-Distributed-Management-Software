@@ -54,10 +54,14 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
     }
 
     override suspend fun getNextTheoreticalExamAppeals(routingContext: RoutingContext) {
-        val result: NextTheoreticalExamAppeals = model.examService.getNextExamAppeals()
-        routingContext.response()
-            .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
-            .end(result.examAppeals ?: result.domainResponseStatus.name)
+        try {
+            val result: NextTheoreticalExamAppeals = model.examService.getNextExamAppeals()
+            routingContext.response()
+                .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
+                .end(result.examAppeals ?: result.domainResponseStatus.name)
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
+        }
     }
 
     override suspend fun putDossierInExamAppeal(routingContext: RoutingContext) {
@@ -68,5 +72,4 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
             handleException(ex, routingContext)
         }
     }
-
 }

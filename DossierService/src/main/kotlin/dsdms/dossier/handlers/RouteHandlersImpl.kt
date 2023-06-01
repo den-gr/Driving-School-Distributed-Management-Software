@@ -33,6 +33,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     }
 
     override suspend fun handleDossierIdReading(routingContext: RoutingContext) {
+        try{
             val result = model.dossierService.readDossierFromId(routingContext.request().getParam("id").toString())
             val payload = if (result.domainResponseStatus == DomainResponseStatus.OK || result.domainResponseStatus == DomainResponseStatus.DOSSIER_INVALID)
                 cjson.encodeToString(result.dossier)
@@ -41,18 +42,21 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                 .putHeader("Content-Type", "application/json")
                 .setStatusCode(getHttpCode(result.domainResponseStatus))
                 .end(payload)
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
+        }
     }
 
     override suspend fun handleDossierExamStatusUpdate(routingContext: RoutingContext) {
-            try {
-                val data: ExamResultEvent = Json.decodeFromString(routingContext.body().asString())
-                val updateResult: DomainResponseStatus =
-                    model.dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
-                routingContext.response().setStatusCode(getHttpCode(updateResult))
-                    .end(updateResult.name)
-            } catch (ex: Exception) {
-                handleException(ex, routingContext)
-            }
+        try {
+            val data: ExamResultEvent = Json.decodeFromString(routingContext.body().asString())
+            val updateResult: DomainResponseStatus =
+                model.dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
+            routingContext.response().setStatusCode(getHttpCode(updateResult))
+                .end(updateResult.name)
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
+        }
     }
 
     @OptIn(ExperimentalSerializationApi::class)

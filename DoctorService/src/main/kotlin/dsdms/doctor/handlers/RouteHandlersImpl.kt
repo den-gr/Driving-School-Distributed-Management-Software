@@ -40,11 +40,14 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
     }
 
     override suspend fun deleteDoctorSlot(routingContext: RoutingContext) {
-        val result = model.doctorService.deleteDoctorSlot(routingContext.request().getParam("dossierId").toString())
-        routingContext.response()
-            .setStatusCode(domainConversionTable.getHttpCode(result))
-            .end(result.toString())
-
+        try {
+            val result = model.doctorService.deleteDoctorSlot(routingContext.request().getParam("dossierId").toString())
+            routingContext.response()
+                .setStatusCode(domainConversionTable.getHttpCode(result))
+                .end(result.toString())
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
+        }
     }
 
     override suspend fun saveDoctorResult(routingContext: RoutingContext) {
