@@ -27,6 +27,9 @@ interface DossierService {
      * @param id: for a specific dossier
      * @return Dossier (could be null if id does not exist)
      * @see Dossier
+     *
+     * - DOSSIER_INVALID
+     * - OK
      */
     suspend fun readDossierFromId(id: String): GetDossierResult
 

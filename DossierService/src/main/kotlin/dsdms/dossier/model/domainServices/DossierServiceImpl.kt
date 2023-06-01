@@ -2,7 +2,6 @@ package dsdms.dossier.model.domainServices
 
 import dsdms.dossier.database.Repository
 import dsdms.dossier.handlers.getDomainCode
-import dsdms.dossier.handlers.repositoryToDomainConversionTable
 import dsdms.dossier.model.domainServices.subscriberCheck.SubscriberControls
 import dsdms.dossier.model.domainServices.subscriberCheck.SubscriberControlsImpl
 import dsdms.dossier.model.entities.Dossier
@@ -45,15 +44,16 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
         val dossier: Dossier? = repository.readDossierFromId(id)
         return if (dossier == null)
             GetDossierResult(DomainResponseStatus.ID_NOT_FOUND)
-        else
-            GetDossierResult(DomainResponseStatus.OK, dossier)
+        else if( dossier.validity.not() ) GetDossierResult(DomainResponseStatus.DOSSIER_INVALID, dossier)
+        else GetDossierResult(DomainResponseStatus.OK, dossier)
+
     }
 
     override suspend fun updateExamStatus(result: ExamResultEvent, id: String): DomainResponseStatus {
         val examsProgress = readDossierFromId(id).dossier?.examsStatus
         return try {
             val newExamState = getNewExamProgressState(result,examsProgress)
-            repositoryToDomainConversionTable.getDomainCode(repository.updateExamStatus(newExamState, id))
+            getDomainCode(repository.updateExamStatus(newExamState, id))
         }catch (ex: IllegalStateException){
             DomainResponseStatus.UPDATE_ERROR
         }

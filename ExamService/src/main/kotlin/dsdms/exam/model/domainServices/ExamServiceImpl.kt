@@ -5,7 +5,7 @@ import dsdms.exam.handlers.getDomainCode
 import dsdms.exam.handlers.repositoryToDomainConversionTable
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamAppeal
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
-import dsdms.exam.model.valueObjects.ExamPassData
+import dsdms.exam.model.valueObjects.DoctorApprovalEvent
 import dsdms.exam.model.valueObjects.TheoreticalExamAppealUpdate
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
@@ -24,13 +24,13 @@ data class NextTheoreticalExamAppeals(
     val examAppeals: String? = null)
 
 class ExamServiceImpl(private val repository: Repository) : ExamService {
-    private suspend fun verifyExamPass(documents: ExamPassData): DomainResponseStatus {
+    private suspend fun verifyExamPass(documents: DoctorApprovalEvent): DomainResponseStatus {
         return if (repository.dossierAlreadyHasOnePass(documents.dossierId))
             DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
         else DomainResponseStatus.OK
     }
 
-    private suspend fun createTheoreticalExamPass(documents: ExamPassData): TheoreticalExamPass =
+    private suspend fun createTheoreticalExamPass(documents: DoctorApprovalEvent): TheoreticalExamPass =
         repository.saveNewTheoreticalExamPass(
             TheoreticalExamPass(
                 documents.dossierId,
@@ -39,7 +39,7 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
             )
         )
 
-    override suspend fun saveNewTheoreticalExamPass(documents: ExamPassData): InsertTheoreticalExamPassResult {
+    override suspend fun saveNewTheoreticalExamPass(documents: DoctorApprovalEvent): InsertTheoreticalExamPassResult {
         val verifyResult = verifyExamPass(documents)
         return if (verifyResult == DomainResponseStatus.OK)
             InsertTheoreticalExamPassResult(verifyResult, Json.encodeToString(createTheoreticalExamPass(documents)))

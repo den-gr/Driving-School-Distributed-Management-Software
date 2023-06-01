@@ -18,14 +18,15 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.AGE_NOT_SUFFICIENT to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.NAME_SURNAME_NOT_STRING to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.DELETE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
-    DomainResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_CONFLICT
+    DomainResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_CONFLICT,
+    DomainResponseStatus.DOSSIER_INVALID to HttpURLConnection.HTTP_ACCEPTED
 
 )
 
-fun Map<RepositoryResponseStatus, DomainResponseStatus>.getDomainCode(repositoryResponseStatus: RepositoryResponseStatus): DomainResponseStatus {
+fun getDomainCode(repositoryResponseStatus: RepositoryResponseStatus): DomainResponseStatus {
     return repositoryToDomainConversionTable.getOrDefault(repositoryResponseStatus, DomainResponseStatus.OK)
 }
 
-fun Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {
+fun getHttpCode(domainResponseStatus: DomainResponseStatus): Int {
     return domainConversionTable.getOrDefault(domainResponseStatus, HttpURLConnection.HTTP_INTERNAL_ERROR)
 }

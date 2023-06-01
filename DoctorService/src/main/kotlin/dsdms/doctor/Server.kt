@@ -1,11 +1,11 @@
 package dsdms.doctor
 
+import dsdms.doctor.channels.ChannelsProviderImpl
 import dsdms.doctor.database.Repository
 import dsdms.doctor.database.RepositoryImpl
 import dsdms.doctor.handlers.RouteHandlers
 import dsdms.doctor.handlers.RouteHandlersImpl
 import dsdms.doctor.model.ModelImpl
-import dsdms.doctor.model.domainServices.vertxClient.VertxClientProvider
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
@@ -21,14 +21,10 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
 
     private val repository: Repository = RepositoryImpl(dbConnection)
 
-    private suspend fun initializeModel(): RouteHandlersImpl {
-        return RouteHandlersImpl(
-            ModelImpl(
-                repository,
-                VertxClientProvider(vertx).getDossierServiceClient(),
-                VertxClientProvider(vertx).getExamServiceClient()
-            )
-        )
+    private fun initializeModel(): RouteHandlersImpl {
+        val channelsProvider = ChannelsProviderImpl(vertx)
+        val model = ModelImpl(repository, channelsProvider)
+        return RouteHandlersImpl(model)
     }
 
     override suspend fun start() {

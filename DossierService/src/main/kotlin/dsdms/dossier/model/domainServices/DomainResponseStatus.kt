@@ -38,5 +38,6 @@ enum class DomainResponseStatus {
     MAX_ATTEMPTS_REACHED,
 
     DELETE_ERROR,
-    UPDATE_ERROR
+    UPDATE_ERROR,
+    DOSSIER_INVALID
 }

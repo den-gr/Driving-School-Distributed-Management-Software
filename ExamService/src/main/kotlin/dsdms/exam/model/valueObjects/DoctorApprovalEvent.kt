@@ -3,7 +3,7 @@ package dsdms.exam.model.valueObjects
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ExamPassData(
+data class DoctorApprovalEvent(
     val dossierId: String,
     val date: String
 )

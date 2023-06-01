@@ -65,8 +65,8 @@ class ExamPassTest : En {
             value = response?.body().toString()
         }
         Then("request finished with not success, with code {int} and message {word}") { code: Int, doctorMessage: String ->
-            assertEquals(code, statusCode)
             assertEquals(doctorMessage, value)
+            assertEquals(code, statusCode)
         }
         And("theoretical exam pass is not being created for {word}, receiving message {word} and code {int}") { id: String, message: String, code: Int ->
             val request = examService

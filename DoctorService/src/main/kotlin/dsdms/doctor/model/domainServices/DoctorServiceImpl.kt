@@ -1,5 +1,6 @@
 package dsdms.doctor.model.domainServices
 
+import dsdms.doctor.channels.ChannelsProvider
 import dsdms.doctor.database.Repository
 import dsdms.doctor.handlers.getDomainCode
 import dsdms.doctor.handlers.repositoryToDomainConversionTable
@@ -8,15 +9,12 @@ import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
 import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.ResultTypes
-import dsdms.exam.model.valueObjects.ExamPassData
+import dsdms.doctor.model.valueObjects.DoctorApprovalEvent
 import io.vertx.core.buffer.Buffer
-import io.vertx.ext.web.client.WebClient
-import io.vertx.kotlin.coroutines.await
 import kotlinx.datetime.toLocalTime
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.net.HttpURLConnection.HTTP_OK
 import java.time.LocalDate
 
 data class InsertDoctorVisitResult(
@@ -35,7 +33,7 @@ data class BookedDoctorSlots(
     }
 }
 
-class DoctorServiceImpl(private val repository: Repository, private val dossierServiceConnection: WebClient, private val examServiceConnection: WebClient) : DoctorService {
+class DoctorServiceImpl(private val repository: Repository, private val channelsProvider: ChannelsProvider) : DoctorService {
 
     private suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
         return if (checkDoctorDay(documents.date))
@@ -46,9 +44,7 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
             DomainResponseStatus.TIME_OCCUPIED
         else if (repository.getAllDoctorSlots(documents.dossierId, LocalDate.now()).isNotEmpty())
             DomainResponseStatus.DOSSIER_ALREADY_BOOKED
-        else if (dossierIdExist(documents.dossierId).not())
-            DomainResponseStatus.DOSSIER_NOT_EXIST
-        else DomainResponseStatus.OK
+        else channelsProvider.dossierServiceChannel.checkDossierValidity(documents.dossierId)
     }
 
     /**
@@ -72,14 +68,6 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
      */
     private suspend fun checkTimeAvailability(time: String, date: String): Boolean =
         getOccupiedDoctorSlots(date).getDoctorSlots().any { el -> el.time == time }
-
-    private suspend fun dossierIdExist(dossierId: String): Boolean {
-        return dossierServiceConnection
-            .get("/dossiers/$dossierId")
-            .send()
-            .await()
-            .statusCode() == HTTP_OK
-    }
 
     override suspend fun saveDoctorSlot(documents: DoctorSlot): InsertDoctorVisitResult {
         val verifyResult = verifyDocuments(documents)
@@ -111,11 +99,8 @@ class DoctorServiceImpl(private val repository: Repository, private val dossierS
     }
 
     private suspend fun createTheoreticalExamPass(document: DoctorResult): Boolean {
-        return examServiceConnection
-            .put("/theoreticalExam/pass")
-            .sendBuffer(createJson(ExamPassData(document.dossierId, document.date)))
-            .await()
-            .statusCode() == HTTP_OK
+        val doctorApprovalEvent = DoctorApprovalEvent(document.dossierId, document.date)
+        return channelsProvider.examServiceChannel.notifyAboutDoctorApproval(doctorApprovalEvent) == DomainResponseStatus.OK
     }
 
     private inline fun <reified T> createJson(docs: T): Buffer? {

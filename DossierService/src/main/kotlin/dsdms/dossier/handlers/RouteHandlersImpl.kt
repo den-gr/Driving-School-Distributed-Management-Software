@@ -29,7 +29,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                     model.dossierService.saveNewDossier(Json.decodeFromString(routingContext.body().asString()))
                 routingContext
                     .response()
-                    .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
+                    .setStatusCode(getHttpCode(insertResult.domainResponseStatus))
                     .end(insertResult.dossierId ?: insertResult.domainResponseStatus.name)
 
             } catch (ex: Exception) {
@@ -41,12 +41,12 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     override suspend fun handleDossierIdReading(routingContext: RoutingContext) {
         GlobalScope.launch {
             val result = model.dossierService.readDossierFromId(routingContext.request().getParam("id").toString())
-            val payload = if (result.domainResponseStatus == DomainResponseStatus.OK)
+            val payload = if (result.domainResponseStatus == DomainResponseStatus.OK || result.domainResponseStatus == DomainResponseStatus.DOSSIER_INVALID)
                 cjson.encodeToString(result.dossier)
             else result.domainResponseStatus.name
             routingContext.response()
                 .putHeader("Content-Type", "application/json")
-                .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
+                .setStatusCode(getHttpCode(result.domainResponseStatus))
                 .end(payload)
         }
     }
@@ -57,7 +57,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                 val data: ExamResultEvent = Json.decodeFromString(routingContext.body().asString())
                 val updateResult: DomainResponseStatus =
                     model.dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
-                routingContext.response().setStatusCode(domainConversionTable.getHttpCode(updateResult))
+                routingContext.response().setStatusCode(getHttpCode(updateResult))
                     .end(updateResult.name)
             } catch (ex: Exception) {
                 handleException(ex, routingContext)

@@ -15,9 +15,6 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.vertx.server)
     implementation(libs.bundles.kmongo)
-
-    implementation(project(":DossierService"))
-    implementation(project(":ExamService"))
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {

@@ -64,8 +64,12 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
     @OptIn(DelicateCoroutinesApi::class)
     override suspend fun saveDoctorResult(routingContext: RoutingContext) {
         GlobalScope.launch {
-            val result = model.doctorService.saveDoctorResult(Json.decodeFromString(routingContext.body().asString()))
-            routingContext.response().setStatusCode(domainConversionTable.getHttpCode(result)).end(result.toString())
+            try {
+                val result = model.doctorService.saveDoctorResult(Json.decodeFromString(routingContext.body().asString()))
+                routingContext.response().setStatusCode(domainConversionTable.getHttpCode(result)).end(result.toString())
+            }catch (ex: Exception) {
+                handleException(ex, routingContext)
+            }
         }
     }
 
