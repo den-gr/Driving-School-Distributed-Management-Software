@@ -31,17 +31,16 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
         }
     }
 
-
     override suspend fun getProvisionalLicenseHolder(routingContext: RoutingContext) {
         try {
             val dossierId = routingContext.request().getParam("id").toString()
-            val provisionalLicenseHandler = model.provisionalLicenseService.getProvisionalLicenseHolder(dossierId)
-            if (provisionalLicenseHandler == null) {
+            val provisionalLicenseHolder = model.provisionalLicenseService.getProvisionalLicenseHolder(dossierId)
+            if (provisionalLicenseHolder == null) {
                 routingContext.response()
                     .setStatusCode(domainConversionTable.getHttpCode(DomainResponseStatus.ID_NOT_FOUND))
                     .end(DomainResponseStatus.ID_NOT_FOUND.name)
             } else routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK)
-                .end(cjson.encodeToString(provisionalLicenseHandler))
+                .end(cjson.encodeToString(provisionalLicenseHolder))
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }

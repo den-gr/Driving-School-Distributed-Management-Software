@@ -5,7 +5,6 @@ import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.LicensePlate
 import dsdms.driving.model.valueObjects.PracticalExamDay
-import kotlinx.datetime.LocalDate
 
 interface Repository {
 
@@ -52,17 +51,19 @@ interface Repository {
     suspend fun deleteDrivingSlot(drivingSlotId: String): RepositoryResponseStatus
 
     /**
-     * TODO
+     * Registers a new practical exam day into db
      */
     suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay)
 
     /**
-     * TODO
+     * @return list, eventually empty, containing all practical exam days
      */
     suspend fun getPracticalExamDays(): List<PracticalExamDay>
 
     /**
-     * TODO
+     * @since each dossier id to do an exam, have to be completed at least 12 driving slot
+     * @param dossierId
+     * @return number of past driving slots made by the given dossier id
      */
     suspend fun countPastDrivingSlots(dossierId: String): Int
 }

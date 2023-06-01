@@ -56,6 +56,13 @@ enum class DomainResponseStatus {
      */
     ALREADY_DEFINED_AS_PRACTICAL_EXAM_DAY,
 
+    /**
+     * When saving a new driving slot (exam type), the dossier does not have minimum number of driving slots
+     */
     NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM,
+
+    /**
+     * Practical exams can be booked only in practical exam days
+     */
     NOT_AN_EXAM_DAY
 }

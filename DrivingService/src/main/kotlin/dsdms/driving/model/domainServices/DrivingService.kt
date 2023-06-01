@@ -30,8 +30,7 @@ interface DrivingService {
     suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DrivingSlotRegistrationResult
 
     /**
-     * @return list of all booked driving slots
-     * in a given date and optionally with a specific instructor Id (list could be empty)
+     * @return list of all booked driving slots in a given date and optionally with a specific instructor Id (list could be empty)
      * @param docs: GetDrivingSlotDocs
      * @see DrivingSlotsRequest
      */

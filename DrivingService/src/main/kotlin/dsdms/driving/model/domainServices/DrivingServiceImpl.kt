@@ -32,7 +32,6 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
         if(numCompletedDrivingLessons  < MIN_NUMBER_OF_DRIVING_LESSONS){
             return DrivingSlotRegistrationResult(DomainResponseStatus.NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM)
         }else if(!repository.getPracticalExamDays().toList().map(PracticalExamDay::date).contains(documents.date)){
-            //Practical exams can be booked only in practical exam days
             return DrivingSlotRegistrationResult(DomainResponseStatus.NOT_AN_EXAM_DAY)
         }
         return DrivingSlotRegistrationResult(DomainResponseStatus.OK, repository.createDrivingSlot(createRegularDrivingSlot(documents)))

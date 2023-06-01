@@ -7,6 +7,12 @@ import kotlinx.serialization.SerializationException
 import java.net.HttpURLConnection
 
 interface Handlers {
+
+    /**
+     * To handle exceptions in route handlers
+     * @param ex -> exception type to be caught
+     * @param routingContext -> where to send message if some exceptions occurs
+     */
     @OptIn(ExperimentalSerializationApi::class)
     fun handleException(ex: Exception, routingContext: RoutingContext){
         println("Error message: ${ex.message}")

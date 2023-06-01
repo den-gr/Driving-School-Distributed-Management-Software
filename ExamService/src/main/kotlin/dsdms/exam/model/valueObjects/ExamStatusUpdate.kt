@@ -10,6 +10,7 @@ enum class Exam{
 enum class ExamOutcome{
     PASSED, FAIL
 }
+
 /**
  * Represents documents that need to be passed to update exam status
  * @param exam: could be THEORETICAL or PRACTICAL

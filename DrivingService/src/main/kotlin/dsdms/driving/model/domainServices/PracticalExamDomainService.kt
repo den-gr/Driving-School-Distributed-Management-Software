@@ -15,8 +15,8 @@ interface PracticalExamDomainService {
      * Set a day as a practical exam day
      * @param practicalExamDay exam day details
      * @return
-     * - ALREADY_DEFINED_AS_PRACTICAL_EXAM_DAY if day is already set as practical exam day
-     * - OK otherwise
+     * - ALREADY_DEFINED_AS_PRACTICAL_EXAM_DAY -> day is already set as practical exam day
+     * - OK -> otherwise
      */
     suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay): DomainResponseStatus
 
