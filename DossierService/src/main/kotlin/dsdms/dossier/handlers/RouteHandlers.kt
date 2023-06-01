@@ -1,10 +1,8 @@
 package dsdms.dossier.handlers
 
 import io.vertx.ext.web.RoutingContext
-import kotlinx.coroutines.DelicateCoroutinesApi
 import dsdms.dossier.model.domainServices.DossierService
 
-@DelicateCoroutinesApi
 interface RouteHandlers {
 
     /**
