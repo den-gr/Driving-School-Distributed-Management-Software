@@ -16,7 +16,7 @@ import kotlin.test.assertNotNull
     features = ["src/main/resources/features/exam/examTest.feature"],
     plugin = ["pretty", "summary"]
 )
-class ExamTest: En {
+class ExamEventTest: En {
     private val client: WebClient = VertxProviderImpl().getExamServiceClient()
     private var value: Int = -1
 

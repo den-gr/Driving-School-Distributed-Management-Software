@@ -7,6 +7,14 @@ import kotlinx.serialization.SerializationException
 import java.net.HttpURLConnection
 
 interface Handlers {
+    /**
+     * Extract id parameter from uri
+     * @param routingContext
+     * @return dossierId
+     */
+    fun getDossierId(routingContext: RoutingContext): String{
+        return routingContext.request().getParam("id").toString()
+    }
 
     /**
      * To handle exceptions in route handlers

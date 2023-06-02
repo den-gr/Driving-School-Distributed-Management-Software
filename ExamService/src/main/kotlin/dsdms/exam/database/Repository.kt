@@ -30,7 +30,7 @@ interface Repository {
      * @return Repository response status:
      *  - OK -> delete was successful
      *  - DELETE_ERROR -> deleting was not acknowledged
-     *  - PASS_NOT_FOUND_FOR_ID -> no theoretical exam passes were found for the given dossier id
+     *  - ID_NOT_FOUND -> no theoretical exam passes were found for the given dossier id
      */
     suspend fun deleteTheoreticalExamPass(dossierId: String): RepositoryResponseStatus
 
@@ -70,4 +70,13 @@ interface Repository {
      * @return provisional license holder registered for the given dossier id, null otherwise
      */
     suspend fun findProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder?
+
+    /**
+     * @param dossierId
+     * @return Repository response status:
+     *  - OK -> delete was successful
+     *  - DELETE_ERROR -> deleting was not acknowledged
+     *  - ID_NOT_FOUND -> no theoretical exam passes were found for the given dossier id
+     */
+    suspend fun deleteProvisionalLicenseHolder(dossierId: String): RepositoryResponseStatus
 }

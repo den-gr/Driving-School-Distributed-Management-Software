@@ -1,7 +1,7 @@
 package dsdms.dossier.model.domainServices
 
 import dsdms.dossier.model.entities.Dossier
-import dsdms.dossier.model.valueObjects.ExamResultEvent
+import dsdms.dossier.model.valueObjects.ExamEvent
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
 
 /**
@@ -34,12 +34,11 @@ interface DossierService {
     suspend fun readDossierFromId(id: String): GetDossierResult
 
     /**
-     * @param result exam result that contains type and outcome of exam
-     * @see ExamResultEvent
+     * @param event that notify what happens
      * @return RepositoryResponseStatus: <br/>
      *
      * - UPDATE_ERROR --> some error occurred (result was not acknowledge)
      * - OK otherwise
      */
-    suspend fun updateExamStatus(result: ExamResultEvent, id: String): DomainResponseStatus
+    suspend fun updateExamStatus(event: ExamEvent, id: String): DomainResponseStatus
 }

@@ -14,7 +14,7 @@ enum class RepositoryResponseStatus {
     /**
      * Not found any theoretical exam pass, for the given dossier id
      */
-    PASS_NOT_FOUND_FOR_ID,
+    ID_NOT_FOUND,
 
     /**
      * New exam day insert, was not acknowledged

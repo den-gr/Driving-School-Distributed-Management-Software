@@ -24,7 +24,7 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
 
     override suspend fun getTheoreticalExamPass(routingContext: RoutingContext) {
         try {
-            val retrievedTheoreticalExamPass: TheoreticalExamPass? = model.examService.readTheoreticalExamPass(routingContext.request().getParam("id").toString())
+            val retrievedTheoreticalExamPass: TheoreticalExamPass? = model.examService.readTheoreticalExamPass(getDossierId(routingContext))
             if (retrievedTheoreticalExamPass == null)
                 routingContext.response()
                     .setStatusCode(domainConversionTable.getHttpCode(DomainResponseStatus.ID_NOT_FOUND))
@@ -37,7 +37,7 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
 
     override suspend fun deleteTheoreticalExamPass(routingContext: RoutingContext) {
         try {
-            val deleteResult: DomainResponseStatus = model.examService.deleteTheoreticalExamPass(routingContext.request().getParam("id").toString())
+            val deleteResult: DomainResponseStatus = model.examService.deleteTheoreticalExamPass(getDossierId(routingContext))
             routingContext.response().setStatusCode(domainConversionTable.getHttpCode(deleteResult)).end(deleteResult.name)
         } catch (ex: Exception) {
             handleException(ex, routingContext)

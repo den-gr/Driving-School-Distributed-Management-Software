@@ -56,6 +56,10 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
         return provisionalLicenseHolders.findOne (ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId)
     }
 
+    override suspend fun deleteProvisionalLicenseHolder(dossierId: String): RepositoryResponseStatus {
+        return handleDeleteResult(provisionalLicenseHolders.deleteOne(ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId))
+    }
+
     private fun handleUpdateResult(updateResult: UpdateResult): RepositoryResponseStatus {
         return if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged()) {
             RepositoryResponseStatus.UPDATE_ERROR
@@ -74,7 +78,7 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
         return if (deleteOne.wasAcknowledged().not())
             RepositoryResponseStatus.DELETE_ERROR
         else if (deleteOne.deletedCount.toInt() == 0)
-            RepositoryResponseStatus.PASS_NOT_FOUND_FOR_ID
+            RepositoryResponseStatus.ID_NOT_FOUND
         else RepositoryResponseStatus.OK
     }
 }

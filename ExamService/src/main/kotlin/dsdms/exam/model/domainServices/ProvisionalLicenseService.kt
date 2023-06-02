@@ -32,4 +32,9 @@ interface ProvisionalLicenseService {
      *  - ID_NOT_FOUND provisional license not found
      */
     suspend fun isProvisionalLicenseValid(dossierId: String, date: LocalDate): DomainResponseStatus
+
+    /**
+     * todo
+     */
+    suspend fun incrementProvisionalLicenseFailures(dossierId: String): DomainResponseStatus
 }

@@ -34,4 +34,9 @@ interface ProvisionalLicenseHandlers : Handlers {
      *  - 500 -> Exceptions caught
      */
     suspend fun isProvisionalLicenseValidHandler(routingContext: RoutingContext)
+
+    /**
+     * todo
+     */
+    suspend fun updateProvisionalLicenseHolder(routingContext: RoutingContext)
 }

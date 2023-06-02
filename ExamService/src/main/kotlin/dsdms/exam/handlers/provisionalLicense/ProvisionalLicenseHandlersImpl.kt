@@ -34,7 +34,7 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
 
     override suspend fun getProvisionalLicenseHolder(routingContext: RoutingContext) {
         try {
-            val dossierId = routingContext.request().getParam("id").toString()
+            val dossierId = getDossierId(routingContext)
             val provisionalLicenseHolder = model.provisionalLicenseService.getProvisionalLicenseHolder(dossierId)
             if (provisionalLicenseHolder == null) {
                 routingContext.response()
@@ -49,7 +49,7 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
 
     override suspend fun isProvisionalLicenseValidHandler(routingContext: RoutingContext) {
         try{
-            val dossierId = routingContext.request().getParam("id").toString()
+            val dossierId = getDossierId(routingContext)
             val date = LocalDate.parse(routingContext.queryParams().get("date"))
             println("Parsed date $date")
             val result = model.provisionalLicenseService.isProvisionalLicenseValid(dossierId, date)
@@ -60,4 +60,16 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
             handleException(ex, routingContext)
         }
     }
+
+    override suspend fun updateProvisionalLicenseHolder(routingContext: RoutingContext) {
+        try {
+            val dossierId = getDossierId(routingContext)
+            val result = model.provisionalLicenseService.incrementProvisionalLicenseFailures(dossierId)
+            println(result)
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
+        }
+    }
+
+
 }

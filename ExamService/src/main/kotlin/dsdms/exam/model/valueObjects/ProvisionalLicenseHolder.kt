@@ -37,6 +37,10 @@ data class ProvisionalLicenseHolder(val provisionalLicense: ProvisionalLicense, 
         return date in provisionalLicense.startValidity..provisionalLicense.endValidity
     }
 
+    fun hasMaxAttempts(): Boolean{
+        return  practicalExamAttempts == MAX_PRACTICAL_EXAM_ATTEMPTS
+    }
+
     private fun checkPracticalExamAttempts(){
         if (practicalExamAttempts < 0 || practicalExamAttempts > MAX_PRACTICAL_EXAM_ATTEMPTS){
             throw IllegalStateException("Illegal number of practical exam attempts")

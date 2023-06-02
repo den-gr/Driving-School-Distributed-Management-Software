@@ -21,7 +21,7 @@ import kotlin.test.assertEquals
     features = ["src/main/resources/features/exam/theoreticalExamTest.feature"],
     plugin = ["pretty", "summary"]
 )
-class TheoreticalExamTest: En {
+class TheoreticalExamTestEvent: En {
     private val client: WebClient = VertxProviderImpl().getExamServiceClient()
     private var statusMessage: String = ""
     private var statusCode: Int? = null

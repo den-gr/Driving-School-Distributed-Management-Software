@@ -3,20 +3,6 @@ package dsdms.dossier.model.valueObjects
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class Exam{
-    THEORETICAL, PRACTICAL
+enum class ExamEvent{
+    THEORETICAL_EXAM_PASSED, PROVISIONAL_LICENSE_INVALIDATION, PRACTICAL_EXAM_PASSED
 }
-
-enum class ExamOutcome{
-    PASSED, FAIL
-}
-/**
- * Represents documents that need to be passed to update exam status
- * @param exam: could be THEORETICAL or PRACTICAL
- * @param outcome: could be PASSED or FAIL
- */
-@Serializable
-data class ExamResultEvent(
-    val exam: Exam,
-    val outcome: ExamOutcome
-)

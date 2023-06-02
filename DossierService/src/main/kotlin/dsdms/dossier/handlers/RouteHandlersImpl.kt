@@ -2,8 +2,7 @@ package dsdms.dossier.handlers
 
 import dsdms.dossier.model.Model
 import dsdms.dossier.model.domainServices.DomainResponseStatus
-import dsdms.dossier.model.valueObjects.ExamResultEvent
-
+import dsdms.dossier.model.valueObjects.ExamEvent
 import io.vertx.ext.web.RoutingContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.MissingFieldException
@@ -49,7 +48,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
 
     override suspend fun handleDossierExamStatusUpdate(routingContext: RoutingContext) {
         try {
-            val event: ExamResultEvent = Json.decodeFromString(routingContext.body().asString())
+            val event: ExamEvent = ExamEvent.valueOf(routingContext.body().asString())
             val updateResult: DomainResponseStatus =
                 model.dossierService.updateExamStatus(event, routingContext.request().getParam("id").toString())
             routingContext.response()

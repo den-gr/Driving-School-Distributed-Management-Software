@@ -5,9 +5,7 @@ import dsdms.exam.database.Repository
 import dsdms.exam.handlers.getDomainCode
 import dsdms.exam.handlers.repositoryToDomainConversionTable
 import dsdms.exam.model.entities.ProvisionalLicense
-import dsdms.exam.model.valueObjects.Exam
-import dsdms.exam.model.valueObjects.ExamOutcome
-import dsdms.exam.model.valueObjects.ExamResultEvent
+import dsdms.exam.model.valueObjects.ExamEvent
 import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
 import kotlinx.datetime.LocalDate
 
@@ -17,7 +15,7 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository, private 
             return DomainResponseStatus.PROVISIONAL_LICENSE_ALREADY_EXISTS
         }
         val eventNotificationResult = channelsProvider.dossierServiceChannel
-            .updateExamStatus(provisionalLicense.dossierId, ExamResultEvent(Exam.THEORETICAL, ExamOutcome.PASSED))
+            .updateExamStatus(provisionalLicense.dossierId, examEvent = ExamEvent.THEORETICAL_EXAM_PASSED)
 
         if(eventNotificationResult != DomainResponseStatus.OK){
             return eventNotificationResult
@@ -34,6 +32,19 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository, private 
         val provisionalLicenseHolder = getProvisionalLicenseHolder(dossierId) ?: return DomainResponseStatus.ID_NOT_FOUND
         return if(provisionalLicenseHolder.isValidOn(date)) DomainResponseStatus.OK
             else DomainResponseStatus.PROVISIONAL_LICENSE_NOT_VALID
+    }
+
+    override suspend fun incrementProvisionalLicenseFailures(dossierId: String): DomainResponseStatus {
+        val provisionalLicenseHolder = getProvisionalLicenseHolder(dossierId) ?: return DomainResponseStatus.ID_NOT_FOUND
+        val holder = provisionalLicenseHolder.registerPracticalExamFailure()
+        if(holder.hasMaxAttempts()){
+            val status = repositoryToDomainConversionTable.getDomainCode(repository.deleteProvisionalLicenseHolder(dossierId))
+            if(status == DomainResponseStatus.OK){
+                channelsProvider.dossierServiceChannel.updateExamStatus(dossierId, ExamEvent.PROVISIONAL_LICENSE_INVALIDATION)
+            }
+            return status
+        }
+        return DomainResponseStatus.OK
     }
 
     private suspend fun areThereAnotherProvisionalLicense(dossierId: String): Boolean{

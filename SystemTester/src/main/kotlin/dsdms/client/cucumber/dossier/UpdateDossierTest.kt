@@ -3,7 +3,6 @@ package dsdms.client.cucumber.dossier
 import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
-import dsdms.client.utils.createJson
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.*
 import io.cucumber.java8.En
@@ -46,7 +45,7 @@ class UpdateDossierTest : En {
 
         When("i read his {word} exam progress state is {word}") { type: String, state: String->
             assertNotNull(retrievedDossier)
-            if (type == Exam.THEORETICAL.name) {
+            if (type == ExamEvent.THEORETICAL_EXAM_PASSED.name) {
                 retrievedDossier?.examsStatus?.let { assertEquals(TheoreticalExamState.valueOf(state), it.theoreticalExamState) }
             } else {
                 retrievedDossier?.examsStatus?.let { assertEquals(PracticalExamState.valueOf(state), it.practicalExamState) }
@@ -56,7 +55,7 @@ class UpdateDossierTest : En {
         Then("trying to register {word} exam state as passed") { type: String->
             val request = client
                 .put("/dossiers/$dossier/examStatus")
-                .sendBuffer(createJson(ExamResultEvent(Exam.valueOf(type), ExamOutcome.PASSED)))
+                .sendBuffer(Buffer.buffer(type))
             val response = sleeper.waitResult(request)
 
             checkResponse(response)
@@ -73,7 +72,7 @@ class UpdateDossierTest : En {
             val response = sleeper.waitResult(request)
             checkResponse(response)
             retrievedDossier = Json.decodeFromString(response?.body().toString())
-            if (type == Exam.THEORETICAL.name) {
+            if (type == ExamEvent.THEORETICAL_EXAM_PASSED.name) {
                 retrievedDossier?.examsStatus?.let { assertEquals(TheoreticalExamState.valueOf(newState), it.theoreticalExamState) }
             } else {
                 retrievedDossier?.examsStatus?.let { assertEquals(PracticalExamState.valueOf(newState), it.practicalExamState) }

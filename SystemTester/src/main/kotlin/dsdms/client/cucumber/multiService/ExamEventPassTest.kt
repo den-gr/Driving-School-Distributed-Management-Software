@@ -20,7 +20,7 @@ import kotlin.test.assertEquals
     features = ["src/main/resources/features/multiService/theoreticalExamPassTest.feature"],
     plugin = ["pretty", "summary"]
 )
-class ExamPassTest : En {
+class ExamEventPassTest : En {
     private val doctorService: WebClient = VertxProviderImpl().getDoctorServiceClient()
     private val examService: WebClient = VertxProviderImpl().getExamServiceClient()
     private var value: String = ""

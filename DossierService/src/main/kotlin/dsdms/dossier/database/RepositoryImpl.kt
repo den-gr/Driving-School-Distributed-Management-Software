@@ -45,10 +45,6 @@ class RepositoryImpl(dossierServiceDb: CoroutineDatabase) : Repository {
         )
     }
 
-//    override suspend fun updateExamAttempts(dossierId: String, examAttempts: PracticalExamAttempts): RepositoryResponseStatus {
-//        return handleUpdateResults(dossiers.updateOne((Dossier::_id eq dossierId), setValue(Dossier::examAttempts, examAttempts)))
-//    }
-
     private fun handleDeleteResult(deleteResult: DeleteResult): RepositoryResponseStatus {
         return if (!deleteResult.wasAcknowledged() || deleteResult.deletedCount.toInt() == 0) {
             RepositoryResponseStatus.DELETE_ERROR

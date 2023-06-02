@@ -49,27 +49,22 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
 
     }
 
-    override suspend fun updateExamStatus(result: ExamResultEvent, id: String): DomainResponseStatus {
+    override suspend fun updateExamStatus(event: ExamEvent, id: String): DomainResponseStatus {
         val examsProgress = readDossierFromId(id).dossier?.examsStatus
         return try {
-            val newExamState = getNewExamProgressState(result,examsProgress)
+            val newExamState = getNewExamProgressState(event,examsProgress)
             getDomainCode(repository.updateExamStatus(newExamState, id))
         }catch (ex: IllegalStateException){
             DomainResponseStatus.UPDATE_ERROR
         }
     }
 
-    private fun getNewExamProgressState(result: ExamResultEvent, currentExamsStatus: ExamsStatus?):ExamsStatus?{
-        return if (result.exam == Exam.THEORETICAL) {
-            if(result.outcome == ExamOutcome.PASSED){
-                currentExamsStatus?.registerTheoreticalExamPassed()
-            }else{
-                throw IllegalStateException("Theoretical exam fail is not manged")
-            }
-        } else if(result.exam == Exam.PRACTICAL && result.outcome == ExamOutcome.PASSED){
-            currentExamsStatus?.registerPracticalExamPassed()
-        }else{
-            currentExamsStatus?.registerProvisionalLicenceInvalidation()
+    private fun getNewExamProgressState(event: ExamEvent, currentExamsStatus: ExamsStatus?):ExamsStatus?{
+        return when(event) {
+            ExamEvent.THEORETICAL_EXAM_PASSED -> currentExamsStatus?.registerTheoreticalExamPassed()
+            ExamEvent.PRACTICAL_EXAM_PASSED -> currentExamsStatus?.registerPracticalExamPassed()
+            ExamEvent.PROVISIONAL_LICENSE_INVALIDATION ->
+                currentExamsStatus?.registerProvisionalLicenceInvalidation()
         }
     }
 }

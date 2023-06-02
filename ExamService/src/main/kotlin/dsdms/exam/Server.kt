@@ -59,6 +59,7 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
 
         router.post("/provisionalLicences").coroutineHandler(provisionalLicenseHandlersImpl::registerProvisionalLicence)
         router.get("/provisionalLicences/:id").coroutineHandler(provisionalLicenseHandlersImpl::getProvisionalLicenseHolder)
+        router.put("/provisionalLicences/:id").coroutineHandler(provisionalLicenseHandlersImpl::updateProvisionalLicenseHolder)
         router.get("/provisionalLicences/:id/validity").coroutineHandler(provisionalLicenseHandlersImpl::isProvisionalLicenseValidHandler)
     }
 

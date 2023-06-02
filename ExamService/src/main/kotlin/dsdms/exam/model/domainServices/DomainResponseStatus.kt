@@ -74,5 +74,15 @@ enum class DomainResponseStatus {
     /**
      * Indicate that provisional license is not valid on requested date
      */
-    PROVISIONAL_LICENSE_NOT_VALID
+    PROVISIONAL_LICENSE_NOT_VALID,
+
+    /**
+     * Indicate that operation can not be done because dossier is not valid
+     */
+    DOSSIER_NOT_VALID,
+
+    /**
+     * Indicate that operation can not be done because dossier do not exist
+     */
+    DOSSIER_NOT_EXIST
 }
