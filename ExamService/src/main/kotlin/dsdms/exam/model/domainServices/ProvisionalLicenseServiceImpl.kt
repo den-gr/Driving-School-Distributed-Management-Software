@@ -23,7 +23,7 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository, private 
             return eventNotificationResult
         }
         return repositoryToDomainConversionTable.getDomainCode(
-            repository.saveProvisionalLicenseHolder(ProvisionalLicenseHolder(provisionalLicense = provisionalLicense)))
+            repository.saveProvisionalLicenseHolder(ProvisionalLicenseHolder(provisionalLicense)))
     }
 
     override suspend fun getProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder? {
@@ -32,7 +32,7 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository, private 
 
     override suspend fun isProvisionalLicenseValid(dossierId: String, date: LocalDate): DomainResponseStatus {
         val provisionalLicenseHolder = getProvisionalLicenseHolder(dossierId) ?: return DomainResponseStatus.ID_NOT_FOUND
-        return if(provisionalLicenseHolder.provisionalLicense.isValidOn(date)) DomainResponseStatus.OK
+        return if(provisionalLicenseHolder.isValidOn(date)) DomainResponseStatus.OK
             else DomainResponseStatus.PROVISIONAL_LICENSE_NOT_VALID
     }
 

@@ -21,19 +21,19 @@ class ProvisionalLicenseTest {
     @Test
     fun checkProvisionalLicenseValidity(){
         val date = LocalDate.parse("2023-10-12")
-        val provisionalLicense = ProvisionalLicense("d1", date)
-        assertEquals(provisionalLicense.endValidity, LocalDate.parse("2024-10-12"))
-        assertTrue(provisionalLicense.isValidOn(LocalDate.parse("2023-10-12")))
-        assertTrue(provisionalLicense.isValidOn(LocalDate.parse("2023-11-12")))
-        assertTrue(provisionalLicense.isValidOn(LocalDate.parse("2023-11-13")))
-        assertTrue(provisionalLicense.isValidOn(LocalDate.parse("2024-10-12")))
-        assertFalse(provisionalLicense.isValidOn(LocalDate.parse("2024-10-13")))
-        assertFalse(provisionalLicense.isValidOn(LocalDate.parse("2023-10-11")))
+        val provisionalLicenseHolder = ProvisionalLicenseHolder(ProvisionalLicense("d1", date))
+        assertEquals(provisionalLicenseHolder.provisionalLicense.endValidity, LocalDate.parse("2024-10-12"))
+        assertTrue(provisionalLicenseHolder.isValidOn(LocalDate.parse("2023-10-12")))
+        assertTrue(provisionalLicenseHolder.isValidOn(LocalDate.parse("2023-11-12")))
+        assertTrue(provisionalLicenseHolder.isValidOn(LocalDate.parse("2023-11-13")))
+        assertTrue(provisionalLicenseHolder.isValidOn(LocalDate.parse("2024-10-12")))
+        assertFalse(provisionalLicenseHolder.isValidOn(LocalDate.parse("2024-10-13")))
+        assertFalse(provisionalLicenseHolder.isValidOn(LocalDate.parse("2023-10-11")))
     }
 
     @Test
     fun serialization(){
-        val jsonString = """{"practicalExamAttempts":0,"provisionalLicense":{"dossierId":"d5","startValidity":"2022-11-25","endValidity":"2023-11-25"}}"""
+        val jsonString = """{"provisionalLicense":{"dossierId":"d5","startValidity":"2022-11-25","endValidity":"2023-11-25"},"practicalExamAttempts":0}"""
         val holder: ProvisionalLicenseHolder? = mjson.decodeFromString(jsonString)
         println(holder)
         assertEquals(jsonString, mjson.encodeToString(holder))

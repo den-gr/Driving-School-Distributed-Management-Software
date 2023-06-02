@@ -122,44 +122,44 @@ drivingDB.Vehicle.insertMany([
 examDB = db.getSiblingDB('exam_service');
 examDB.createCollection('ProvisionalLicenseHolders');
 examDB.ProvisionalLicenseHolders.insertMany([
-    {
-        "practicalExamAttempts": 0,
+      {
         "provisionalLicense": {
           "dossierId": "d1",
           "startValidity": new Date("2023-01-25"),
-          "endValidity": new Date(new Date("2024-01-25"))
-        }
-    },
-    {
-        "practicalExamAttempts": 0,
+          "endValidity": new Date("2024-01-25")
+        },
+        "practicalExamAttempts": 0
+      },
+      {
         "provisionalLicense": {
           "dossierId": "d2",
           "startValidity": new Date("2023-01-25"),
           "endValidity": new Date("2024-01-25")
-        }
-    },
-    {
-        "practicalExamAttempts": 0,
+        },
+        "practicalExamAttempts": 0
+      },
+      {
         "provisionalLicense": {
           "dossierId": "d3",
           "startValidity": new Date("2023-01-25"),
           "endValidity": new Date("2024-01-25")
-        }
-    },
-    {
-        "practicalExamAttempts": 0,
+        },
+        "practicalExamAttempts": 0
+      },
+      {
         "provisionalLicense": {
           "dossierId": "d4",
           "startValidity": new Date("2023-01-25"),
           "endValidity": new Date("2024-01-25")
-        }
-    },
-    {
-        "practicalExamAttempts": 0,
+        },
+        "practicalExamAttempts": 0
+      },
+      {
         "provisionalLicense": {
           "dossierId": "d5",
-          "startValidity":  new Date("2022-11-25"),
-          "endValidity":  new Date("2023-11-25")
-        }
-    }
+          "startValidity": new Date("2022-11-25"),
+          "endValidity": new Date("2023-11-25")
+        },
+        "practicalExamAttempts": 0
+      }
 ]);

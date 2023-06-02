@@ -49,10 +49,11 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
 
     override suspend fun handleDossierExamStatusUpdate(routingContext: RoutingContext) {
         try {
-            val data: ExamResultEvent = Json.decodeFromString(routingContext.body().asString())
+            val event: ExamResultEvent = Json.decodeFromString(routingContext.body().asString())
             val updateResult: DomainResponseStatus =
-                model.dossierService.updateExamStatus(data, routingContext.request().getParam("id").toString())
-            routingContext.response().setStatusCode(getHttpCode(updateResult))
+                model.dossierService.updateExamStatus(event, routingContext.request().getParam("id").toString())
+            routingContext.response()
+                .setStatusCode(getHttpCode(updateResult))
                 .end(updateResult.name)
         } catch (ex: Exception) {
             handleException(ex, routingContext)
@@ -66,9 +67,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
             is SerializationException, is MissingFieldException -> {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
             }
-            else ->{
-                routingContext.response().setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR).end(ex.message)
-            }
+            else -> routingContext.response().setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR).end(ex.message)
         }
     }
 }
