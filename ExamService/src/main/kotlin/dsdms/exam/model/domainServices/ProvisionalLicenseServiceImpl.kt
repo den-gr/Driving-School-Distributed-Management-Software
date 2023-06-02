@@ -15,7 +15,7 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository, private 
             return DomainResponseStatus.PROVISIONAL_LICENSE_ALREADY_EXISTS
         }
         val eventNotificationResult = channelsProvider.dossierServiceChannel
-            .updateExamStatus(provisionalLicense.dossierId, examEvent = ExamEvent.THEORETICAL_EXAM_PASSED)
+            .updateExamStatus(provisionalLicense.dossierId, ExamEvent.THEORETICAL_EXAM_PASSED)
 
         if(eventNotificationResult != DomainResponseStatus.OK){
             return eventNotificationResult
@@ -40,11 +40,23 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository, private 
         if(holder.hasMaxAttempts()){
             val status = repositoryToDomainConversionTable.getDomainCode(repository.deleteProvisionalLicenseHolder(dossierId))
             if(status == DomainResponseStatus.OK){
-                channelsProvider.dossierServiceChannel.updateExamStatus(dossierId, ExamEvent.PROVISIONAL_LICENSE_INVALIDATION)
+                return channelsProvider.dossierServiceChannel.updateExamStatus(dossierId, ExamEvent.PROVISIONAL_LICENSE_INVALIDATION)
             }
             return status
         }
         return DomainResponseStatus.OK
+    }
+
+    override suspend fun practicalExamSuccess(dossierId: String): DomainResponseStatus {
+        val isDossierValidResult = channelsProvider.dossierServiceChannel.checkDossierValidity(dossierId)
+        if(isDossierValidResult == DomainResponseStatus.OK){
+            val updateExamStateResult = channelsProvider.dossierServiceChannel.updateExamStatus(dossierId, ExamEvent.PRACTICAL_EXAM_PASSED)
+            if(updateExamStateResult == DomainResponseStatus.OK){
+                return repositoryToDomainConversionTable.getDomainCode(repository.deleteProvisionalLicenseHolder(dossierId))
+            }
+            return updateExamStateResult
+        }
+        return isDossierValidResult
     }
 
     private suspend fun areThereAnotherProvisionalLicense(dossierId: String): Boolean{

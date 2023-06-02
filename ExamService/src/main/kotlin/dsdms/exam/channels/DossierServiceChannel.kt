@@ -9,15 +9,21 @@ import java.lang.IllegalStateException
 import java.net.HttpURLConnection
 
 /**
- * Allows communicate with DossierContext
+ * Allows to communicate with DossierContext
  */
 interface DossierServiceChannel {
     /**
-     * TODO
+     * Update dossier exam status
+     * @param dossierId
+     * @param examEvent event about exam state change
+     * @return DomainResponseStatus
+     *  - OK
+     *  - EXAM_STATUS_ERROR
      */
     suspend fun updateExamStatus(dossierId: String, examEvent: ExamEvent): DomainResponseStatus
 
     /**
+     * Verify if dossier is valid or not
      * @param dossierId
      * @return DomainResponseStatus
      * - OK

@@ -51,7 +51,6 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
         try{
             val dossierId = getDossierId(routingContext)
             val date = LocalDate.parse(routingContext.queryParams().get("date"))
-            println("Parsed date $date")
             val result = model.provisionalLicenseService.isProvisionalLicenseValid(dossierId, date)
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))
@@ -64,12 +63,15 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
     override suspend fun updateProvisionalLicenseHolder(routingContext: RoutingContext) {
         try {
             val dossierId = getDossierId(routingContext)
-            val result = model.provisionalLicenseService.incrementProvisionalLicenseFailures(dossierId)
-            println(result)
+            val option = routingContext.queryParams().get("practicalExamUpdate")
+            if(option == "PASSED"){
+                val result = model.provisionalLicenseService.practicalExamSuccess(dossierId)
+                routingContext.response()
+                    .setStatusCode(domainConversionTable.getHttpCode(result))
+                    .end(result.name)
+            }
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
     }
-
-
 }

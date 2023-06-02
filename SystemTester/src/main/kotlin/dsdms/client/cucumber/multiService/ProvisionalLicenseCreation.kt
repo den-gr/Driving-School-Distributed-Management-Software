@@ -26,7 +26,7 @@ import kotlinx.serialization.decodeFromString
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
-    features = ["src/main/resources/features/multiService/provisionalLicenseTest.feature"],
+    features = ["src/main/resources/features/multiService/provisionalLicenseRegistration.feature"],
     plugin = ["pretty", "summary"]
 )
 class ProvisionalLicenseCreation : En {

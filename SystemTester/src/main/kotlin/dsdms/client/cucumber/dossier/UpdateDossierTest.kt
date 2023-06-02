@@ -4,7 +4,9 @@ import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
 import dsdms.dossier.model.entities.Dossier
-import dsdms.dossier.model.valueObjects.*
+import dsdms.dossier.model.valueObjects.ExamEvent
+import dsdms.dossier.model.valueObjects.PracticalExamState
+import dsdms.dossier.model.valueObjects.TheoreticalExamState
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions

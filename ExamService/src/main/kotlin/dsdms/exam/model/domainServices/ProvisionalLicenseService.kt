@@ -34,7 +34,29 @@ interface ProvisionalLicenseService {
     suspend fun isProvisionalLicenseValid(dossierId: String, date: LocalDate): DomainResponseStatus
 
     /**
-     * todo
+     * Register new failure of practical exam. If it arrives to 3 practical exam failure for this provisional license
+     * the provisional license will be deleted and DossierContext will be notified
+     * @param dossierId
+     * @return DomainResponseStatus
+     *  - OK
+     *  - ID_NOT_FOUND provisional license not found
+     *  - DELETE_ERROR
+     *  - EXAM_STATUS_ERROR can not notify DossierContext about Provisional License invalidation
      */
     suspend fun incrementProvisionalLicenseFailures(dossierId: String): DomainResponseStatus
+
+    /**
+     * Register practical exam success for given dossier. As side effects:
+     *  - Verify validity of dossier
+     *  - Delete provisional license associated with dossier
+     *  - Notify DossierContext about exam success
+     * @param dossierId
+     * @return DomainResponseStatus
+     *  - OK
+     *  - EXAM_STATUS_ERROR can not notify DossierContext about exam success
+     *  - DOSSIER_NOT_VALID
+     *  - DOSSIER_NOT_EXIST
+     *  - DELETE_ERROR
+     */
+    suspend fun practicalExamSuccess(dossierId: String): DomainResponseStatus
 }

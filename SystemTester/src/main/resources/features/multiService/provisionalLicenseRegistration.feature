@@ -13,5 +13,3 @@ Feature: creation of provisional license
   Scenario: reading information about exam status for the created dossier
     When secretary requests dossier exam status information
     Then theoretical exam state is PASSED and practical exam state is TO_DO
-
-#Feature: provisional license
