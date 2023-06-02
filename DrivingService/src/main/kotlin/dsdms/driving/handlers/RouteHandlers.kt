@@ -8,7 +8,8 @@ interface RouteHandlers {
      * @see RouteHandlersImpl.handleException
      * @return http code:
      *  - 200 -> OK
-     *  - 400 -> INSTRUCTOR_NOT_FREE, OCCUPIED_DRIVING_SLOTS, VEHICLE_NOT_FREE, NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM, NOT_AN_EXAM_DAY
+     *  - 400 -> INSTRUCTOR_NOT_FREE, OCCUPIED_DRIVING_SLOTS, VEHICLE_NOT_FREE, NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM,
+     *          NOT_AN_EXAM_DAY, PROVISIONAL_LICENSE_NOT_VALID, NO_PROVISIONAL_LICENSE
      *  - 404 -> BAD_VEHICLE_INSTRUCTOR_INFO
      *  - 400, 500 -> exceptions caught
      */

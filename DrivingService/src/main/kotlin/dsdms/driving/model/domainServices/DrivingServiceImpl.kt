@@ -1,8 +1,7 @@
 package dsdms.driving.model.domainServices
 
+import dsdms.driving.channels.ChannelsProvider
 import dsdms.driving.database.Repository
-import dsdms.driving.database.mock.ExamService
-import dsdms.driving.database.utils.RepositoryResponseStatus
 import dsdms.driving.handlers.getDomainCode
 import dsdms.driving.handlers.repositoryToDomainConversionTable
 import dsdms.driving.model.entities.DrivingSlot
@@ -10,11 +9,10 @@ import dsdms.driving.model.valueObjects.*
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
-class DrivingServiceImpl(private val repository: Repository) : DrivingService {
+class DrivingServiceImpl(private val repository: Repository, private val channels: ChannelsProvider) : DrivingService {
     companion object {
         private const val MIN_NUMBER_OF_DRIVING_LESSONS: Int = 10
     }
-    private val examService: ExamService = ExamService()
 
     override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DrivingSlotRegistrationResult {
         val verifyResult = verifyDocuments(documents)
@@ -74,10 +72,10 @@ class DrivingServiceImpl(private val repository: Repository) : DrivingService {
 
         val forThisDossier: (DrivingSlot) -> Boolean = { el -> el.dossierId == drivingSlotBooking.dossierId }
 
-        val provisionalLicenseResult: RepositoryResponseStatus = examService.getProvisionalLicenseInfo(drivingSlotBooking.dossierId, drivingSlotBooking.date)
+        val provisionalLicenseResult: DomainResponseStatus = channels.examServiceChannel.isProvisionalLicenseValid(drivingSlotBooking.dossierId, drivingSlotBooking.date)
 
-        return if (provisionalLicenseResult != RepositoryResponseStatus.OK)
-                repositoryToDomainConversionTable.getDomainCode(provisionalLicenseResult)
+        return if (provisionalLicenseResult != DomainResponseStatus.OK)
+                provisionalLicenseResult
             else if (vehicleExist(drivingSlotBooking.licensePlate).not() || instructorExist(drivingSlotBooking.instructorId).not())
                 DomainResponseStatus.BAD_VEHICLE_INSTRUCTOR_INFO
             else if (futureDrivingSlots.any(forThisDossier))

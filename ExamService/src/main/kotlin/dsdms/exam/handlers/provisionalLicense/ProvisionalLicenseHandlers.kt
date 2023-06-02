@@ -24,4 +24,14 @@ interface ProvisionalLicenseHandlers : Handlers {
      *  - 400, 500 -> Exceptions caught
      */
     suspend fun getProvisionalLicenseHolder(routingContext: RoutingContext)
+
+    /**
+     * Handle requests of checking provisional license validity
+     * @see Handlers.handleException
+     * @return http code:
+     *  - 200 -> OK or PROVISIONAL_LICENSE_NOT_VALID
+     *  - 404 -> ID_NOT_FOUND that means that provisional license not found
+     *  - 500 -> Exceptions caught
+     */
+    suspend fun isProvisionalLicenseValidHandler(routingContext: RoutingContext)
 }

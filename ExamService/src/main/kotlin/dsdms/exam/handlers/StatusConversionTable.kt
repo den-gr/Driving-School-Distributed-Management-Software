@@ -26,7 +26,9 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.PLACES_FINISHED to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
     DomainResponseStatus.DOSSIER_ALREADY_PUT to HttpURLConnection.HTTP_BAD_REQUEST,
-    DomainResponseStatus.PROVISIONAL_LICENSE_ALREADY_EXISTS to HttpURLConnection.HTTP_CONFLICT
+    DomainResponseStatus.PROVISIONAL_LICENSE_ALREADY_EXISTS to HttpURLConnection.HTTP_CONFLICT,
+    DomainResponseStatus.PROVISIONAL_LICENSE_NOT_VALID to HttpURLConnection.HTTP_OK
+
 )
 
 fun  Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {

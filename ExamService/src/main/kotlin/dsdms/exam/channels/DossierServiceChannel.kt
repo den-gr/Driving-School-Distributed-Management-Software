@@ -9,7 +9,13 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
+/**
+ * Allows communicate with DossierContext
+ */
 interface DossierServiceChannel {
+    /**
+     * TODO
+     */
     suspend fun updateExamStatus(dossierId: String, examResultEvent: ExamResultEvent): DomainResponseStatus
 }
 

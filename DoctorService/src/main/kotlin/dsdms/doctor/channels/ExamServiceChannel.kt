@@ -10,7 +10,18 @@ import kotlinx.serialization.encodeToString
 import java.lang.IllegalStateException
 import java.net.HttpURLConnection
 
+/**
+ * Allows communicate with ExamContext
+ */
 interface ExamServiceChannel {
+    /**
+     * Notify ExamContext that subscriber get doctor approval so he/she can have a theoretical exam pass
+     * @param doctorApprovalEvent
+     * @return DomainResponseStatus
+     *  - OK
+     *  - EXAM_PASS_ALREADY_AVAILABLE
+     * @throws IllegalStateException in case of unrecognized response of ExamContext
+     */
     suspend fun notifyAboutDoctorApproval(doctorApprovalEvent: DoctorApprovalEvent): DomainResponseStatus
 }
 
@@ -29,5 +40,4 @@ class ExamServiceChannelImpl(private val client: WebClient): ExamServiceChannel{
             }
         }
     }
-
 }

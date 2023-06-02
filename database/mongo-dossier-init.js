@@ -1,6 +1,6 @@
-db = db.getSiblingDB('dossier_service');
-db.createCollection('Dossier');
-db.Dossier.insertMany([
+dossierDB = db.getSiblingDB('dossier_service');
+dossierDB.createCollection('Dossier');
+dossierDB.Dossier.insertMany([
     {
       _id: "d1",
       name: "prova1",
@@ -30,11 +30,11 @@ db.Dossier.insertMany([
     }
 ]);
 
-db2 = db.getSiblingDB('driving_service');
-db2.createCollection('DrivingSlot');
-db2.createCollection('Instructor');
-db2.createCollection('Vehicle');
-db2.DrivingSlot.insertMany([
+drivingDB = db.getSiblingDB('driving_service');
+drivingDB.createCollection('DrivingSlot');
+drivingDB.createCollection('Instructor');
+drivingDB.createCollection('Vehicle');
+drivingDB.DrivingSlot.insertMany([
 
     {
       _id: "b2",
@@ -70,7 +70,7 @@ db2.DrivingSlot.insertMany([
       slotType: "ORDINARY"
     }
 ]);
-db2.Instructor.insertMany([
+drivingDB.Instructor.insertMany([
     {
       _id: "i1",
       name: "riccardo",
@@ -84,7 +84,7 @@ db2.Instructor.insertMany([
       fiscal_code: "DRGOENMD75493MV"
     }
 ]);
-db2.Vehicle.insertMany([
+drivingDB.Vehicle.insertMany([
     {
       licensePlate: {
         numberPlate: "FZ340AR"
@@ -116,5 +116,50 @@ db2.Vehicle.insertMany([
       manufacturer: "BMW",
       model: "118d",
       year: 2014
+    }
+]);
+
+examDB = db.getSiblingDB('exam_service');
+examDB.createCollection('ProvisionalLicenseHolders');
+examDB.ProvisionalLicenseHolders.insertMany([
+    {
+        "practicalExamAttempts": 0,
+        "provisionalLicense": {
+          "dossierId": "d1",
+          "startValidity": new Date("2023-01-25"),
+          "endValidity": new Date(new Date("2024-01-25"))
+        }
+    },
+    {
+        "practicalExamAttempts": 0,
+        "provisionalLicense": {
+          "dossierId": "d2",
+          "startValidity": new Date("2023-01-25"),
+          "endValidity": new Date("2024-01-25")
+        }
+    },
+    {
+        "practicalExamAttempts": 0,
+        "provisionalLicense": {
+          "dossierId": "d3",
+          "startValidity": new Date("2023-01-25"),
+          "endValidity": new Date("2024-01-25")
+        }
+    },
+    {
+        "practicalExamAttempts": 0,
+        "provisionalLicense": {
+          "dossierId": "d4",
+          "startValidity": new Date("2023-01-25"),
+          "endValidity": new Date("2024-01-25")
+        }
+    },
+    {
+        "practicalExamAttempts": 0,
+        "provisionalLicense": {
+          "dossierId": "d5",
+          "startValidity":  new Date("2022-11-25"),
+          "endValidity":  new Date("2023-11-25")
+        }
     }
 ]);

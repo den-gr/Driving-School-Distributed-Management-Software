@@ -6,6 +6,7 @@ import dsdms.exam.model.Model
 import dsdms.exam.model.domainServices.DomainResponseStatus
 import dsdms.exam.model.entities.ProvisionalLicense
 import io.vertx.ext.web.RoutingContext
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -41,6 +42,20 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
                     .end(DomainResponseStatus.ID_NOT_FOUND.name)
             } else routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK)
                 .end(cjson.encodeToString(provisionalLicenseHolder))
+        } catch (ex: Exception) {
+            handleException(ex, routingContext)
+        }
+    }
+
+    override suspend fun isProvisionalLicenseValidHandler(routingContext: RoutingContext) {
+        try{
+            val dossierId = routingContext.request().getParam("id").toString()
+            val date = LocalDate.parse(routingContext.queryParams().get("date"))
+            println("Parsed date $date")
+            val result = model.provisionalLicenseService.isProvisionalLicenseValid(dossierId, date)
+            routingContext.response()
+                .setStatusCode(domainConversionTable.getHttpCode(result))
+                .end(result.name)
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }

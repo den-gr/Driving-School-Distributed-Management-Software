@@ -8,11 +8,11 @@ import dsdms.exam.model.entities.ProvisionalLicense
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamAppeal
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
+import kotlinx.datetime.LocalDate
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.div
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
-import java.time.LocalDate
 
 class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     private val theoreticalExamPassDb = examService.getCollection<TheoreticalExamPass>("TheoreticalExamPass")
@@ -36,7 +36,7 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     }
 
     override suspend fun getFutureTheoreticalExamAppeals(): List<TheoreticalExamAppeal> {
-        return theoreticalExamAppeals.find().toList().filter { el -> LocalDate.parse(el.date) > LocalDate.now() }
+        return theoreticalExamAppeals.find().toList().filter { el -> LocalDate.parse(el.date) > LocalDate.parse(java.time.LocalDate.now().toString()) }
     }
 
     override suspend fun insertTheoreticalExamDay(newExamDay: TheoreticalExamAppeal): RepositoryResponseStatus {

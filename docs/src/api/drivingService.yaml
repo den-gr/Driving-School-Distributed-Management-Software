@@ -25,7 +25,7 @@
           text/plain:
             schema:
               type: string
-              enum: [ INSTRUCTOR_NOT_FREE, OCCUPIED_DRIVING_SLOTS, VEHICLE_NOT_FREE, NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM, NOT_AN_EXAM_DAY ]
+              enum: [ INSTRUCTOR_NOT_FREE, OCCUPIED_DRIVING_SLOTS, VEHICLE_NOT_FREE, NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM, NOT_AN_EXAM_DAY, PROVISIONAL_LICENSE_NOT_VALID, NO_PROVISIONAL_LICENSE]
       "404":
         description: "Given info about vehicle or instructor not found"
       "500":

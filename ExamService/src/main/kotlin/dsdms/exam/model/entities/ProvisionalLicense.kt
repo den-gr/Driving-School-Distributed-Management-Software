@@ -18,4 +18,13 @@ data class ProvisionalLicense(val dossierId: String, val startValidity: LocalDat
     init {
         endValidity = startValidity + DatePeriod(years = 1)
     }
+
+    /**
+     * Is this provisional license valid in a particular day
+     * @param date
+     * @return true if provisional license is valid in indicated date
+     */
+    fun isValidOn(date: LocalDate): Boolean{
+        return date in startValidity..endValidity
+    }
 }

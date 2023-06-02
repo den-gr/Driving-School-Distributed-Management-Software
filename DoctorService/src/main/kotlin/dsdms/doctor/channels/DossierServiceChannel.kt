@@ -6,6 +6,9 @@ import io.vertx.kotlin.coroutines.await
 import java.lang.IllegalStateException
 import java.net.HttpURLConnection
 
+/**
+ * Allows communicate with DossierContext
+ */
 interface DossierServiceChannel {
     /**
      * @param dossierId

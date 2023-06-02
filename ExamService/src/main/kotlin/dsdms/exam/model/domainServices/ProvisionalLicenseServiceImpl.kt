@@ -9,6 +9,7 @@ import dsdms.exam.model.valueObjects.Exam
 import dsdms.exam.model.valueObjects.ExamOutcome
 import dsdms.exam.model.valueObjects.ExamResultEvent
 import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
+import kotlinx.datetime.LocalDate
 
 class ProvisionalLicenseServiceImpl(private val repository: Repository, private val channelsProvider: ChannelsProvider): ProvisionalLicenseService {
     override suspend fun registerProvisionalLicense(provisionalLicense: ProvisionalLicense): DomainResponseStatus {
@@ -27,6 +28,12 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository, private 
 
     override suspend fun getProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder? {
         return repository.findProvisionalLicenseHolder(dossierId)
+    }
+
+    override suspend fun isProvisionalLicenseValid(dossierId: String, date: LocalDate): DomainResponseStatus {
+        val provisionalLicenseHolder = getProvisionalLicenseHolder(dossierId) ?: return DomainResponseStatus.ID_NOT_FOUND
+        return if(provisionalLicenseHolder.provisionalLicense.isValidOn(date)) DomainResponseStatus.OK
+            else DomainResponseStatus.PROVISIONAL_LICENSE_NOT_VALID
     }
 
     private suspend fun areThereAnotherProvisionalLicense(dossierId: String): Boolean{

@@ -1,5 +1,7 @@
 package dsdms.driving
 
+import dsdms.driving.channels.ChannelsProvider
+import dsdms.driving.channels.ChannelsProviderImpl
 import dsdms.driving.database.Repository
 import dsdms.driving.database.RepositoryImpl
 import dsdms.driving.handlers.RouteHandlers
@@ -16,16 +18,18 @@ import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
-class     Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
+class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
-    private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
 
     override suspend fun start() {
+        val channelProvider: ChannelsProvider = ChannelsProviderImpl(vertx)
+        val handlers: RouteHandlers = RouteHandlersImpl(ModelImpl(repository, channelProvider))
+
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
-        setRoutes(router)
+        setRoutes(router, handlers)
 
         vertx.createHttpServer()
             .requestHandler(router)
@@ -48,13 +52,13 @@ class     Server(private val port: Int, dbConnection: CoroutineDatabase) : Corou
         }
     }
 
-    private fun setRoutes(router: Router) {
-        router.post("/drivingSlots").coroutineHandler(handlersImpl::registerNewDrivingSlot)
-        router.get("/drivingSlots").coroutineHandler(handlersImpl::getOccupiedDrivingSlots)
+    private fun setRoutes(router: Router, handlers: RouteHandlers) {
+        router.post("/drivingSlots").coroutineHandler(handlers::registerNewDrivingSlot)
+        router.get("/drivingSlots").coroutineHandler(handlers::getOccupiedDrivingSlots)
 
-        router.delete("/drivingSlots/:id").coroutineHandler(handlersImpl::deleteDrivingSlot)
+        router.delete("/drivingSlots/:id").coroutineHandler(handlers::deleteDrivingSlot)
 
-        router.post("/practicalExamDays").coroutineHandler(handlersImpl::postPracticalExamDay)
-        router.get("/practicalExamDays").coroutineHandler(handlersImpl::getPracticalExamDays)
+        router.post("/practicalExamDays").coroutineHandler(handlers::postPracticalExamDay)
+        router.get("/practicalExamDays").coroutineHandler(handlers::getPracticalExamDays)
     }
 }

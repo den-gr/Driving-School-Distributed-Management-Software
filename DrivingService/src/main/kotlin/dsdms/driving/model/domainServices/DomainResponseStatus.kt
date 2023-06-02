@@ -64,5 +64,10 @@ enum class DomainResponseStatus {
     /**
      * Practical exams can be booked only in practical exam days
      */
-    NOT_AN_EXAM_DAY
+    NOT_AN_EXAM_DAY,
+
+    /**
+     * Can not register a driving slot because provisional license is not valid in driving slot date
+     */
+    PROVISIONAL_LICENSE_NOT_VALID
 }

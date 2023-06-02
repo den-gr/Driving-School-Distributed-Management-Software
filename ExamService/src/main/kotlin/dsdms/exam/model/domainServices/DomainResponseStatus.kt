@@ -69,5 +69,10 @@ enum class DomainResponseStatus {
     /**
      * Update exam status in dossier context finish with an error
      */
-    EXAM_STATUS_ERROR
+    EXAM_STATUS_ERROR,
+
+    /**
+     * Indicate that provisional license is not valid on requested date
+     */
+    PROVISIONAL_LICENSE_NOT_VALID
 }
