@@ -10,6 +10,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.lang.IllegalArgumentException
 import java.net.HttpURLConnection
 
 class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandlers {
@@ -63,13 +64,14 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
     override suspend fun updateProvisionalLicenseHolder(routingContext: RoutingContext) {
         try {
             val dossierId = getDossierId(routingContext)
-            val option = routingContext.queryParams().get("practicalExamUpdate")
-            if(option == "PASSED"){
-                val result = model.provisionalLicenseService.practicalExamSuccess(dossierId)
-                routingContext.response()
-                    .setStatusCode(domainConversionTable.getHttpCode(result))
-                    .end(result.name)
+            val result: DomainResponseStatus = when(routingContext.queryParams().get("practicalExamUpdate")){
+                "PASSED" -> model.provisionalLicenseService.practicalExamSuccess(dossierId)
+                "FAILED" -> model.provisionalLicenseService.incrementProvisionalLicenseFailures(dossierId)
+                 else -> throw IllegalArgumentException("Query parameter is not recognized. It should be (practicalExamUpdate -> PASSED/FAILED")
             }
+            routingContext.response()
+                .setStatusCode(domainConversionTable.getHttpCode(result))
+                .end(result.name)
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }

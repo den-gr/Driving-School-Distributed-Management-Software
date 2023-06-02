@@ -6,6 +6,7 @@ import dsdms.dossier.model.domainServices.subscriberCheck.SubscriberControls
 import dsdms.dossier.model.domainServices.subscriberCheck.SubscriberControlsImpl
 import dsdms.dossier.model.entities.Dossier
 import dsdms.dossier.model.valueObjects.*
+import java.lang.IllegalStateException
 
 data class SaveDossierResult(
     val domainResponseStatus: DomainResponseStatus,
@@ -50,21 +51,29 @@ class DossierServiceImpl(private val repository: Repository): DossierService {
     }
 
     override suspend fun updateExamStatus(event: ExamEvent, id: String): DomainResponseStatus {
-        val examsProgress = readDossierFromId(id).dossier?.examsStatus
-        return try {
-            val newExamState = getNewExamProgressState(event,examsProgress)
-            getDomainCode(repository.updateExamStatus(newExamState, id))
-        }catch (ex: IllegalStateException){
-            DomainResponseStatus.UPDATE_ERROR
+        val dossier = readDossierFromId(id).dossier
+        if(dossier != null){
+            return try{
+                val newExamState = getNewExamProgressState(event, dossier.examsStatus)
+                if(newExamState.practicalExamState == PracticalExamState.SECOND_PROVISIONAL_LICENCE_INVALID){
+                    getDomainCode(repository.updateDossier(dossier.copy(examsStatus = newExamState, validity = false)))
+                }else{
+                    getDomainCode(repository.updateDossier(dossier.copy(examsStatus = newExamState)))
+                }
+            }catch (ex: IllegalStateException){
+                DomainResponseStatus.UPDATE_ERROR
+            }
         }
+        return DomainResponseStatus.ID_NOT_FOUND
+
     }
 
-    private fun getNewExamProgressState(event: ExamEvent, currentExamsStatus: ExamsStatus?):ExamsStatus?{
+    private fun getNewExamProgressState(event: ExamEvent, currentExamsStatus: ExamsStatus):ExamsStatus{
         return when(event) {
-            ExamEvent.THEORETICAL_EXAM_PASSED -> currentExamsStatus?.registerTheoreticalExamPassed()
-            ExamEvent.PRACTICAL_EXAM_PASSED -> currentExamsStatus?.registerPracticalExamPassed()
+            ExamEvent.THEORETICAL_EXAM_PASSED -> currentExamsStatus.registerTheoreticalExamPassed()
+            ExamEvent.PRACTICAL_EXAM_PASSED -> currentExamsStatus.registerPracticalExamPassed()
             ExamEvent.PROVISIONAL_LICENSE_INVALIDATION ->
-                currentExamsStatus?.registerProvisionalLicenceInvalidation()
+                currentExamsStatus.registerProvisionalLicenceInvalidation()
         }
     }
 }

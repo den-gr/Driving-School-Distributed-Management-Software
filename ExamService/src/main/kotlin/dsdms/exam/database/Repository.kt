@@ -79,4 +79,12 @@ interface Repository {
      *  - ID_NOT_FOUND -> no theoretical exam passes were found for the given dossier id
      */
     suspend fun deleteProvisionalLicenseHolder(dossierId: String): RepositoryResponseStatus
+
+    /**
+     * @param holder
+     * @return Repository response status:
+     *  - OK
+     *  - UPDATE_ERROR -> update was not acknowledged
+     */
+    suspend fun updateProvisionalLicenseHolder(holder: ProvisionalLicenseHolder): RepositoryResponseStatus
 }

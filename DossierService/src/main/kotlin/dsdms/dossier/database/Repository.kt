@@ -1,7 +1,6 @@
 package dsdms.dossier.database
 import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
-import dsdms.dossier.model.valueObjects.ExamsStatus
 
 interface Repository {
 
@@ -24,13 +23,12 @@ interface Repository {
     suspend fun readDossierFromCf(cf: String): List<Dossier>
 
     /**
-     * @param id of the dossier to be updated
-     * @param newStatus for theoretical or pratical exam or both
+     * @param dossier in its new state
      * @return Repository response status:
      *  - UPDATE_ERROR
      *  - OK
      */
-    suspend fun updateExamStatus(newStatus: ExamsStatus?, id: String): RepositoryResponseStatus
+    suspend fun updateDossier(dossier: Dossier): RepositoryResponseStatus
 
     /**
      * @param id of the dossier to be updated

@@ -44,7 +44,7 @@ class ProvisionalLicenseServiceImpl(private val repository: Repository, private 
             }
             return status
         }
-        return DomainResponseStatus.OK
+        return repositoryToDomainConversionTable.getDomainCode(repository.updateProvisionalLicenseHolder(holder))
     }
 
     override suspend fun practicalExamSuccess(dossierId: String): DomainResponseStatus {

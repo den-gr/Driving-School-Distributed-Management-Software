@@ -4,6 +4,7 @@ import io.vertx.ext.web.RoutingContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
+import java.lang.IllegalArgumentException
 import java.net.HttpURLConnection
 
 interface Handlers {
@@ -25,7 +26,7 @@ interface Handlers {
     fun handleException(ex: Exception, routingContext: RoutingContext){
         println("Error message: ${ex.message}")
         when(ex){
-            is SerializationException, is MissingFieldException -> {
+            is SerializationException, is MissingFieldException, is IllegalArgumentException -> {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
             }
             else ->{

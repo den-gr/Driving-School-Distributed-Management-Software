@@ -60,6 +60,12 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
         return handleDeleteResult(provisionalLicenseHolders.deleteOne(ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId))
     }
 
+    override suspend fun updateProvisionalLicenseHolder(holder: ProvisionalLicenseHolder): RepositoryResponseStatus {
+        return handleUpdateResult(provisionalLicenseHolders.updateOne(
+            ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq holder.provisionalLicense.dossierId, holder
+        ))
+    }
+
     private fun handleUpdateResult(updateResult: UpdateResult): RepositoryResponseStatus {
         return if (updateResult.modifiedCount.toInt() != 1 || !updateResult.wasAcknowledged()) {
             RepositoryResponseStatus.UPDATE_ERROR

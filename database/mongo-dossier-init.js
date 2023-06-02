@@ -17,7 +17,7 @@ dossierDB.Dossier.insertMany([
       birthdate: "1999-03-07",
       fiscal_code: "MFH7594",
       validity: true,
-      examsStatus: {theoreticalExamState: "TO_DO", practicalExamState: "TO_DO"}
+      examsStatus: {theoreticalExamState: "PASSED", practicalExamState: "FIRST_PROVISIONAL_LICENCE_INVALID"}
     },
     {
       _id: "d99",
@@ -136,7 +136,7 @@ examDB.ProvisionalLicenseHolders.insertMany([
           "startValidity": new Date("2023-01-25"),
           "endValidity": new Date("2024-01-25")
         },
-        "practicalExamAttempts": 0
+        "practicalExamAttempts": 1
       },
       {
         "provisionalLicense": {
