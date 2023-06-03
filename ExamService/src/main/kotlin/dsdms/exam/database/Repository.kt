@@ -63,7 +63,8 @@ interface Repository {
      *  - OK
      *  - INSERT_ERROR -> insert operation was not acknowledged
      */
-    suspend fun saveProvisionalLicenseHolder(provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus
+    suspend fun saveProvisionalLicenseHolder(
+        provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus
 
     /**
      * @see ProvisionalLicenseHolder

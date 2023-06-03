@@ -6,7 +6,7 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 /**
- * Represents a driving slot
+ * Represents a driving slot.
  * @param date
  * @param time
  * @param instructorId

@@ -5,7 +5,7 @@ import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 
 /**
- * Provide web client to connect to other services to use their api
+ * Provide a channel that allows to communicate with other bounded contexts.
  */
 interface ChannelsProvider {
     val dossierServiceChannel: DossierServiceChannel

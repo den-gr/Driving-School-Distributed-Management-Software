@@ -62,7 +62,8 @@ class ProvisionalLicenseCreation : En {
             val response = createProvisionalLicense()
             assertEquals(HTTP_OK, response.statusCode())
         }
-        And("if try to register an another provisional license for this dossier receive {word} msg") { exception: String ->
+        And("if try to register an another provisional license for this dossier receive {word} msg") {
+                exception: String ->
             val response = createProvisionalLicense()
             assertEquals(HTTP_CONFLICT, response.statusCode())
             assertEquals(exception, response.body().toString())
@@ -76,7 +77,8 @@ class ProvisionalLicenseCreation : En {
             assertEquals(HTTP_OK, response?.statusCode())
             provisionalLicenseHolder = Json.decodeFromString(response?.body().toString())
         }
-        Then("receiving info that there are {int} failing attempts and validity range is from {word} to {word}") { attempts: Int, startDate: String, endDate: String ->
+        Then("receiving info that there are {int} failing attempts " +
+                "and validity range is from {word} to {word}") { attempts: Int, startDate: String, endDate: String ->
             assertEquals(attempts, provisionalLicenseHolder?.practicalExamAttempts)
             assertEquals(LocalDate.parse(startDate), provisionalLicenseHolder?.provisionalLicense?.startValidity)
             assertEquals(LocalDate.parse(endDate), provisionalLicenseHolder?.provisionalLicense?.endValidity)
@@ -90,7 +92,8 @@ class ProvisionalLicenseCreation : En {
             val dossier: Dossier = Json.decodeFromString(response?.body().toString())
             examStatus = dossier.examsStatus
         }
-        Then("theoretical exam state is {word} and practical exam state is {word}") { thResult: String, prResult: String ->
+        Then("theoretical exam state is {word} and practical exam state is {word}") {
+                thResult: String, prResult: String ->
             assertEquals(thResult, examStatus!!.theoreticalExamState.name)
             assertEquals(prResult, examStatus!!.practicalExamState.name)
         }

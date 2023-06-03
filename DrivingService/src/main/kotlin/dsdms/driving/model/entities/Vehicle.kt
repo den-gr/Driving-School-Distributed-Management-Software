@@ -4,7 +4,7 @@ import dsdms.driving.model.valueObjects.LicensePlate
 import kotlinx.serialization.Serializable
 
 /**
- * Represents a vehicle
+ * Represents a vehicle.
  * @param licensePlate
  * @param manufacturer
  * @param model

@@ -12,12 +12,11 @@ import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.dispatcher
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import java.net.HttpURLConnection
 import kotlin.system.exitProcess
 
-@DelicateCoroutinesApi
 class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
@@ -65,9 +64,9 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
         val id = routingContext.request().getParam("id").toIntOrNull()
         val response = routingContext.response()
         if (id != null) {
-            response.setStatusCode(200).end((id).toString())
+            response.setStatusCode(HttpURLConnection.HTTP_OK).end((id).toString())
         } else {
-            response.setStatusCode(401).end("wrong input")
+            response.setStatusCode(HttpURLConnection.HTTP_UNAUTHORIZED).end("wrong input")
         }
     }
 }

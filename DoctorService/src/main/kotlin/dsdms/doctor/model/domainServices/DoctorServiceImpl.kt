@@ -10,10 +10,8 @@ import dsdms.doctor.model.entities.DoctorTimeSlot
 import dsdms.doctor.model.valueObjects.DoctorApprovalEvent
 import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.ResultTypes
-import io.vertx.core.buffer.Buffer
 import kotlinx.datetime.toLocalTime
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.time.LocalDate
 
@@ -35,7 +33,9 @@ data class BookedDoctorSlots(
     }
 }
 
-class DoctorServiceImpl(private val repository: Repository, private val channelsProvider: ChannelsProvider) : DoctorService {
+class DoctorServiceImpl(
+    private val repository: Repository,
+    private val channelsProvider: ChannelsProvider) : DoctorService {
 
     private suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
         return if (checkDoctorDay(documents.date)) {
@@ -63,7 +63,8 @@ class DoctorServiceImpl(private val repository: Repository, private val channels
      * @return if given time per the doctor visit is in the correct time slot and is available
      */
     private fun checkDoctorVisitGivenTime(time: String): Boolean =
-        (time.toLocalTime() >= DoctorTimeSlot.InitTime.time && time.toLocalTime() <= DoctorTimeSlot.FinishTime.time).not()
+        (time.toLocalTime() >= DoctorTimeSlot.InitTime.time
+                && time.toLocalTime() <= DoctorTimeSlot.FinishTime.time).not()
 
     /**
      * @param time: wanted time of the visit
@@ -110,10 +111,7 @@ class DoctorServiceImpl(private val repository: Repository, private val channels
 
     private suspend fun createTheoreticalExamPass(document: DoctorResult): Boolean {
         val doctorApprovalEvent = DoctorApprovalEvent(document.dossierId, document.date)
-        return channelsProvider.examServiceChannel.notifyAboutDoctorApproval(doctorApprovalEvent) == DomainResponseStatus.OK
-    }
-
-    private inline fun <reified T> createJson(docs: T): Buffer? {
-        return Buffer.buffer(Json.encodeToString(docs))
+        return channelsProvider.examServiceChannel
+            .notifyAboutDoctorApproval(doctorApprovalEvent) == DomainResponseStatus.OK
     }
 }

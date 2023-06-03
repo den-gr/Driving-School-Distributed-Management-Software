@@ -37,7 +37,9 @@ class ProvisionalLicenseTest {
 
     @Test
     fun serialization() {
-        val jsonString = """{"provisionalLicense":{"dossierId":"d5","startValidity":"2022-11-25","endValidity":"2023-11-25"},"practicalExamAttempts":0}"""
+        val jsonString = """{"provisionalLicense":{"dossierId":"d5",
+            "startValidity":"2022-11-25","endValidity":"2023-11-25"},"practicalExamAttempts":0}"""
+            .trimIndent().replace("\\s".toRegex(), "")
         val holder: ProvisionalLicenseHolder? = mjson.decodeFromString(jsonString)
         println(holder)
         assertEquals(jsonString, mjson.encodeToString(holder))

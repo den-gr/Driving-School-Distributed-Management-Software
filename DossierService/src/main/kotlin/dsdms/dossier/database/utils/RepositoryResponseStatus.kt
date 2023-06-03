@@ -5,17 +5,17 @@ package dsdms.dossier.database.utils
  */
 enum class RepositoryResponseStatus {
     /**
-     * Request was successful
+     * Request was successful.
      */
     OK,
 
     /**
-     * Repository gets an error during delete operation
+     * Repository gets an error during delete operation.
      */
     DELETE_ERROR,
 
     /**
-     * Repository gets an error during update operation
+     * Repository gets an error during update operation.
      */
     UPDATE_ERROR
 }

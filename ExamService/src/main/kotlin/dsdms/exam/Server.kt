@@ -46,24 +46,28 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
     }
 
     private fun setRoutes(router: Router) {
-        router.get("/test").handler(this::testHandler)
+        router.put("/theoreticalExam/pass")
+            .coroutineHandler(theoreticalExamHandlersImpl::createTheoreticalExamPass)
+        router.get("/theoreticalExam/:id/pass")
+            .coroutineHandler(theoreticalExamHandlersImpl::getTheoreticalExamPass)
+        router.delete("/theoreticalExam/:id/pass")
+            .coroutineHandler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
 
-        router.put("/theoreticalExam/pass").coroutineHandler(theoreticalExamHandlersImpl::createTheoreticalExamPass)
-        router.get("/theoreticalExam/:id/pass").coroutineHandler(theoreticalExamHandlersImpl::getTheoreticalExamPass)
-        router.delete("/theoreticalExam/:id/pass").coroutineHandler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
+        router.post("/theoreticalExam/examAppeal")
+            .coroutineHandler(theoreticalExamHandlersImpl::createNewTheoreticalExamAppeal)
+        router.get("/theoreticalExam/examAppeal")
+            .coroutineHandler(theoreticalExamHandlersImpl::getNextTheoreticalExamAppeals)
+        router.put("/theoreticalExam/examAppeal")
+            .coroutineHandler(theoreticalExamHandlersImpl::putDossierInExamAppeal)
 
-        router.post("/theoreticalExam/examAppeal").coroutineHandler(theoreticalExamHandlersImpl::createNewTheoreticalExamAppeal)
-        router.get("/theoreticalExam/examAppeal").coroutineHandler(theoreticalExamHandlersImpl::getNextTheoreticalExamAppeals)
-        router.put("/theoreticalExam/examAppeal").coroutineHandler(theoreticalExamHandlersImpl::putDossierInExamAppeal)
-
-        router.post("/provisionalLicences").coroutineHandler(provisionalLicenseHandlersImpl::registerProvisionalLicence)
-        router.get("/provisionalLicences/:id").coroutineHandler(provisionalLicenseHandlersImpl::getProvisionalLicenseHolder)
-        router.put("/provisionalLicences/:id").coroutineHandler(provisionalLicenseHandlersImpl::updateProvisionalLicenseHolder)
-        router.get("/provisionalLicences/:id/validity").coroutineHandler(provisionalLicenseHandlersImpl::isProvisionalLicenseValidHandler)
-    }
-
-    private fun testHandler(routingContext: RoutingContext) {
-        routingContext.response().setStatusCode(200).end("999")
+        router.post("/provisionalLicences")
+            .coroutineHandler(provisionalLicenseHandlersImpl::registerProvisionalLicence)
+        router.get("/provisionalLicences/:id")
+            .coroutineHandler(provisionalLicenseHandlersImpl::getProvisionalLicenseHolder)
+        router.put("/provisionalLicences/:id")
+            .coroutineHandler(provisionalLicenseHandlersImpl::updateProvisionalLicenseHolder)
+        router.get("/provisionalLicences/:id/validity")
+            .coroutineHandler(provisionalLicenseHandlersImpl::isProvisionalLicenseValidHandler)
     }
 
     private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {

@@ -32,8 +32,10 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
 
     override suspend fun handleDossierIdReading(routingContext: RoutingContext) {
         try {
-            val result = model.dossierService.readDossierFromId(routingContext.request().getParam("id").toString())
-            val payload = if (result.domainResponseStatus == DomainResponseStatus.OK || result.domainResponseStatus == DomainResponseStatus.DOSSIER_INVALID) {
+            val result = model.dossierService
+                .readDossierFromId(routingContext.request().getParam("id").toString())
+            val payload = if (result.domainResponseStatus == DomainResponseStatus.OK
+                || result.domainResponseStatus == DomainResponseStatus.DOSSIER_INVALID) {
                 cjson.encodeToString(result.dossier)
             } else {
                 result.domainResponseStatus.name
@@ -51,7 +53,8 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
         try {
             val event: ExamEvent = ExamEvent.valueOf(routingContext.body().asString())
             val updateResult: DomainResponseStatus =
-                model.dossierService.updateExamStatus(event, routingContext.request().getParam("id").toString())
+                model.dossierService
+                    .updateExamStatus(event, routingContext.request().getParam("id").toString())
             routingContext.response()
                 .setStatusCode(getHttpCode(updateResult))
                 .end(updateResult.name)

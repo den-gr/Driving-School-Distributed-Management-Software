@@ -7,7 +7,7 @@ import java.lang.IllegalStateException
 import java.net.HttpURLConnection
 
 /**
- * Allows communicate with DossierContext
+ * Allows to communicate with DossierContext.
  */
 interface DossierServiceChannel {
     /**
@@ -31,7 +31,7 @@ class DossierServiceChannelImpl(val client: WebClient) : DossierServiceChannel {
             HttpURLConnection.HTTP_OK -> DomainResponseStatus.OK
             HttpURLConnection.HTTP_ACCEPTED -> DomainResponseStatus.DOSSIER_NOT_VALID
             HttpURLConnection.HTTP_NOT_FOUND -> DomainResponseStatus.DOSSIER_NOT_EXIST
-            else -> throw IllegalStateException("Can not get dossier information")
+            else -> error("Can not get dossier information")
         }
     }
 }

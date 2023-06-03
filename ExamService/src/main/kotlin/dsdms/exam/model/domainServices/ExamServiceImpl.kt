@@ -72,18 +72,25 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
         return if (examAppeals.isEmpty()) {
             NextTheoreticalExamAppeals(DomainResponseStatus.NO_EXAM_APPEALS)
         } else {
-            NextTheoreticalExamAppeals(DomainResponseStatus.OK, Json.encodeToString(ListSerializer(TheoreticalExamAppeal.serializer()), examAppeals))
+            NextTheoreticalExamAppeals(
+                DomainResponseStatus.OK,
+                Json.encodeToString(ListSerializer(TheoreticalExamAppeal.serializer()), examAppeals))
         }
     }
 
-    override suspend fun putDossierInExamAppeal(theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus {
-        val examAppeal: TheoreticalExamAppeal? = repository.getFutureTheoreticalExamAppeals().find { el -> el.date == theoreticalExamAppealUpdate.date }
+    override suspend fun putDossierInExamAppeal(
+        theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus {
+        val examAppeal: TheoreticalExamAppeal? = repository.getFutureTheoreticalExamAppeals().find {
+                el -> el.date == theoreticalExamAppealUpdate.date
+        }
 
         return if (examAppeal == null) {
             DomainResponseStatus.APPEAL_NOT_FOUND
         } else {
             if (examAppeal.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId) ||
-                repository.getFutureTheoreticalExamAppeals().any { el -> el.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId) }
+                repository.getFutureTheoreticalExamAppeals().any {
+                        el -> el.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId)
+                }
             ) {
                 DomainResponseStatus.DOSSIER_ALREADY_PUT
             } else if (examAppeal.registeredDossiers.count() < examAppeal.numberOfPlaces) {

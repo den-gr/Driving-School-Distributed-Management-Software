@@ -4,6 +4,9 @@ import io.vertx.core.Vertx
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 
+/**
+ * Provide a channel that allows to communicate with other bounded contexts
+ */
 interface ChannelsProvider {
     val examServiceChannel: ExamServiceChannel
 }
@@ -12,8 +15,8 @@ class ChannelsProviderImpl(private val vertx: Vertx) : ChannelsProvider {
     override val examServiceChannel: ExamServiceChannel
 
     companion object {
-        const val LOCALHOST: String = "localhost"
-        const val DEFAULT_EXAM_SERVICE_PORT = 8020
+        private const val LOCALHOST: String = "localhost"
+        private const val DEFAULT_EXAM_SERVICE_PORT = 8020
     }
 
     init {

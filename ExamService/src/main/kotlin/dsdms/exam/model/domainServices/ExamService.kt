@@ -8,7 +8,7 @@ import dsdms.exam.model.valueObjects.TheoreticalExamAppealUpdate
 interface ExamService {
 
     /**
-     * Saves new theoretical exam pass, starting from given documents
+     * Saves new theoretical exam pass, starting from given documents.
      * @see DoctorApprovalEvent
      * @param documents: ExamPassData
      * @return InsertTheoreticalExamPassResult, composed by:
@@ -24,7 +24,7 @@ interface ExamService {
     suspend fun readTheoreticalExamPass(dossierId: String): TheoreticalExamPass?
 
     /**
-     * Deletes theoretical exam pass assigned to the given dossier id
+     * Deletes theoretical exam pass assigned to the given dossier id.
      * @param dossierId
      * @return: Domain Response status:
      *  - DELETE_ERROR -> some error is returned from repository
@@ -34,7 +34,7 @@ interface ExamService {
     suspend fun deleteTheoreticalExamPass(dossierId: String): DomainResponseStatus
 
     /**
-     * Inserts a new exam appeal in the given date
+     * Inserts a new exam appeal in the given date.
      * @see TheoreticalExamAppeal
      * @param newExamDay
      * @return Domain Response Status:
@@ -52,7 +52,7 @@ interface ExamService {
     suspend fun getNextExamAppeals(): NextTheoreticalExamAppeals
 
     /**
-     * To put a given dossier id in exam appeal in the given date
+     * To put a given dossier id in exam appeal in the given date.
      * @see TheoreticalExamAppealUpdate
      * @return Domain Response Status:
      *  - APPEAL_NOT_FOUND in the given date

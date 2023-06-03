@@ -3,7 +3,7 @@ package dsdms.exam.model.entities.theoreticalExam
 import kotlinx.serialization.Serializable
 
 /**
- * Represents a theoretical exam appeal
+ * Represents a theoretical exam appeal.
  * @param date of the exam appeal
  * @param numberOfPlaces
  * @param registeredDossiers -> list of registered dossiers into this exam, set by default to empty list

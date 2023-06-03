@@ -11,11 +11,11 @@ import java.lang.IllegalStateException
 import java.net.HttpURLConnection
 
 /**
- * Allows communicate with ExamContext
+ * Allows to communicate with ExamContext.
  */
 interface ExamServiceChannel {
     /**
-     * Notify ExamContext that subscriber get doctor approval so he/she can have a theoretical exam pass
+     * Notify ExamContext that subscriber get doctor approval so he/she can have a theoretical exam pass.
      * @param doctorApprovalEvent
      * @return DomainResponseStatus
      *  - OK
@@ -36,7 +36,7 @@ class ExamServiceChannelImpl(private val client: WebClient) : ExamServiceChannel
             HttpURLConnection.HTTP_BAD_REQUEST -> DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
             else -> {
                 println(statusCode)
-                throw IllegalStateException("Can not notify about doctor approval event. Arrived status code: $statusCode")
+                error("Can not notify about doctor approval event. Arrived status code: $statusCode")
             }
         }
     }

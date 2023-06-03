@@ -36,7 +36,17 @@ interface ProvisionalLicenseHandlers : Handlers {
     suspend fun isProvisionalLicenseValidHandler(routingContext: RoutingContext)
 
     /**
-     * todo
+     * Allow register result of practical exam.
+     * HTTP request must include a query parameter: "practicalExamUpdate"  that can be
+     *  - PASSED if exam is passed. Delete provisional license and notify dossier service
+     *  - FAILED if exam is failed. Increment number of practical exam attempts. Can delete provisional license
+     *      and notify dossier service
+     * @see Handlers.handleException
+     * @return http code:
+     *  - 200 -> OK or PROVISIONAL_LICENSE_NOT_VALID
+     *  - 202 -> DOSSIER_NOT_VALID
+     *  - 404 -> DOSSIER_NOT_EXIST
+     *  - 500 -> Exceptions caught, EXAM_STATUS_ERROR, DELETE_ERROR
      */
     suspend fun updateProvisionalLicenseHolder(routingContext: RoutingContext)
 }

@@ -54,7 +54,8 @@ class ExamEventPassTest : En {
 
             retrievedTheoreticalExamPass = Json.decodeFromString(response?.body().toString())
         }
-        When("sending {word}, {word} and {word} for saving doctor results") { id: String, date: String, result: String ->
+        When("sending {word}, {word} and {word} for saving doctor results") {
+                id: String, date: String, result: String ->
             val request = doctorService
                 .put("/doctorSlots")
                 .sendBuffer(createJson(DoctorResult(id, date, result)))
@@ -64,11 +65,13 @@ class ExamEventPassTest : En {
             statusCode = response?.statusCode()
             value = response?.body().toString()
         }
-        Then("request finished with not success, with code {int} and message {word}") { code: Int, doctorMessage: String ->
+        Then("request finished with not success, with code {int} and message {word}") {
+                code: Int, doctorMessage: String ->
             assertEquals(doctorMessage, value)
             assertEquals(code, statusCode)
         }
-        And("theoretical exam pass is not being created for {word}, receiving message {word} and code {int}") { id: String, message: String, code: Int ->
+        And("theoretical exam pass is not being created for {word}, receiving message {word} and code {int}") {
+                id: String, message: String, code: Int ->
             val request = examService
                 .get("/theoreticalExam/$id/pass")
                 .send()
@@ -83,7 +86,8 @@ class ExamEventPassTest : En {
                 assertEquals(message, response?.body().toString())
             }
         }
-        Given("theoretical exam pass for dossier {word}, secretary requests to delete it") { dossierId: String ->
+        Given("theoretical exam pass for dossier {word}, secretary requests to delete it") {
+                dossierId: String ->
             val request = examService
                 .delete("/theoreticalExam/$dossierId/pass")
                 .send()

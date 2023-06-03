@@ -51,7 +51,7 @@ interface Repository {
     suspend fun deleteDrivingSlot(drivingSlotId: String): RepositoryResponseStatus
 
     /**
-     * Registers a new practical exam day into db
+     * Registers a new practical exam day into db.
      */
     suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay)
 

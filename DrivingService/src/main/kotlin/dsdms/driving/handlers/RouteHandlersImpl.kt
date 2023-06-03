@@ -63,7 +63,8 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
 
     override suspend fun postPracticalExamDay(routingContext: RoutingContext) {
         try {
-            val result = model.practicalExamDomainService.registerPracticalExamDay(Json.decodeFromString(routingContext.body().asString()))
+            val result = model.practicalExamDomainService
+                .registerPracticalExamDay(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))
                 .end(result.name)

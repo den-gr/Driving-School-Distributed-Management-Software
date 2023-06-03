@@ -5,7 +5,7 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 /**
- * Represents a complete Dossier representation
+ * Represents a complete Dossier representation.
  * @param name: name of subscriber
  * @param surname: surname of subscriber
  * @param birthdate: birthdate of subscriber to verify that he has the minimum age

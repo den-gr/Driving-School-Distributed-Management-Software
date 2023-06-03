@@ -9,7 +9,7 @@ import java.net.HttpURLConnection
 
 interface Handlers {
     /**
-     * Extract id parameter from uri
+     * Extract id parameter from uri.
      * @param routingContext
      * @return dossierId
      */
@@ -18,7 +18,7 @@ interface Handlers {
     }
 
     /**
-     * To handle exceptions in route handlers
+     * To handle exceptions in route handlers.
      * @param ex -> exception type to be caught
      * @param routingContext -> where to send message if some exceptions occurs
      */

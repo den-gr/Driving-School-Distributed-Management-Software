@@ -6,7 +6,7 @@ import io.vertx.ext.web.RoutingContext
 interface TheoreticalExamHandlers : Handlers {
 
     /**
-     * Handles theoretical exam pass creation
+     * Handles theoretical exam pass creation.
      * @see Handlers.handleException
      * @return http code:
      *  - 200 -> OK
@@ -16,7 +16,7 @@ interface TheoreticalExamHandlers : Handlers {
     suspend fun createTheoreticalExamPass(routingContext: RoutingContext)
 
     /**
-     * Handles getting of theoretical exam passes if available for given dossier id
+     * Handles getting of theoretical exam passes if available for given dossier id.
      * @see Handlers.handleException
      * @return http code:
      *  - 404 -> ID_NOT_FOUND
@@ -26,7 +26,7 @@ interface TheoreticalExamHandlers : Handlers {
     suspend fun getTheoreticalExamPass(routingContext: RoutingContext)
 
     /**
-     * Handles deleting of theoretical exam pass if available for given dossier id
+     * Handles deleting of theoretical exam pass if available for given dossier id.
      * @see Handlers.handleException
      * @return http code:
      *  - 500 -> DELETE_ERROR, exceptions caught
@@ -36,7 +36,7 @@ interface TheoreticalExamHandlers : Handlers {
     suspend fun deleteTheoreticalExamPass(routingContext: RoutingContext)
 
     /**
-     * Handles registration for a new theoretical exam appeal
+     * Handles registration for a new theoretical exam appeal.
      * @see Handlers.handleException
      * @return http code:
      *  - 200 -> OK
@@ -46,7 +46,7 @@ interface TheoreticalExamHandlers : Handlers {
     suspend fun createNewTheoreticalExamAppeal(routingContext: RoutingContext)
 
     /**
-     * Handles getting of next exam appeals
+     * Handles getting of next exam appeals.
      * @see Handlers.handleException
      * @return http code:
      *  - 200 -> OK or NO_EXAM_APPEALS with founded list of exam appeals as Json Body
@@ -54,7 +54,7 @@ interface TheoreticalExamHandlers : Handlers {
     suspend fun getNextTheoreticalExamAppeals(routingContext: RoutingContext)
 
     /**
-     * Handles dossier id registration to a specific appeal
+     * Handles dossier id registration to a specific appeal.
      * @see Handlers.handleException
      * @return http code:
      *  - 400 -> APPEAL_NOT_FOUND, DOSSIER_ALREADY_PUT, PLACES_FINISHED, exceptions caught

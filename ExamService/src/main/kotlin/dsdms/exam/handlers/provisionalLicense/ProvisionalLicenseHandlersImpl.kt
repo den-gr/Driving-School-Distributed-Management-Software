@@ -69,7 +69,8 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
             val result: DomainResponseStatus = when (routingContext.queryParams().get("practicalExamUpdate")) {
                 "PASSED" -> model.provisionalLicenseService.practicalExamSuccess(dossierId)
                 "FAILED" -> model.provisionalLicenseService.incrementProvisionalLicenseFailures(dossierId)
-                else -> throw IllegalArgumentException("Query parameter is not recognized. It should be (practicalExamUpdate -> PASSED/FAILED")
+                else -> throw IllegalArgumentException("Query parameter is not recognized. " +
+                        "It should be (practicalExamUpdate -> PASSED/FAILED")
             }
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))

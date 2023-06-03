@@ -4,7 +4,7 @@ import dsdms.exam.model.domainServices.ExamService
 import dsdms.exam.model.domainServices.ProvisionalLicenseService
 
 /**
- * Representing different services
+ * Representing different services.
  */
 interface Model {
     val examService: ExamService

@@ -8,11 +8,11 @@ data class PracticalExamDaysResponse(
 )
 
 /**
- * Manage practical exam day logic
+ * Manage practical exam day logic.
  */
 interface PracticalExamDomainService {
     /**
-     * Set a day as a practical exam day
+     * Set a day as a practical exam day.
      * @param practicalExamDay exam day details
      * @return
      * - ALREADY_DEFINED_AS_PRACTICAL_EXAM_DAY -> day is already set as practical exam day
@@ -21,7 +21,7 @@ interface PracticalExamDomainService {
     suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay): DomainResponseStatus
 
     /**
-     * Get list of all practical exam days
+     * Get list of all practical exam days.
      * @return an object with domain status code that always OK and a list with practical exam days
      */
     suspend fun getPracticalExamDays(): PracticalExamDaysResponse

@@ -30,7 +30,8 @@ class TheoreticalExamTestEvent : En {
     init {
         val sleeper = SmartSleep()
 
-        When("secretary inserts a new day {word} and number of places {int} for exam appeal") { date: String, places: Int ->
+        When("secretary inserts a new day {word} and number of places {int} for exam appeal") {
+                date: String, places: Int ->
             val request = client
                 .post("/theoreticalExam/examAppeal")
                 .sendBuffer(createJson(TheoreticalExamAppeal(date, places)))
@@ -65,7 +66,8 @@ class TheoreticalExamTestEvent : En {
             assertEquals(listOf(), examAppealList)
         }
 
-        When("secretary registers dossier {word} in exam appeal in date {word}") { dossierId: String, date: String ->
+        When("secretary registers dossier {word} in exam appeal in date {word}") {
+                dossierId: String, date: String ->
             val request = client
                 .put("/theoreticalExam/examAppeal")
                 .sendBuffer(createJson(TheoreticalExamAppealUpdate(dossierId, date)))

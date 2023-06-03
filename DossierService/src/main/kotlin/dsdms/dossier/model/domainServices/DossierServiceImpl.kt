@@ -34,7 +34,11 @@ class DossierServiceImpl(private val repository: Repository) : DossierService {
     }
 
     private suspend fun createDossier(givenDocuments: SubscriberDocuments): String? =
-        repository.createDossier(Dossier(givenDocuments.name, givenDocuments.surname, givenDocuments.birthdate.toString(), givenDocuments.fiscal_code))
+        repository.createDossier(Dossier(
+            givenDocuments.name,
+            givenDocuments.surname,
+            givenDocuments.birthdate.toString(),
+            givenDocuments.fiscal_code))
 
     private suspend fun verifyDocuments(documents: SubscriberDocuments): DomainResponseStatus {
         return if (subscriberControls.checkDuplicatedFiscalCode(documents, repository)) {

@@ -5,32 +5,36 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 
 class SmartSleep(private val timeout: Long = 10000) {
+    companion object{
+        private const val DEBAG = false
+        private const val INITIAL_DELAY = 50L
+    }
 
+    @Suppress("ReturnCount")
     fun waitResult(future: Future<HttpResponse<Buffer>>): HttpResponse<Buffer>? {
         future.onFailure { println(it.message) }
 
         var toWait = timeout
         val iterable = iterator {
-            var x = 50L
+            var x = INITIAL_DELAY
             while (true) {
                 yield(x)
                 x *= 2
             }
         }
         for (i in iterable) {
-            print(".")
+            if(DEBAG) print(".")
             if (toWait < i) {
                 Thread.sleep(toWait)
                 return future.result()
             }
             Thread.sleep(i)
             if (future.isComplete) {
-                println(" is complete on $i")
+                if(DEBAG) println(" is complete on $i")
                 return future.result()
             }
             toWait -= i
         }
-        println("Feature Timeout")
         return null
     }
 }

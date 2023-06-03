@@ -35,10 +35,17 @@ class RegularDrivingSlotTest : En {
     init {
         val sleeper = SmartSleep()
 
-        When("i send {word}, {word}, {word}, {word}, {word} to book the driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        When("i send {word}, {word}, {word}, {word}, {word} to book the driving slot") {
+                date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             val request = client
                 .post("/drivingSlots")
-                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlate(vehicle))))
+                .sendBuffer(createJson(DrivingSlotBooking(
+                    LocalDate.parse(date),
+                    LocalTime.parse(time),
+                    instructorId,
+                    dossierId,
+                    DrivingSlotType.ORDINARY,
+                    LicensePlate(vehicle))))
             val response = sleeper.waitResult(request)
             checkResponse(response)
             statusMessage = response?.body().toString()
@@ -65,21 +72,27 @@ class RegularDrivingSlotTest : En {
             assertEquals(HTTP_OK, statusCode)
             value = Json.decodeFromString(ListSerializer(DrivingSlot.serializer()), response?.body().toString())
         }
-        Then("the first driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        Then("the first driving slot is: {word}, time {word}, instructor id {word}," +
+                " dossier id {word}, vehicle {word}") {
+                date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(0)?.date.toString())
             assertEquals(time, value?.get(0)?.time.toString())
             assertEquals(instructorId, value?.get(0)?.instructorId)
             assertEquals(dossierId, value?.get(0)?.dossierId)
             assertEquals(vehicle, value?.get(0)?.licensePlate?.numberPlate)
         }
-        Then("the second driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        Then("the second driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}," +
+                " vehicle {word}") {
+                date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(1)?.date.toString())
             assertEquals(time, value?.get(1)?.time.toString())
             assertEquals(instructorId, value?.get(1)?.instructorId)
             assertEquals(dossierId, value?.get(1)?.dossierId)
             assertEquals(vehicle, value?.get(1)?.licensePlate?.numberPlate)
         }
-        Then("the third driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        Then("the third driving slot is: {word}, time {word}, instructor id {word}," +
+                " dossier id {word}, vehicle {word}") {
+                date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(2)?.date.toString())
             assertEquals(time, value?.get(2)?.time.toString())
             assertEquals(instructorId, value?.get(2)?.instructorId)
@@ -87,10 +100,17 @@ class RegularDrivingSlotTest : En {
             assertEquals(vehicle, value?.get(2)?.licensePlate?.numberPlate)
         }
 
-        When("i send {word}, {word}, {word}, {word}, {word} to book the wrong driving slot") { date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
+        When("i send {word}, {word}, {word}, {word}, {word} to book the wrong driving slot") {
+                date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             val request = client
                 .post("/drivingSlots")
-                .sendBuffer(createJson(DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse(time), instructorId, dossierId, DrivingSlotType.ORDINARY, LicensePlate(vehicle))))
+                .sendBuffer(createJson(DrivingSlotBooking(
+                    LocalDate.parse(date),
+                    LocalTime.parse(time),
+                    instructorId,
+                    dossierId,
+                    DrivingSlotType.ORDINARY,
+                    LicensePlate(vehicle))))
             val response = sleeper.waitResult(request)
             checkResponse(response)
             registeredSlot = response?.body().toString()
@@ -109,7 +129,8 @@ class RegularDrivingSlotTest : En {
 
             assertEquals(code, statusCode)
         }
-        Then("when attempting to remove it another time \\(wrongly), i receive code {int} with {word}") { code: Int, message: String ->
+        Then("when attempting to remove it another time \\(wrongly), i receive code {int} with {word}") {
+                code: Int, message: String ->
             val request = client
                 .delete("/drivingSlots/$registeredSlot").send()
             val response = sleeper.waitResult(request)

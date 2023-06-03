@@ -35,6 +35,7 @@ fun Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainRespo
     return domainConversionTable.getOrDefault(domainResponseStatus, HttpURLConnection.HTTP_INTERNAL_ERROR)
 }
 
-fun Map<RepositoryResponseStatus, DomainResponseStatus>.getDomainCode(repositoryResponseStatus: RepositoryResponseStatus): DomainResponseStatus {
+fun Map<RepositoryResponseStatus, DomainResponseStatus>
+        .getDomainCode(repositoryResponseStatus: RepositoryResponseStatus): DomainResponseStatus {
     return repositoryToDomainConversionTable.getOrDefault(repositoryResponseStatus, DomainResponseStatus.OK)
 }

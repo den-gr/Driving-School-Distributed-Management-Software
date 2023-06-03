@@ -3,14 +3,14 @@ package dsdms.dossier.model.domainServices.subscriberCheck
 import dsdms.dossier.database.Repository
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
 
-interface SubscriberControls {
-
+object SubscriberConstants {
     /**
-     * Min age for a subscriber to be subscribed
+     * Min age for a subscriber to be subscribed.
      */
-    val MIN_AGE: Int
-        get() = 16
+    const val MIN_AGE: Int = 16
+}
 
+interface SubscriberControls {
     /**
      * @see SubscriberDocuments
      * @see Repository

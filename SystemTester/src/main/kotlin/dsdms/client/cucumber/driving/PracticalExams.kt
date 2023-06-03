@@ -37,8 +37,16 @@ class PracticalExams : En {
     init {
         val sleeper = SmartSleep()
 
-        Given("an attempt to book a new practical exam on {word} for instructor {word}, dossier {word} and auto {word}") { date: String, instructorId: String, dossierId: String, auto: String ->
-            val bookingRequest = DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse("09:00"), instructorId, dossierId, DrivingSlotType.EXAM, LicensePlate(auto))
+        Given("an attempt to book a new practical exam on {word} for instructor {word}," +
+                " dossier {word} and auto {word}") {
+                date: String, instructorId: String, dossierId: String, auto: String ->
+            val bookingRequest = DrivingSlotBooking(
+                LocalDate.parse(date),
+                LocalTime.parse("09:00"),
+                instructorId,
+                dossierId,
+                DrivingSlotType.EXAM,
+                LicensePlate(auto))
 
             val request = client
                 .post("/drivingSlots")
@@ -54,9 +62,10 @@ class PracticalExams : En {
         }
 
         /* Check NOT_AN_EXAM_DAY*/
-        Given("dossier {word} has already 10 driving lessons in the past") { dossierId: String ->
+        Given("dossier {word} has already {int} driving lessons in the past") {
+                dossierId: String, numLessions: Int ->
             var localRequest: Future<HttpResponse<Buffer>>? = null
-            for (i in 0..9) {
+            for (i in 0 until numLessions) {
                 val bookingRequest = DrivingSlotBooking(
                     LocalDate.parse("2023-01-01"),
                     LocalTime.parse("0$i:00"),
@@ -100,7 +109,8 @@ class PracticalExams : En {
             val response = sleeper.waitResult(request)
             checkResponse(response)
             statusCode = response?.statusCode()
-            practicalExamDays = Json.decodeFromString(ListSerializer(PracticalExamDay.serializer()), response?.body().toString())
+            practicalExamDays = Json.decodeFromString(
+                ListSerializer(PracticalExamDay.serializer()), response?.body().toString())
         }
         Then("finds only one available practical exam day on {word}") { date: String ->
             assertEquals(1, practicalExamDays?.size)
