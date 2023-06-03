@@ -1,33 +1,33 @@
 package dsdms.dossier.model.valueObjects
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import kotlin.test.assertEquals
-import dsdms.dossier.model.valueObjects.PracticalExamState.*
 import dsdms.dossier.model.valueObjects.TheoreticalExamState.PASSED
 import dsdms.dossier.model.valueObjects.TheoreticalExamState.TO_DO
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalStateException
+import kotlin.test.assertEquals
 
 class ExamsStatusTest {
 
     @Test
-    fun checkDefaultState(){
+    fun checkDefaultState() {
         assertEquals(ExamsStatus().practicalExamState, PracticalExamState.TO_DO)
         assertEquals(ExamsStatus().theoreticalExamState, TO_DO)
     }
 
     @Test
-    fun setCorrectStates(){
+    fun setCorrectStates() {
         assertDoesNotThrow {
-            val tmp =  ExamsStatus().registerTheoreticalExamPassed()
+            val tmp = ExamsStatus().registerTheoreticalExamPassed()
             assertEquals(tmp.theoreticalExamState, PASSED)
             tmp.registerPracticalExamPassed()
         }
         val intermediateState = ExamsStatus()
             .registerTheoreticalExamPassed()
             .registerProvisionalLicenceInvalidation()
-        assertEquals(intermediateState.theoreticalExamState,
+        assertEquals(
+            intermediateState.theoreticalExamState,
             TO_DO
         )
         assertDoesNotThrow {
@@ -39,7 +39,7 @@ class ExamsStatusTest {
     }
 
     @Test
-    fun setIncorrectStates(){
+    fun setIncorrectStates() {
         assertThrows<IllegalStateException> {
             ExamsStatus().registerPracticalExamPassed()
         }
@@ -53,9 +53,9 @@ class ExamsStatusTest {
 
         assertThrows<IllegalStateException> {
             var exams = ExamsStatus().registerTheoreticalExamPassed().registerProvisionalLicenceInvalidation()
-            assertEquals(exams.practicalExamState,FIRST_PROVISIONAL_LICENCE_INVALID)
+            assertEquals(exams.practicalExamState, PracticalExamState.FIRST_PROVISIONAL_LICENCE_INVALID)
             exams = exams.registerTheoreticalExamPassed().registerProvisionalLicenceInvalidation()
-            assertEquals(exams.practicalExamState, SECOND_PROVISIONAL_LICENCE_INVALID)
+            assertEquals(exams.practicalExamState, PracticalExamState.SECOND_PROVISIONAL_LICENCE_INVALID)
             exams.registerTheoreticalExamPassed().registerPracticalExamPassed()
         }
     }

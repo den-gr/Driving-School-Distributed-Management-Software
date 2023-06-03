@@ -7,7 +7,8 @@ import dsdms.exam.model.domainServices.DomainResponseStatus
 import dsdms.exam.model.domainServices.NextTheoreticalExamAppeals
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import io.vertx.ext.web.RoutingContext
-import kotlinx.serialization.*
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
@@ -16,7 +17,8 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
         try {
             val insertResult = model.examService.saveNewTheoreticalExamPass(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response().setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus)).end(
-                insertResult.theoreticalExamPass ?: insertResult.domainResponseStatus.name)
+                insertResult.theoreticalExamPass ?: insertResult.domainResponseStatus.name
+            )
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
@@ -25,15 +27,17 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
     override suspend fun getTheoreticalExamPass(routingContext: RoutingContext) {
         try {
             val retrievedTheoreticalExamPass: TheoreticalExamPass? = model.examService.readTheoreticalExamPass(getDossierId(routingContext))
-            if (retrievedTheoreticalExamPass == null)
+            if (retrievedTheoreticalExamPass == null) {
                 routingContext.response()
                     .setStatusCode(domainConversionTable.getHttpCode(DomainResponseStatus.ID_NOT_FOUND))
                     .end(DomainResponseStatus.ID_NOT_FOUND.name)
-            else routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK).end(Json.encodeToString(retrievedTheoreticalExamPass))
+            } else {
+                routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK).end(Json.encodeToString(retrievedTheoreticalExamPass))
+            }
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
-     }
+    }
 
     override suspend fun deleteTheoreticalExamPass(routingContext: RoutingContext) {
         try {

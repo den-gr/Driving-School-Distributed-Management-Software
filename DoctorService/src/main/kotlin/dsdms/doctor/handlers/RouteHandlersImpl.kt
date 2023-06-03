@@ -11,15 +11,15 @@ import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
 class RouteHandlersImpl(private val model: Model) : RouteHandlers {
-    
+
     override suspend fun bookDoctorVisit(routingContext: RoutingContext) {
         try {
             val insertResult =
                 model.doctorService.saveDoctorSlot(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus)).end(
-                insertResult.visitDate ?: insertResult.domainResponseStatus.toString()
-            )
+                    insertResult.visitDate ?: insertResult.domainResponseStatus.toString()
+                )
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
@@ -33,7 +33,6 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
                 .end(result.doctorSlots ?: result.domainResponseStatus.toString())
-
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
@@ -54,19 +53,19 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
         try {
             val result = model.doctorService.saveDoctorResult(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response().setStatusCode(domainConversionTable.getHttpCode(result)).end(result.toString())
-        }catch (ex: Exception) {
+        } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    private fun handleException(ex: Exception, routingContext: RoutingContext){
+    private fun handleException(ex: Exception, routingContext: RoutingContext) {
         println("Error message: ${ex.message}")
-        when(ex){
+        when (ex) {
             is SerializationException, is MissingFieldException -> {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
             }
-            else ->{
+            else -> {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR).end(ex.message)
             }
         }

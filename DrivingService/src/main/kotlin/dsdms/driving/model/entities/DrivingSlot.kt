@@ -22,5 +22,5 @@ data class DrivingSlot(
     val dossierId: String,
     val licensePlate: LicensePlate,
     val slotType: DrivingSlotType,
-    @Contextual val _id: String? = null,
+    @Contextual val _id: String? = null
 )

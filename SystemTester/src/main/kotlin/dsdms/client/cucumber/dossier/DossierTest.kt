@@ -17,7 +17,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
-import java.net.HttpURLConnection.*
+import java.net.HttpURLConnection.HTTP_BAD_REQUEST
+import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -74,7 +75,7 @@ class DossierTest : En {
             assertEquals(PracticalExamState.TO_DO, retrievedDossier?.examsStatus?.practicalExamState)
         }
 
-        When("I try to register invalid subscriber information: {word},{word},{word},{word}") {name: String, surname: String, birthdate: String, fiscal_code: String ->
+        When("I try to register invalid subscriber information: {word},{word},{word},{word}") { name: String, surname: String, birthdate: String, fiscal_code: String ->
             val request = client
                 .post("/dossiers")
                 .sendJson(

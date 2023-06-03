@@ -1,10 +1,10 @@
 package dsdms.exam.model.entities
 
+import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.plus
 import kotlinx.serialization.Serializable
-import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
 
 /**
  * Represents the provisional license

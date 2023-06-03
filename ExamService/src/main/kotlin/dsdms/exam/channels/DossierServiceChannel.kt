@@ -39,7 +39,7 @@ class DossierServiceChannelImpl(val client: WebClient) : DossierServiceChannel {
     override suspend fun updateExamStatus(dossierId: String, examEvent: ExamEvent): DomainResponseStatus {
         val result = client.put("/dossiers/$dossierId/examStatus")
             .sendBuffer(Buffer.buffer(examEvent.name)).await()
-        if(result.statusCode() != HttpURLConnection.HTTP_OK){
+        if (result.statusCode() != HttpURLConnection.HTTP_OK) {
             println(result.body())
             return DomainResponseStatus.EXAM_STATUS_ERROR
         }

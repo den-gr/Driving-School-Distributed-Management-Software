@@ -45,7 +45,7 @@ class UpdateDossierTest : En {
             retrievedDossier = Json.decodeFromString(response?.body().toString())
         }
 
-        When("i read his {word} exam progress state is {word}") { type: String, state: String->
+        When("i read his {word} exam progress state is {word}") { type: String, state: String ->
             assertNotNull(retrievedDossier)
             if (type == ExamEvent.THEORETICAL_EXAM_PASSED.name) {
                 retrievedDossier?.examsStatus?.let { assertEquals(TheoreticalExamState.valueOf(state), it.theoreticalExamState) }
@@ -54,7 +54,7 @@ class UpdateDossierTest : En {
             }
         }
 
-        Then("trying to register {word} exam state as passed") { type: String->
+        Then("trying to register {word} exam state as passed") { type: String ->
             val request = client
                 .put("/dossiers/$dossier/examStatus")
                 .sendBuffer(Buffer.buffer(type))
@@ -64,7 +64,7 @@ class UpdateDossierTest : En {
             result = response
         }
 
-        And("obtaining {word} exam state equal to {word}") { type: String, newState: String->
+        And("obtaining {word} exam state equal to {word}") { type: String, newState: String ->
             assertNotNull(result)
             assertEquals(HTTP_OK, result?.statusCode())
 

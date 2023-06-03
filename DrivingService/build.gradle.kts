@@ -19,9 +19,6 @@ dependencies {
     implementation(libs.bundles.vertx.server)
 }
 
-
-
-
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     manifest.attributes["Main-Class"] = application.mainClass

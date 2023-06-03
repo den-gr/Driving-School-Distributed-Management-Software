@@ -1,7 +1,7 @@
 package dsdms.doctor.handlers
 
-import io.vertx.ext.web.RoutingContext
 import dsdms.doctor.model.domainServices.DoctorService
+import io.vertx.ext.web.RoutingContext
 
 interface RouteHandlers {
 

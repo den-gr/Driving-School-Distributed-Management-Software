@@ -10,7 +10,8 @@ data class DrivingSlotRegistrationResult(
 
 data class DrivingSlotsRequestResult(
     val domainResponseStatus: DomainResponseStatus,
-    val drivingSlots: String? = null)
+    val drivingSlots: String? = null
+)
 
 interface DrivingService {
 

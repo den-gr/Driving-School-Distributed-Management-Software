@@ -4,15 +4,15 @@ import dsdms.client.utils.SmartSleep
 import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
 import dsdms.client.utils.createJson
-import dsdms.driving.model.entities.DrivingSlot
-import dsdms.driving.model.valueObjects.*
+import dsdms.driving.model.valueObjects.DrivingSlotBooking
+import dsdms.driving.model.valueObjects.DrivingSlotType
+import dsdms.driving.model.valueObjects.LicensePlate
+import dsdms.driving.model.valueObjects.PracticalExamDay
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
-import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.core.Future
 import io.vertx.core.buffer.Buffer
-import io.vertx.ext.web.client.HttpRequest
 import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
 import kotlinx.datetime.LocalDate
@@ -37,7 +37,7 @@ class PracticalExams : En {
     init {
         val sleeper = SmartSleep()
 
-        Given("an attempt to book a new practical exam on {word} for instructor {word}, dossier {word} and auto {word}") {date: String, instructorId: String, dossierId: String, auto: String ->
+        Given("an attempt to book a new practical exam on {word} for instructor {word}, dossier {word} and auto {word}") { date: String, instructorId: String, dossierId: String, auto: String ->
             val bookingRequest = DrivingSlotBooking(LocalDate.parse(date), LocalTime.parse("09:00"), instructorId, dossierId, DrivingSlotType.EXAM, LicensePlate(auto))
 
             val request = client
@@ -48,15 +48,15 @@ class PracticalExams : En {
             body = response?.body().toString()
             statusCode = response?.statusCode()
         }
-        Then("receive the {word} response") {errorType: String ->
+        Then("receive the {word} response") { errorType: String ->
             assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, statusCode)
             assertEquals(errorType, body)
         }
 
         /* Check NOT_AN_EXAM_DAY*/
-        Given("dossier {word} has already 10 driving lessons in the past") {dossierId: String ->
-            var localRequest:  Future<HttpResponse<Buffer>>? = null
-            for(i in 0..9) {
+        Given("dossier {word} has already 10 driving lessons in the past") { dossierId: String ->
+            var localRequest: Future<HttpResponse<Buffer>>? = null
+            for (i in 0..9) {
                 val bookingRequest = DrivingSlotBooking(
                     LocalDate.parse("2023-01-01"),
                     LocalTime.parse("0$i:00"),
@@ -81,7 +81,7 @@ class PracticalExams : En {
             assertEquals(errorType, body)
         }
 
-        When("registering a new practical exam day on {word}") {date: String ->
+        When("registering a new practical exam day on {word}") { date: String ->
             val request = client
                 .post("/practicalExamDays")
                 .sendBuffer(createJson(PracticalExamDay(LocalDate.parse(date))))
@@ -90,7 +90,7 @@ class PracticalExams : En {
             body = response?.body().toString()
             statusCode = response?.statusCode()
         }
-        Then("it receives {int} with {word}") {code: Int, message: String ->
+        Then("it receives {int} with {word}") { code: Int, message: String ->
             assertEquals(code, statusCode)
             assertEquals(message, body)
         }
@@ -102,7 +102,7 @@ class PracticalExams : En {
             statusCode = response?.statusCode()
             practicalExamDays = Json.decodeFromString(ListSerializer(PracticalExamDay.serializer()), response?.body().toString())
         }
-        Then("finds only one available practical exam day on {word}") {date: String ->
+        Then("finds only one available practical exam day on {word}") { date: String ->
             assertEquals(1, practicalExamDays?.size)
             assertEquals(practicalExamDays?.get(0)?.date, LocalDate.parse(date))
         }

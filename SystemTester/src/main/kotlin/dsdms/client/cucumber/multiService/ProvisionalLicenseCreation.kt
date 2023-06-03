@@ -17,12 +17,12 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
 import java.net.HttpURLConnection.HTTP_CONFLICT
 import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
-import kotlinx.serialization.decodeFromString
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
@@ -40,9 +40,8 @@ class ProvisionalLicenseCreation : En {
     private var provisionalLicenseHolder: ProvisionalLicenseHolder? = null
     private var examStatus: ExamsStatus? = null
 
-
     init {
-        Given("a new exam appeal on {word}") {date: String ->
+        Given("a new exam appeal on {word}") { date: String ->
             examDate = LocalDate.parse(date)
             val request = examService
                 .post("/theoreticalExam/examAppeal")
@@ -63,7 +62,7 @@ class ProvisionalLicenseCreation : En {
             val response = createProvisionalLicense()
             assertEquals(HTTP_OK, response.statusCode())
         }
-        And("if try to register an another provisional license for this dossier receive {word} msg") {exception: String ->
+        And("if try to register an another provisional license for this dossier receive {word} msg") { exception: String ->
             val response = createProvisionalLicense()
             assertEquals(HTTP_CONFLICT, response.statusCode())
             assertEquals(exception, response.body().toString())
@@ -77,7 +76,7 @@ class ProvisionalLicenseCreation : En {
             assertEquals(HTTP_OK, response?.statusCode())
             provisionalLicenseHolder = Json.decodeFromString(response?.body().toString())
         }
-        Then("receiving info that there are {int} failing attempts and validity range is from {word} to {word}") {attempts: Int, startDate: String, endDate: String ->
+        Then("receiving info that there are {int} failing attempts and validity range is from {word} to {word}") { attempts: Int, startDate: String, endDate: String ->
             assertEquals(attempts, provisionalLicenseHolder?.practicalExamAttempts)
             assertEquals(LocalDate.parse(startDate), provisionalLicenseHolder?.provisionalLicense?.startValidity)
             assertEquals(LocalDate.parse(endDate), provisionalLicenseHolder?.provisionalLicense?.endValidity)
@@ -91,16 +90,16 @@ class ProvisionalLicenseCreation : En {
             val dossier: Dossier = Json.decodeFromString(response?.body().toString())
             examStatus = dossier.examsStatus
         }
-        Then("theoretical exam state is {word} and practical exam state is {word}") {thResult: String, prResult: String ->
-           assertEquals(thResult,examStatus!!.theoreticalExamState.name)
-           assertEquals(prResult,examStatus!!.practicalExamState.name)
+        Then("theoretical exam state is {word} and practical exam state is {word}") { thResult: String, prResult: String ->
+            assertEquals(thResult, examStatus!!.theoreticalExamState.name)
+            assertEquals(prResult, examStatus!!.practicalExamState.name)
         }
     }
 
-    private fun createProvisionalLicense(): HttpResponse<Buffer>{
+    private fun createProvisionalLicense(): HttpResponse<Buffer> {
         val request = examService
             .post("/provisionalLicences")
-            .sendBuffer(createJson(ProvisionalLicense(dossierId, examDate!!) ))
+            .sendBuffer(createJson(ProvisionalLicense(dossierId, examDate!!)))
         val response = sleeper.waitResult(request)
         checkResponse(response)
         return response!!

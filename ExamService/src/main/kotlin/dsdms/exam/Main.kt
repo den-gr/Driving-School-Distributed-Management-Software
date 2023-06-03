@@ -1,8 +1,8 @@
 package dsdms.exam
 
 import io.vertx.core.Vertx
-import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.coroutine.coroutine
+import org.litote.kmongo.reactivestreams.KMongo
 
 class Main {
     companion object {

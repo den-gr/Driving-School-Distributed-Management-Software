@@ -4,12 +4,11 @@ import io.vertx.core.Vertx
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 
-
 interface ChannelsProvider {
     val examServiceChannel: ExamServiceChannel
 }
 
-class ChannelsProviderImpl(private val vertx: Vertx): ChannelsProvider {
+class ChannelsProviderImpl(private val vertx: Vertx) : ChannelsProvider {
     override val examServiceChannel: ExamServiceChannel
 
     companion object {
@@ -26,12 +25,12 @@ class ChannelsProviderImpl(private val vertx: Vertx): ChannelsProvider {
         return ExamServiceChannelImpl(client)
     }
 
-    private fun getHost(hostName: String = "exam_host"): String{
+    private fun getHost(hostName: String = "exam_host"): String {
         return if (System.getProperty(hostName) != null) System.getProperty(hostName) else LOCALHOST
     }
 
     private fun getPort(portName: String = "exam_port", defaultPort: Int = DEFAULT_EXAM_SERVICE_PORT): Int {
-        return  if (System.getProperty(portName) != null) System.getProperty(portName).toInt() else defaultPort
+        return if (System.getProperty(portName) != null) System.getProperty(portName).toInt() else defaultPort
     }
 
     private fun createClient(host: String, port: Int): WebClient {

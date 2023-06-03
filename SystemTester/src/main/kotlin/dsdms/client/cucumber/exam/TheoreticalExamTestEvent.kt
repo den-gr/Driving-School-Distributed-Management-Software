@@ -21,13 +21,13 @@ import kotlin.test.assertEquals
     features = ["src/main/resources/features/exam/theoreticalExamTest.feature"],
     plugin = ["pretty", "summary"]
 )
-class TheoreticalExamTestEvent: En {
+class TheoreticalExamTestEvent : En {
     private val client: WebClient = VertxProviderImpl().getExamServiceClient()
     private var statusMessage: String = ""
     private var statusCode: Int? = null
     private var examAppealList: List<String>? = null
 
-    init{
+    init {
         val sleeper = SmartSleep()
 
         When("secretary inserts a new day {word} and number of places {int} for exam appeal") { date: String, places: Int ->

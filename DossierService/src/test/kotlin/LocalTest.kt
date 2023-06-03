@@ -27,7 +27,7 @@ internal class LocalTest {
     @Disabled
     @Test
     fun assertInsertTest() {
-        val den = Dossier("den", "grush", "1999-03-07","DNFG123")
+        val den = Dossier("den", "grush", "1999-03-07", "DNFG123")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
         assertNull(result)
@@ -36,7 +36,7 @@ internal class LocalTest {
     @Disabled
     @Test
     fun updateTest() {
-        val den = Dossier("den", "grush", "1999-03-07","DNFG123456789")
+        val den = Dossier("den", "grush", "1999-03-07", "DNFG123456789")
         val result: Dossier = den.apply { dossiers.insertOne(den) }
 
         println(result.toString())
@@ -48,13 +48,13 @@ internal class LocalTest {
         assertTrue(updateResult.deletedCount.toInt() != 1)
     }
 
-    val mjson = Json{
+    val mjson = Json {
         encodeDefaults = true
     }
 
     @Disabled
     @Test
-    fun findOne(){
+    fun findOne() {
         val dos = dossiers.findOne(Dossier::_id eq "d2")
         println(dos)
         val ser = mjson.encodeToString(dos)
@@ -64,7 +64,7 @@ internal class LocalTest {
     }
 
     @Test
-    fun deserializationTest(){
+    fun deserializationTest() {
         val dossierJson = """{"name":"Homer","surname":"Simpsons","birthdate":"1990-03-03","fiscal_code":"SMPHMR80A01C573O","_id":"64633c11f85fe95eb801c0b6","validity":true,"examsStatus":{"theoreticalExamState":"TO_DO","practicalExamState":"TO_DO"}}"""
         val dossier: Dossier? = mjson.decodeFromString(dossierJson)
         assertEquals(dossierJson, mjson.encodeToString(dossier))

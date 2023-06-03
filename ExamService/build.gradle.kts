@@ -15,7 +15,6 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.kmongo)
     implementation(libs.bundles.vertx.server)
-
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {

@@ -25,7 +25,6 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
     private lateinit var provisionalLicenseHandlersImpl: ProvisionalLicenseHandlers
     private lateinit var theoreticalExamHandlersImpl: TheoreticalExamHandlers
 
-
     override suspend fun start() {
         val channelsProvider = ChannelsProviderImpl(vertx)
         val model = ModelImpl(repository, channelsProvider)

@@ -8,7 +8,6 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import java.time.LocalDate
 
-
 class RepositoryImpl(doctorService: CoroutineDatabase) : Repository {
     private val doctorSlots = doctorService.getCollection<DoctorSlot>("DoctorSlot")
     private val doctorResults = doctorService.getCollection<DoctorResult>("DoctorResult")
@@ -26,15 +25,19 @@ class RepositoryImpl(doctorService: CoroutineDatabase) : Repository {
 
     override suspend fun getAllDoctorSlots(dossierId: String, today: LocalDate?): List<DoctorSlot> {
         val result = doctorSlots.find(DoctorSlot::dossierId eq dossierId).toList()
-        return if (today != null)
+        return if (today != null) {
             result.filter { el -> LocalDate.parse(el.date) >= today }
-        else result
+        } else {
+            result
+        }
     }
 
     override suspend fun registerDoctorResult(document: DoctorResult): RepositoryResponseStatus {
-        return if (doctorResults.insertOne(document).wasAcknowledged())
+        return if (doctorResults.insertOne(document).wasAcknowledged()) {
             RepositoryResponseStatus.OK
-        else RepositoryResponseStatus.INSERT_ERROR
+        } else {
+            RepositoryResponseStatus.INSERT_ERROR
+        }
     }
 
     private fun handleDeleteResult(deleteResult: DeleteResult): RepositoryResponseStatus {

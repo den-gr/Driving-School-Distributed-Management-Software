@@ -2,8 +2,8 @@
 
 package dsdms.exam.handlers
 
-import dsdms.exam.model.domainServices.DomainResponseStatus
 import dsdms.exam.database.utils.RepositoryResponseStatus
+import dsdms.exam.model.domainServices.DomainResponseStatus
 import java.net.HttpURLConnection
 
 val repositoryToDomainConversionTable: Map<RepositoryResponseStatus, DomainResponseStatus> = mapOf(
@@ -31,7 +31,7 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
 
 )
 
-fun  Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {
+fun Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {
     return domainConversionTable.getOrDefault(domainResponseStatus, HttpURLConnection.HTTP_INTERNAL_ERROR)
 }
 

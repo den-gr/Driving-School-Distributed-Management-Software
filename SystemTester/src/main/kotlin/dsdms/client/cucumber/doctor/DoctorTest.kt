@@ -27,7 +27,7 @@ class DoctorTest : En {
     private var receivedCode: Int? = null
     private var receivedMessage: String = ""
 
-    init{
+    init {
         val sleeper = SmartSleep()
         When("sending {word} for registering doctor visit on {word} and {word}") { id: String, date: String, time: String ->
             val request = client

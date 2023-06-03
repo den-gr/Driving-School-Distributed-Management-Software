@@ -7,9 +7,9 @@ import dsdms.doctor.handlers.repositoryToDomainConversionTable
 import dsdms.doctor.model.entities.DoctorDays
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.entities.DoctorTimeSlot
+import dsdms.doctor.model.valueObjects.DoctorApprovalEvent
 import dsdms.doctor.model.valueObjects.DoctorResult
 import dsdms.doctor.model.valueObjects.ResultTypes
-import dsdms.doctor.model.valueObjects.DoctorApprovalEvent
 import io.vertx.core.buffer.Buffer
 import kotlinx.datetime.toLocalTime
 import kotlinx.serialization.builtins.ListSerializer
@@ -27,24 +27,28 @@ data class BookedDoctorSlots(
     val doctorSlots: String? = null
 ) {
     fun getDoctorSlots(): List<DoctorSlot> {
-        return if (doctorSlots != null)
+        return if (doctorSlots != null) {
             Json.decodeFromString(ListSerializer(DoctorSlot.serializer()), doctorSlots)
-        else listOf()
+        } else {
+            listOf()
+        }
     }
 }
 
 class DoctorServiceImpl(private val repository: Repository, private val channelsProvider: ChannelsProvider) : DoctorService {
 
     private suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
-        return if (checkDoctorDay(documents.date))
+        return if (checkDoctorDay(documents.date)) {
             DomainResponseStatus.NOT_DOCTOR_DAY
-        else if (checkDoctorVisitGivenTime(documents.time))
+        } else if (checkDoctorVisitGivenTime(documents.time)) {
             DomainResponseStatus.BAD_TIME
-        else if (checkTimeAvailability(documents.time, documents.date))
+        } else if (checkTimeAvailability(documents.time, documents.date)) {
             DomainResponseStatus.TIME_OCCUPIED
-        else if (repository.getAllDoctorSlots(documents.dossierId, LocalDate.now()).isNotEmpty())
+        } else if (repository.getAllDoctorSlots(documents.dossierId, LocalDate.now()).isNotEmpty()) {
             DomainResponseStatus.DOSSIER_ALREADY_BOOKED
-        else channelsProvider.dossierServiceChannel.checkDossierValidity(documents.dossierId)
+        } else {
+            channelsProvider.dossierServiceChannel.checkDossierValidity(documents.dossierId)
+        }
     }
 
     /**
@@ -52,7 +56,7 @@ class DoctorServiceImpl(private val repository: Repository, private val channels
      * @return if wanted date is a Doctor Day (Tuesday or Friday)
      */
     private fun checkDoctorDay(date: String): Boolean =
-        DoctorDays.values().any { el -> el.name == LocalDate.parse(date).dayOfWeek.name}.not()
+        DoctorDays.values().any { el -> el.name == LocalDate.parse(date).dayOfWeek.name }.not()
 
     /**
      * @param time: wanted time of the visit
@@ -71,18 +75,23 @@ class DoctorServiceImpl(private val repository: Repository, private val channels
 
     override suspend fun saveDoctorSlot(documents: DoctorSlot): InsertDoctorVisitResult {
         val verifyResult = verifyDocuments(documents)
-        return if (verifyResult == DomainResponseStatus.OK)
+        return if (verifyResult == DomainResponseStatus.OK) {
             InsertDoctorVisitResult(verifyResult, repository.saveDoctorSlot(documents))
-        else InsertDoctorVisitResult(verifyResult)
+        } else {
+            InsertDoctorVisitResult(verifyResult)
+        }
     }
 
     override suspend fun getOccupiedDoctorSlots(date: String): BookedDoctorSlots {
         val doctorSlots = repository.getOccupiedDoctorSlots(date)
-        return if (doctorSlots.isEmpty())
+        return if (doctorSlots.isEmpty()) {
             BookedDoctorSlots(DomainResponseStatus.NO_SLOT_OCCUPIED)
-        else BookedDoctorSlots(
-            DomainResponseStatus.OK,
-            Json.encodeToString(ListSerializer(DoctorSlot.serializer()), doctorSlots))
+        } else {
+            BookedDoctorSlots(
+                DomainResponseStatus.OK,
+                Json.encodeToString(ListSerializer(DoctorSlot.serializer()), doctorSlots)
+            )
+        }
     }
 
     override suspend fun deleteDoctorSlot(dossierId: String): DomainResponseStatus {
@@ -90,12 +99,13 @@ class DoctorServiceImpl(private val repository: Repository, private val channels
     }
 
     override suspend fun saveDoctorResult(document: DoctorResult): DomainResponseStatus {
-        return if (document.result != ResultTypes.VALID.toString())
-                DomainResponseStatus.EXAM_PASS_NOT_CREATED
-            else if (createTheoreticalExamPass(document))
-                repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
-            else
-                DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
+        return if (document.result != ResultTypes.VALID.toString()) {
+            DomainResponseStatus.EXAM_PASS_NOT_CREATED
+        } else if (createTheoreticalExamPass(document)) {
+            repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
+        } else {
+            DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
+        }
     }
 
     private suspend fun createTheoreticalExamPass(document: DoctorResult): Boolean {

@@ -30,7 +30,7 @@ class VertxProviderImpl : VertxProvider {
     }
 
     override fun getDrivingServiceClient(): WebClient {
-        return createClient(getHost("driving_host"), getPort("driving_port", DEFAULT_DRIVING_SERVICE_PORT ))
+        return createClient(getHost("driving_host"), getPort("driving_port", DEFAULT_DRIVING_SERVICE_PORT))
     }
 
     override fun getExamServiceClient(): WebClient {
@@ -41,12 +41,12 @@ class VertxProviderImpl : VertxProvider {
         return createClient(getHost("doctor_host"), getPort("doctor_port", DEFAULT_DOCTOR_SERVICE_PORT))
     }
 
-    private fun getHost(hostName: String): String{
+    private fun getHost(hostName: String): String {
         return if (System.getProperty(hostName) != null) System.getProperty(hostName) else LOCALHOST
     }
 
     private fun getPort(portName: String, defaultPort: Int): Int {
-        return  if (System.getProperty(portName) != null) System.getProperty(portName).toInt() else defaultPort
+        return if (System.getProperty(portName) != null) System.getProperty(portName).toInt() else defaultPort
     }
 
     private fun createClient(host: String, port: Int): WebClient {

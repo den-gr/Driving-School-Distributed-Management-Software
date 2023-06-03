@@ -17,6 +17,6 @@ internal class LocalTest {
     }
 
     private fun checkIfContains(dayOfWeek: String): Boolean {
-        return DoctorDays.values().any { el -> el.name == dayOfWeek}
+        return DoctorDays.values().any { el -> el.name == dayOfWeek }
     }
 }

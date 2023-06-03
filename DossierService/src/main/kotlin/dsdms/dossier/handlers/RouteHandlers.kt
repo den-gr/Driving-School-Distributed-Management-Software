@@ -1,7 +1,7 @@
 package dsdms.dossier.handlers
 
-import io.vertx.ext.web.RoutingContext
 import dsdms.dossier.model.domainServices.DossierService
+import io.vertx.ext.web.RoutingContext
 
 interface RouteHandlers {
 

@@ -17,5 +17,5 @@ enum class RepositoryResponseStatus {
     /**
      * Repository gets an error during update operation
      */
-    UPDATE_ERROR,
+    UPDATE_ERROR
 }

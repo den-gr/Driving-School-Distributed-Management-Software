@@ -79,8 +79,9 @@ class ExamEventPassTest : En {
 
             // Cause if status code is 200, exam service returns the founded theoretical exam pass for D1
             // previously created
-            if (response?.statusCode() != HTTP_OK)
+            if (response?.statusCode() != HTTP_OK) {
                 assertEquals(message, response?.body().toString())
+            }
         }
         Given("theoretical exam pass for dossier {word}, secretary requests to delete it") { dossierId: String ->
             val request = examService

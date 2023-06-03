@@ -14,9 +14,8 @@ class LocalTest {
     }
 
     @Test fun regexTest() {
-        assertDoesNotThrow {  LicensePlate("FZ340AR") }
-        println(LicensePlate("FZ340AR") )
-
+        assertDoesNotThrow { LicensePlate("FZ340AR") }
+        println(LicensePlate("FZ340AR"))
     }
 
     @Test fun localDateSerialization() {

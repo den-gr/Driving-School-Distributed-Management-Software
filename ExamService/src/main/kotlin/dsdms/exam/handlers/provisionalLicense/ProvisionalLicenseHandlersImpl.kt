@@ -14,7 +14,7 @@ import java.lang.IllegalArgumentException
 import java.net.HttpURLConnection
 
 class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandlers {
-    val cjson = Json{
+    val cjson = Json {
         encodeDefaults = true
     }
 
@@ -41,15 +41,17 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
                 routingContext.response()
                     .setStatusCode(domainConversionTable.getHttpCode(DomainResponseStatus.ID_NOT_FOUND))
                     .end(DomainResponseStatus.ID_NOT_FOUND.name)
-            } else routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK)
-                .end(cjson.encodeToString(provisionalLicenseHolder))
+            } else {
+                routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK)
+                    .end(cjson.encodeToString(provisionalLicenseHolder))
+            }
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
     }
 
     override suspend fun isProvisionalLicenseValidHandler(routingContext: RoutingContext) {
-        try{
+        try {
             val dossierId = getDossierId(routingContext)
             val date = LocalDate.parse(routingContext.queryParams().get("date"))
             val result = model.provisionalLicenseService.isProvisionalLicenseValid(dossierId, date)
@@ -64,10 +66,10 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
     override suspend fun updateProvisionalLicenseHolder(routingContext: RoutingContext) {
         try {
             val dossierId = getDossierId(routingContext)
-            val result: DomainResponseStatus = when(routingContext.queryParams().get("practicalExamUpdate")){
+            val result: DomainResponseStatus = when (routingContext.queryParams().get("practicalExamUpdate")) {
                 "PASSED" -> model.provisionalLicenseService.practicalExamSuccess(dossierId)
                 "FAILED" -> model.provisionalLicenseService.incrementProvisionalLicenseFailures(dossierId)
-                 else -> throw IllegalArgumentException("Query parameter is not recognized. It should be (practicalExamUpdate -> PASSED/FAILED")
+                else -> throw IllegalArgumentException("Query parameter is not recognized. It should be (practicalExamUpdate -> PASSED/FAILED")
             }
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))

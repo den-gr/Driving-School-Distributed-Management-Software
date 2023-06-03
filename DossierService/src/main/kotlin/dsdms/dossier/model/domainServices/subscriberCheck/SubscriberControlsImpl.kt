@@ -6,7 +6,7 @@ import dsdms.dossier.model.valueObjects.SubscriberDocuments
 import kotlinx.datetime.toJavaLocalDate
 import java.time.Period
 
-class SubscriberControlsImpl: SubscriberControls {
+class SubscriberControlsImpl : SubscriberControls {
     override suspend fun checkDuplicatedFiscalCode(givenDocuments: SubscriberDocuments, repository: Repository): Boolean {
         val alreadyExistingDossiers: List<Dossier> = repository.readDossierFromCf(givenDocuments.fiscal_code)
         return alreadyExistingDossiers.count { el -> el.validity } != 0

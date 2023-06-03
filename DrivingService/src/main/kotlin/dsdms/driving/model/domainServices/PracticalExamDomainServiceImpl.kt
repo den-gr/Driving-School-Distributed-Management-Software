@@ -4,10 +4,9 @@ import dsdms.driving.database.Repository
 import dsdms.driving.model.valueObjects.PracticalExamDay
 import kotlinx.datetime.LocalDate
 
-
-class PracticalExamDomainServiceImpl(private val repository: Repository): PracticalExamDomainService {
+class PracticalExamDomainServiceImpl(private val repository: Repository) : PracticalExamDomainService {
     override suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay): DomainResponseStatus {
-        if(!isPracticalExamDay(practicalExamDay.date)){
+        if (!isPracticalExamDay(practicalExamDay.date)) {
             repository.registerPracticalExamDay(practicalExamDay)
             return DomainResponseStatus.OK
         }
@@ -18,7 +17,7 @@ class PracticalExamDomainServiceImpl(private val repository: Repository): Practi
         return PracticalExamDaysResponse(DomainResponseStatus.OK, repository.getPracticalExamDays())
     }
 
-    private suspend fun isPracticalExamDay(date: LocalDate): Boolean{
+    private suspend fun isPracticalExamDay(date: LocalDate): Boolean {
         return repository.getPracticalExamDays().map { elem -> elem.date }.contains(date)
     }
 }

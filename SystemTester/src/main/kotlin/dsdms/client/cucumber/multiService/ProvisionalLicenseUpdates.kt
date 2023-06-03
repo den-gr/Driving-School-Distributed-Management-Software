@@ -12,8 +12,8 @@ import io.cucumber.junit.CucumberOptions
 import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.runner.RunWith
 import java.net.HttpURLConnection
 import kotlin.test.assertEquals
@@ -32,7 +32,7 @@ class ProvisionalLicenseUpdates : En {
     private var dossierId: String? = null
 
     init {
-        Given("dossier {word} that is associated with a valid provisional license") {id: String ->
+        Given("dossier {word} that is associated with a valid provisional license") { id: String ->
             dossierId = id
             val request = examService.get("/provisionalLicences/$dossierId").send()
             val response = sleeper.waitResult(request)
@@ -47,17 +47,16 @@ class ProvisionalLicenseUpdates : En {
             checkResponse(response)
             assertEquals(HttpURLConnection.HTTP_OK, response?.statusCode())
         }
-        Then("provisional license is deleted so {word}") {attendedResponse: String ->
+        Then("provisional license is deleted so {word}") { attendedResponse: String ->
             checkProvisionalLicenseDeletion(dossierId!!, attendedResponse)
         }
-        And("dossier practical exam status is {word}") {finalState: String ->
+        And("dossier practical exam status is {word}") { finalState: String ->
             val dossier: Dossier = getDossier(dossierId!!)
             assertEquals(PracticalExamState.valueOf(finalState), dossier.examsStatus.practicalExamState)
         }
 
-
         Given("dossier {word} already has {word} and {int} failed attempts of practical exams") {
-            id: String, examState: String, attempts: Int ->
+                id: String, examState: String, attempts: Int ->
             dossierId = id
             assertEquals(examState, getDossier(id).examsStatus.practicalExamState.name)
             assertEquals(attempts, getHolder(id).practicalExamAttempts)
@@ -71,9 +70,9 @@ class ProvisionalLicenseUpdates : En {
             registerFailedPracticalExam(dossierId!!)
         }
         Then("provisional license is deleted so get {word} message") { status: String ->
-            checkProvisionalLicenseDeletion(dossierId!!,status)
+            checkProvisionalLicenseDeletion(dossierId!!, status)
         }
-        And("dossier is invalid and has practical exam state {word}") {status: String ->
+        And("dossier is invalid and has practical exam state {word}") { status: String ->
             val response = getDossierResponse(dossierId!!)
             assertEquals(HttpURLConnection.HTTP_ACCEPTED, response?.statusCode())
             val dossier: Dossier = Json.decodeFromString(response?.body().toString())
@@ -90,20 +89,20 @@ class ProvisionalLicenseUpdates : En {
         return Json.decodeFromString(response?.body().toString())
     }
 
-    private fun getDossier(id: String): Dossier{
+    private fun getDossier(id: String): Dossier {
         val response = getDossierResponse(id)
         assertEquals(HttpURLConnection.HTTP_OK, response?.statusCode())
         return Json.decodeFromString(response?.body().toString())
     }
 
-    private fun getDossierResponse(id: String): HttpResponse<Buffer>?{
+    private fun getDossierResponse(id: String): HttpResponse<Buffer>? {
         val request = dossierService.get("/dossiers/$id").send()
         val response = sleeper.waitResult(request)
         checkResponse(response)
         return response
     }
 
-    private fun registerFailedPracticalExam(id: String){
+    private fun registerFailedPracticalExam(id: String) {
         val request = examService.put("/provisionalLicences/$id")
             .addQueryParam("practicalExamUpdate", "FAILED")
             .send()
@@ -112,7 +111,7 @@ class ProvisionalLicenseUpdates : En {
         assertEquals(HttpURLConnection.HTTP_OK, response?.statusCode())
     }
 
-    private fun checkProvisionalLicenseDeletion(id: String, attendedResponse: String){
+    private fun checkProvisionalLicenseDeletion(id: String, attendedResponse: String) {
         val request = examService.get("/provisionalLicences/$id").send()
         val response = sleeper.waitResult(request)
         checkResponse(response)

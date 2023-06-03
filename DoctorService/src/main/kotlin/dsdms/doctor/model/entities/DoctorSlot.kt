@@ -10,7 +10,6 @@ data class DoctorSlot(
     val dossierId: String
 )
 
-
 enum class DoctorDays {
     TUESDAY,
     FRIDAY

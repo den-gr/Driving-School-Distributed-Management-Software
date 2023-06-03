@@ -21,13 +21,16 @@ data class InsertTheoreticalExamPassResult(
 
 data class NextTheoreticalExamAppeals(
     val domainResponseStatus: DomainResponseStatus,
-    val examAppeals: String? = null)
+    val examAppeals: String? = null
+)
 
 class ExamServiceImpl(private val repository: Repository) : ExamService {
     private suspend fun verifyExamPass(documents: DoctorApprovalEvent): DomainResponseStatus {
-        return if (repository.dossierAlreadyHasOnePass(documents.dossierId))
+        return if (repository.dossierAlreadyHasOnePass(documents.dossierId)) {
             DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
-        else DomainResponseStatus.OK
+        } else {
+            DomainResponseStatus.OK
+        }
     }
 
     private suspend fun createTheoreticalExamPass(documents: DoctorApprovalEvent): TheoreticalExamPass =
@@ -41,10 +44,11 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
 
     override suspend fun saveNewTheoreticalExamPass(documents: DoctorApprovalEvent): InsertTheoreticalExamPassResult {
         val verifyResult = verifyExamPass(documents)
-        return if (verifyResult == DomainResponseStatus.OK)
+        return if (verifyResult == DomainResponseStatus.OK) {
             InsertTheoreticalExamPassResult(verifyResult, Json.encodeToString(createTheoreticalExamPass(documents)))
-        else InsertTheoreticalExamPassResult(verifyResult)
-
+        } else {
+            InsertTheoreticalExamPassResult(verifyResult)
+        }
     }
 
     override suspend fun readTheoreticalExamPass(dossierId: String): TheoreticalExamPass? {
@@ -56,37 +60,42 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
     }
 
     override suspend fun insertNewExamAppeal(newExamDay: TheoreticalExamAppeal): DomainResponseStatus {
-        return if (repository.getFutureTheoreticalExamAppeals().any { el -> el.date == newExamDay.date })
+        return if (repository.getFutureTheoreticalExamAppeals().any { el -> el.date == newExamDay.date }) {
             DomainResponseStatus.DATE_ALREADY_IN
-        else
+        } else {
             repositoryToDomainConversionTable.getDomainCode(repository.insertTheoreticalExamDay(newExamDay))
+        }
     }
 
     override suspend fun getNextExamAppeals(): NextTheoreticalExamAppeals {
         val examAppeals = repository.getFutureTheoreticalExamAppeals()
-        return if (examAppeals.isEmpty())
+        return if (examAppeals.isEmpty()) {
             NextTheoreticalExamAppeals(DomainResponseStatus.NO_EXAM_APPEALS)
-        else
+        } else {
             NextTheoreticalExamAppeals(DomainResponseStatus.OK, Json.encodeToString(ListSerializer(TheoreticalExamAppeal.serializer()), examAppeals))
+        }
     }
 
     override suspend fun putDossierInExamAppeal(theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus {
         val examAppeal: TheoreticalExamAppeal? = repository.getFutureTheoreticalExamAppeals().find { el -> el.date == theoreticalExamAppealUpdate.date }
 
-        return if (examAppeal == null)
+        return if (examAppeal == null) {
             DomainResponseStatus.APPEAL_NOT_FOUND
-        else {
+        } else {
             if (examAppeal.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId) ||
-                repository.getFutureTheoreticalExamAppeals().any { el -> el.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId) })
+                repository.getFutureTheoreticalExamAppeals().any { el -> el.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId) }
+            ) {
                 DomainResponseStatus.DOSSIER_ALREADY_PUT
-            else if (examAppeal.registeredDossiers.count() < examAppeal.numberOfPlaces)
+            } else if (examAppeal.registeredDossiers.count() < examAppeal.numberOfPlaces) {
                 repositoryToDomainConversionTable.getDomainCode(
                     repository.updateExamAppeal(
                         examAppeal.date,
                         examAppeal.registeredDossiers.plus(theoreticalExamAppealUpdate.dossierId)
-                    ))
-            else DomainResponseStatus.PLACES_FINISHED
+                    )
+                )
+            } else {
+                DomainResponseStatus.PLACES_FINISHED
+            }
         }
     }
 }
-

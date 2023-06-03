@@ -13,7 +13,7 @@ interface Handlers {
      * @param routingContext
      * @return dossierId
      */
-    fun getDossierId(routingContext: RoutingContext): String{
+    fun getDossierId(routingContext: RoutingContext): String {
         return routingContext.request().getParam("id").toString()
     }
 
@@ -23,13 +23,13 @@ interface Handlers {
      * @param routingContext -> where to send message if some exceptions occurs
      */
     @OptIn(ExperimentalSerializationApi::class)
-    fun handleException(ex: Exception, routingContext: RoutingContext){
+    fun handleException(ex: Exception, routingContext: RoutingContext) {
         println("Error message: ${ex.message}")
-        when(ex){
+        when (ex) {
             is SerializationException, is MissingFieldException, is IllegalArgumentException -> {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
             }
-            else ->{
+            else -> {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR).end(ex.message)
             }
         }

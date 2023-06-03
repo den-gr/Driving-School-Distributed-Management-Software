@@ -7,12 +7,13 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
     alias(libs.plugins.dokka)
+    id("org.danilopianini.gradle-kotlin-qa") version "0.42.0"
 
 //    id("org.jlleitschuh.gradle.ktlint") version "11.3.2" //TEMPORALLY DISABLE
 }
 
 allprojects {
-//    apply(plugin = "org.jlleitschuh.gradle.ktlint") //TEMPORALLY DISABLE
+    apply(plugin = "org.jlleitschuh.gradle.ktlint") // TEMPORALLY DISABLE
     apply(plugin = "org.jetbrains.dokka")
 
     tasks.withType<KotlinCompile> {
@@ -28,7 +29,7 @@ allprojects {
         mavenCentral()
     }
 
-    tasks.withType<Jar>{
+    tasks.withType<Jar> {
         archiveClassifier.set("sources")
     }
 

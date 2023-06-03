@@ -5,7 +5,6 @@ import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.valueObjects.DoctorResult
 import java.time.LocalDate
 
-
 interface Repository {
 
     /**

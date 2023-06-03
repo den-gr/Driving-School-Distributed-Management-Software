@@ -37,7 +37,7 @@ class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
         return drivingSlots.find().toList().filter { el -> LocalDate.parse(el.date) > now() }
     }
 
-    override suspend fun countPastDrivingSlots(dossierId: String): Int{
+    override suspend fun countPastDrivingSlots(dossierId: String): Int {
         return drivingSlots.find(and(DrivingSlot::dossierId eq dossierId, DrivingSlot::date lt now().toString())).toList().count()
     }
 
@@ -58,7 +58,7 @@ class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
     }
 
     override suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay) {
-       practicalExamDays.insertOne(practicalExamDay)
+        practicalExamDays.insertOne(practicalExamDay)
     }
 
     override suspend fun getPracticalExamDays(): List<PracticalExamDay> {
@@ -73,7 +73,7 @@ class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
         }
     }
 
-    private fun now(): LocalDate{
+    private fun now(): LocalDate {
         return LocalDate.parse(java.time.LocalDate.now().toString())
     }
 }

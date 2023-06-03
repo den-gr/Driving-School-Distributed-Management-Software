@@ -23,13 +23,13 @@ interface ExamServiceChannel {
     suspend fun isProvisionalLicenseValid(dossierId: String, date: LocalDate): DomainResponseStatus
 }
 
-class ExamServiceChannelImpl(private val client: WebClient): ExamServiceChannel {
+class ExamServiceChannelImpl(private val client: WebClient) : ExamServiceChannel {
     override suspend fun isProvisionalLicenseValid(dossierId: String, date: LocalDate): DomainResponseStatus {
         val result = client
             .get("/provisionalLicences/$dossierId/validity")
             .addQueryParam("date", date.toString())
             .send().await()
-        return when(result.body().toString()){
+        return when (result.body().toString()) {
             DomainResponseStatus.OK.name -> DomainResponseStatus.OK
             DomainResponseStatus.PROVISIONAL_LICENSE_NOT_VALID.name -> DomainResponseStatus.PROVISIONAL_LICENSE_NOT_VALID
             "ID_NOT_FOUND" -> DomainResponseStatus.NO_PROVISIONAL_LICENSE

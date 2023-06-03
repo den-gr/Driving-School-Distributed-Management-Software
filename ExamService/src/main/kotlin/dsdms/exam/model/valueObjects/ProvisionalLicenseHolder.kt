@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ProvisionalLicenseHolder(val provisionalLicense: ProvisionalLicense, val practicalExamAttempts: Int = 0) {
-    companion object{
+    companion object {
         private const val MAX_PRACTICAL_EXAM_ATTEMPTS = 3
     }
 
@@ -24,7 +24,7 @@ data class ProvisionalLicenseHolder(val provisionalLicense: ProvisionalLicense, 
      * @return new ProvisionalLicenseHolder with incremented number of failures
      * @throws IllegalStateException if there are already max number of practical exam attempts
      */
-    fun registerPracticalExamFailure(): ProvisionalLicenseHolder{
+    fun registerPracticalExamFailure(): ProvisionalLicenseHolder {
         return this.copy(practicalExamAttempts = practicalExamAttempts + 1)
     }
 
@@ -33,18 +33,17 @@ data class ProvisionalLicenseHolder(val provisionalLicense: ProvisionalLicense, 
      * @param date
      * @return true if provisional license is valid in indicated date
      */
-    fun isValidOn(date: LocalDate): Boolean{
+    fun isValidOn(date: LocalDate): Boolean {
         return date in provisionalLicense.startValidity..provisionalLicense.endValidity
     }
 
-    fun hasMaxAttempts(): Boolean{
-        return  practicalExamAttempts == MAX_PRACTICAL_EXAM_ATTEMPTS
+    fun hasMaxAttempts(): Boolean {
+        return practicalExamAttempts == MAX_PRACTICAL_EXAM_ATTEMPTS
     }
 
-    private fun checkPracticalExamAttempts(){
-        if (practicalExamAttempts < 0 || practicalExamAttempts > MAX_PRACTICAL_EXAM_ATTEMPTS){
+    private fun checkPracticalExamAttempts() {
+        if (practicalExamAttempts < 0 || practicalExamAttempts > MAX_PRACTICAL_EXAM_ATTEMPTS) {
             throw IllegalStateException("Illegal number of practical exam attempts")
         }
     }
 }
-

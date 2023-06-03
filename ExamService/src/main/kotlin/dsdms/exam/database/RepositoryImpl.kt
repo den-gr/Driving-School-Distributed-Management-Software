@@ -44,8 +44,10 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     }
 
     override suspend fun updateExamAppeal(appealDate: String, appealList: List<String>): RepositoryResponseStatus {
-        return handleUpdateResult(theoreticalExamAppeals
-            .updateOne((TheoreticalExamAppeal::date eq appealDate), setValue(TheoreticalExamAppeal::registeredDossiers, appealList)))
+        return handleUpdateResult(
+            theoreticalExamAppeals
+                .updateOne((TheoreticalExamAppeal::date eq appealDate), setValue(TheoreticalExamAppeal::registeredDossiers, appealList))
+        )
     }
 
     override suspend fun saveProvisionalLicenseHolder(provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus {
@@ -53,7 +55,7 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     }
 
     override suspend fun findProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder? {
-        return provisionalLicenseHolders.findOne (ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId)
+        return provisionalLicenseHolders.findOne(ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId)
     }
 
     override suspend fun deleteProvisionalLicenseHolder(dossierId: String): RepositoryResponseStatus {
@@ -61,9 +63,12 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     }
 
     override suspend fun updateProvisionalLicenseHolder(holder: ProvisionalLicenseHolder): RepositoryResponseStatus {
-        return handleUpdateResult(provisionalLicenseHolders.updateOne(
-            ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq holder.provisionalLicense.dossierId, holder
-        ))
+        return handleUpdateResult(
+            provisionalLicenseHolders.updateOne(
+                ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq holder.provisionalLicense.dossierId,
+                holder
+            )
+        )
     }
 
     private fun handleUpdateResult(updateResult: UpdateResult): RepositoryResponseStatus {
@@ -75,16 +80,20 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     }
 
     private fun handleInsertResult(insertOne: InsertOneResult): RepositoryResponseStatus {
-        return if (insertOne.wasAcknowledged().not())
+        return if (insertOne.wasAcknowledged().not()) {
             RepositoryResponseStatus.INSERT_ERROR
-        else RepositoryResponseStatus.OK
+        } else {
+            RepositoryResponseStatus.OK
+        }
     }
 
     private fun handleDeleteResult(deleteOne: DeleteResult): RepositoryResponseStatus {
-        return if (deleteOne.wasAcknowledged().not())
+        return if (deleteOne.wasAcknowledged().not()) {
             RepositoryResponseStatus.DELETE_ERROR
-        else if (deleteOne.deletedCount.toInt() == 0)
+        } else if (deleteOne.deletedCount.toInt() == 0) {
             RepositoryResponseStatus.ID_NOT_FOUND
-        else RepositoryResponseStatus.OK
+        } else {
+            RepositoryResponseStatus.OK
+        }
     }
 }

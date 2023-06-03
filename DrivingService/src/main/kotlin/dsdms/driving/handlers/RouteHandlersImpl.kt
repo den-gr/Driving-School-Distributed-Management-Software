@@ -24,7 +24,6 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
                 .response()
                 .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
                 .end(insertResult.drivingSlotId ?: insertResult.domainResponseStatus.name)
-
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
@@ -86,13 +85,13 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    private fun handleException(ex: Exception, routingContext: RoutingContext){
+    private fun handleException(ex: Exception, routingContext: RoutingContext) {
         println("Error message: ${ex.message}")
-        when(ex){
+        when (ex) {
             is SerializationException, is MissingFieldException -> {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST).end(ex.message)
             }
-            else ->{
+            else -> {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR).end(ex.message)
             }
         }
