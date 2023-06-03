@@ -11,7 +11,8 @@ import kotlinx.datetime.LocalDate
 
 class ProvisionalLicenseServiceImpl(
     private val repository: Repository,
-    private val channelsProvider: ChannelsProvider) : ProvisionalLicenseService {
+    private val channelsProvider: ChannelsProvider,
+) : ProvisionalLicenseService {
     override suspend fun registerProvisionalLicense(provisionalLicense: ProvisionalLicense): DomainResponseStatus {
         if (areThereAnotherProvisionalLicense(provisionalLicense.dossierId)) {
             return DomainResponseStatus.PROVISIONAL_LICENSE_ALREADY_EXISTS
@@ -19,13 +20,13 @@ class ProvisionalLicenseServiceImpl(
         val eventNotificationResult = channelsProvider.dossierServiceChannel
             .updateExamStatus(provisionalLicense.dossierId, ExamEvent.THEORETICAL_EXAM_PASSED)
 
-        return if (eventNotificationResult != DomainResponseStatus.OK) eventNotificationResult
-        else{
+        return if (eventNotificationResult != DomainResponseStatus.OK) {
+            eventNotificationResult
+        } else {
             repositoryToDomainConversionTable.getDomainCode(
-                repository.saveProvisionalLicenseHolder(ProvisionalLicenseHolder(provisionalLicense))
+                repository.saveProvisionalLicenseHolder(ProvisionalLicenseHolder(provisionalLicense)),
             )
         }
-
     }
 
     override suspend fun getProvisionalLicenseHolder(dossierId: String): ProvisionalLicenseHolder? {
@@ -46,17 +47,20 @@ class ProvisionalLicenseServiceImpl(
         val provisionalLicenseHolder = getProvisionalLicenseHolder(dossierId)
             ?: return DomainResponseStatus.ID_NOT_FOUND
         val holder = provisionalLicenseHolder.registerPracticalExamFailure()
-        return if (holder.hasMaxAttempts()) deleteProvisionalLicenseWithInvalidation(dossierId)
-        else repositoryToDomainConversionTable.getDomainCode(repository.updateProvisionalLicenseHolder(holder))
+        return if (holder.hasMaxAttempts()) {
+            deleteProvisionalLicenseWithInvalidation(dossierId)
+        } else {
+            repositoryToDomainConversionTable.getDomainCode(repository.updateProvisionalLicenseHolder(holder))
+        }
     }
 
-    private suspend fun deleteProvisionalLicenseWithInvalidation(dossierId: String): DomainResponseStatus{
+    private suspend fun deleteProvisionalLicenseWithInvalidation(dossierId: String): DomainResponseStatus {
         val status = repositoryToDomainConversionTable
             .getDomainCode(repository.deleteProvisionalLicenseHolder(dossierId))
         return if (status == DomainResponseStatus.OK) {
             channelsProvider.dossierServiceChannel
                 .updateExamStatus(dossierId, ExamEvent.PROVISIONAL_LICENSE_INVALIDATION)
-        }else{
+        } else {
             status
         }
     }
@@ -68,7 +72,7 @@ class ProvisionalLicenseServiceImpl(
                 .updateExamStatus(dossierId, ExamEvent.PRACTICAL_EXAM_PASSED)
             return if (updateExamStateResult == DomainResponseStatus.OK) {
                 repositoryToDomainConversionTable.getDomainCode(repository.deleteProvisionalLicenseHolder(dossierId))
-            }else{
+            } else {
                 updateExamStateResult
             }
         }

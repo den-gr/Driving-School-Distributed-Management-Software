@@ -2,6 +2,9 @@ package dsdms.client
 
 import io.cucumber.core.cli.Main
 
+/**
+ * Entry point of testing system.
+ */
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
@@ -12,7 +15,7 @@ object Main {
             "dsdms.client.cucumber",
             "--plugin",
             "html:build/reports/cucumber",
-            "classpath:features"
+            "classpath:features",
         )
     }
 }

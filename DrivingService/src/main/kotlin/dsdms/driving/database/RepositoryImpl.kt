@@ -29,9 +29,12 @@ class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
         return if (docs.instructorId == null) {
             drivingSlots.find(DrivingSlot::date eq docs.date.toString()).toList()
         } else {
-            drivingSlots.find(and(
-                DrivingSlot::date eq docs.date.toString(),
-                DrivingSlot::instructorId eq docs.instructorId)).toList()
+            drivingSlots.find(
+                and(
+                    DrivingSlot::date eq docs.date.toString(),
+                    DrivingSlot::instructorId eq docs.instructorId,
+                ),
+            ).toList()
         }
     }
 
@@ -40,9 +43,12 @@ class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
     }
 
     override suspend fun countPastDrivingSlots(dossierId: String): Int {
-        return drivingSlots.find(and(
-            DrivingSlot::dossierId eq dossierId,
-            DrivingSlot::date lt now().toString())).toList().count()
+        return drivingSlots.find(
+            and(
+                DrivingSlot::dossierId eq dossierId,
+                DrivingSlot::date lt now().toString(),
+            ),
+        ).toList().count()
     }
 
     override suspend fun doesVehicleExist(licensePlate: LicensePlate): Boolean {
@@ -57,7 +63,7 @@ class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
         return handleDeleteResult(
             runBlocking {
                 drivingSlots.deleteOne(DrivingSlot::_id eq drivingSlotId)
-            }
+            },
         )
     }
 

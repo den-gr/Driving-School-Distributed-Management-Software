@@ -18,6 +18,11 @@ import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import kotlin.system.exitProcess
 
+/**
+ * Vertx server.
+ * @param port server port
+ * @param dbConnection connection to database
+ */
 class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)

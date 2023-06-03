@@ -8,9 +8,12 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import java.time.LocalDate
 
-class RepositoryImpl(doctorService: CoroutineDatabase) : Repository {
-    private val doctorSlots = doctorService.getCollection<DoctorSlot>("DoctorSlot")
-    private val doctorResults = doctorService.getCollection<DoctorResult>("DoctorResult")
+/**
+ * @param doctorServiceDB connection with database
+ */
+class RepositoryImpl(doctorServiceDB: CoroutineDatabase) : Repository {
+    private val doctorSlots = doctorServiceDB.getCollection<DoctorSlot>("DoctorSlot")
+    private val doctorResults = doctorServiceDB.getCollection<DoctorResult>("DoctorResult")
     override suspend fun saveDoctorSlot(documents: DoctorSlot): String {
         return documents.apply { doctorSlots.insertOne(documents) }.date
     }

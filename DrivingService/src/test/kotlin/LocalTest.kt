@@ -23,7 +23,9 @@ class LocalTest {
         println(json)
 
         val prova = Json.encodeToString(
-            DrivingSlotsRequest.serializer(), DrivingSlotsRequest(LocalDate.parse("2013-12-04")))
+            DrivingSlotsRequest.serializer(),
+            DrivingSlotsRequest(LocalDate.parse("2013-12-04")),
+        )
 
         assertEquals(prova, "{\"date\":\"2013-12-04\"}")
     }

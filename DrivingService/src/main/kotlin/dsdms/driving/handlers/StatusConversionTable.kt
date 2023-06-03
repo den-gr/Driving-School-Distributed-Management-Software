@@ -6,13 +6,19 @@ import dsdms.driving.database.utils.RepositoryResponseStatus
 import dsdms.driving.model.domainServices.DomainResponseStatus
 import java.net.HttpURLConnection
 
+/**
+ * Convert RepositoryResponseStatus to corresponding DomainResponseStatus.
+ */
 val repositoryToDomainConversionTable: Map<RepositoryResponseStatus, DomainResponseStatus> = mapOf(
     RepositoryResponseStatus.OK to DomainResponseStatus.OK,
     RepositoryResponseStatus.DELETE_ERROR to DomainResponseStatus.DELETE_ERROR,
     RepositoryResponseStatus.NO_PROVISIONAL_LICENSE to DomainResponseStatus.NO_PROVISIONAL_LICENSE,
-    RepositoryResponseStatus.INVALID_PROVISIONAL_LICENSE to DomainResponseStatus.INVALID_PROVISIONAL_LICENSE
+    RepositoryResponseStatus.INVALID_PROVISIONAL_LICENSE to DomainResponseStatus.INVALID_PROVISIONAL_LICENSE,
 )
 
+/**
+ * Convert DomainResponseStatus to corresponding HTTP code.
+ */
 val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.OK to HttpURLConnection.HTTP_OK,
     DomainResponseStatus.INSTRUCTOR_NOT_FREE to HttpURLConnection.HTTP_BAD_REQUEST,
@@ -26,14 +32,22 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.NOT_AN_EXAM_DAY to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.NO_SLOT_OCCUPIED to HttpURLConnection.HTTP_OK,
-    DomainResponseStatus.PROVISIONAL_LICENSE_NOT_VALID to HttpURLConnection.HTTP_BAD_REQUEST
+    DomainResponseStatus.PROVISIONAL_LICENSE_NOT_VALID to HttpURLConnection.HTTP_BAD_REQUEST,
 )
 
+/**
+ * @param domainResponseStatus that must be converted in HTTP code
+ * @return value from domainConversionTable or HTTP_INTERNAL_ERROR if it not finds a value in the conversion table
+ */
 fun Map<DomainResponseStatus, Int>.getHttpCode(domainResponseStatus: DomainResponseStatus): Int {
     return domainConversionTable.getOrDefault(domainResponseStatus, HttpURLConnection.HTTP_INTERNAL_ERROR)
 }
 
+/**
+ * @param repositoryResponseStatus that must be converted in DomainResponseStatus
+ * @return value from repositoryToDomainConversionTable or OK if it not finds a value in the conversion table
+ */
 fun Map<RepositoryResponseStatus, DomainResponseStatus>
-        .getDomainCode(repositoryResponseStatus: RepositoryResponseStatus): DomainResponseStatus {
+    .getDomainCode(repositoryResponseStatus: RepositoryResponseStatus): DomainResponseStatus {
     return repositoryToDomainConversionTable.getOrDefault(repositoryResponseStatus, DomainResponseStatus.OK)
 }

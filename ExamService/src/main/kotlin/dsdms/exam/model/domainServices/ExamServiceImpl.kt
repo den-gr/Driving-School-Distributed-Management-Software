@@ -16,12 +16,12 @@ import kotlinx.serialization.json.Json
 
 data class InsertTheoreticalExamPassResult(
     val domainResponseStatus: DomainResponseStatus,
-    val theoreticalExamPass: String? = null
+    val theoreticalExamPass: String? = null,
 )
 
 data class NextTheoreticalExamAppeals(
     val domainResponseStatus: DomainResponseStatus,
-    val examAppeals: String? = null
+    val examAppeals: String? = null,
 )
 
 class ExamServiceImpl(private val repository: Repository) : ExamService {
@@ -38,8 +38,8 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
             TheoreticalExamPass(
                 documents.dossierId,
                 documents.date,
-                LocalDate.parse(documents.date).plus(DatePeriod(months = 6)).toString()
-            )
+                LocalDate.parse(documents.date).plus(DatePeriod(months = 6)).toString(),
+            ),
         )
 
     override suspend fun saveNewTheoreticalExamPass(documents: DoctorApprovalEvent): InsertTheoreticalExamPassResult {
@@ -74,14 +74,17 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
         } else {
             NextTheoreticalExamAppeals(
                 DomainResponseStatus.OK,
-                Json.encodeToString(ListSerializer(TheoreticalExamAppeal.serializer()), examAppeals))
+                Json.encodeToString(ListSerializer(TheoreticalExamAppeal.serializer()), examAppeals),
+            )
         }
     }
 
     override suspend fun putDossierInExamAppeal(
-        theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate): DomainResponseStatus {
+        theoreticalExamAppealUpdate: TheoreticalExamAppealUpdate,
+    ): DomainResponseStatus {
         val examAppeal: TheoreticalExamAppeal? = repository.getFutureTheoreticalExamAppeals().find {
-                el -> el.date == theoreticalExamAppealUpdate.date
+                el ->
+            el.date == theoreticalExamAppealUpdate.date
         }
 
         return if (examAppeal == null) {
@@ -89,7 +92,8 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
         } else {
             if (examAppeal.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId) ||
                 repository.getFutureTheoreticalExamAppeals().any {
-                        el -> el.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId)
+                        el ->
+                    el.registeredDossiers.contains(theoreticalExamAppealUpdate.dossierId)
                 }
             ) {
                 DomainResponseStatus.DOSSIER_ALREADY_PUT
@@ -97,8 +101,8 @@ class ExamServiceImpl(private val repository: Repository) : ExamService {
                 repositoryToDomainConversionTable.getDomainCode(
                     repository.updateExamAppeal(
                         examAppeal.date,
-                        examAppeal.registeredDossiers.plus(theoreticalExamAppealUpdate.dossierId)
-                    )
+                        examAppeal.registeredDossiers.plus(theoreticalExamAppealUpdate.dossierId),
+                    ),
                 )
             } else {
                 DomainResponseStatus.PLACES_FINISHED

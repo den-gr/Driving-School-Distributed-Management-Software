@@ -20,7 +20,7 @@ import kotlin.test.assertTrue
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/doctor/doctorTest.feature"],
-    plugin = ["pretty", "summary"]
+    plugin = ["pretty", "summary"],
 )
 class DoctorTest : En {
     private val client: WebClient = VertxProviderImpl().getDoctorServiceClient()

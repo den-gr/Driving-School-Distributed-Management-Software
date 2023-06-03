@@ -2,6 +2,9 @@ package dsdms.dossier.database
 import dsdms.dossier.database.utils.RepositoryResponseStatus
 import dsdms.dossier.model.entities.Dossier
 
+/**
+ * Layer between domain and data storage.
+ */
 interface Repository {
 
     /**

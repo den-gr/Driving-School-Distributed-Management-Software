@@ -23,7 +23,7 @@ import kotlin.test.assertNotNull
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/test/resources/features/dossier/updateDossier.feature"],
-    plugin = ["pretty", "summary"]
+    plugin = ["pretty", "summary"],
 )
 class UpdateDossierTest : En {
     private val client: WebClient = VertxProviderImpl().getDossierServiceClient()

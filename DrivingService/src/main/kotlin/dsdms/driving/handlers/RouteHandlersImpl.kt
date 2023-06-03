@@ -46,7 +46,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     private fun parseHeaderValues(headers: MultiMap): DrivingSlotsRequest {
         return DrivingSlotsRequest(
             LocalDate.parse(headers.get("date")),
-            headers.get("instructorId")
+            headers.get("instructorId"),
         )
     }
 

@@ -3,6 +3,9 @@ package dsdms.doctor.model.domainServices
 import dsdms.doctor.model.entities.DoctorSlot
 import dsdms.doctor.model.valueObjects.DoctorResult
 
+/**
+ * Doctor context operational domain logic.
+ */
 interface DoctorService {
 
     /**

@@ -69,5 +69,5 @@ enum class DomainResponseStatus {
     /**
      * Can not register a driving slot because provisional license is not valid in driving slot date.
      */
-    PROVISIONAL_LICENSE_NOT_VALID
+    PROVISIONAL_LICENSE_NOT_VALID,
 }

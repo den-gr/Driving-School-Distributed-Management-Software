@@ -8,7 +8,14 @@ import io.vertx.ext.web.client.WebClientOptions
  * Provide channels for communication with other bounded contexts.
  */
 interface ChannelsProvider {
+    /**
+     * Channel to DossierContext.
+     */
     val dossierServiceChannel: DossierServiceChannel
+
+    /**
+     * Channel to ExamContext.
+     */
     val examServiceChannel: ExamServiceChannel
 }
 

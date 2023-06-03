@@ -15,5 +15,5 @@ data class Vehicle(
     val licensePlate: LicensePlate,
     val manufacturer: String,
     val model: String,
-    val year: Int
+    val year: Int,
 )

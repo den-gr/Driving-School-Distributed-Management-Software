@@ -27,7 +27,7 @@ import kotlin.test.assertEquals
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/multiService/provisionalLicenseRegistration.feature"],
-    plugin = ["pretty", "summary"]
+    plugin = ["pretty", "summary"],
 )
 class ProvisionalLicenseCreation : En {
     private val dossierService: WebClient = VertxProviderImpl().getDossierServiceClient()
@@ -77,8 +77,10 @@ class ProvisionalLicenseCreation : En {
             assertEquals(HTTP_OK, response?.statusCode())
             provisionalLicenseHolder = Json.decodeFromString(response?.body().toString())
         }
-        Then("receiving info that there are {int} failing attempts " +
-                "and validity range is from {word} to {word}") { attempts: Int, startDate: String, endDate: String ->
+        Then(
+            "receiving info that there are {int} failing attempts " +
+                "and validity range is from {word} to {word}",
+        ) { attempts: Int, startDate: String, endDate: String ->
             assertEquals(attempts, provisionalLicenseHolder?.practicalExamAttempts)
             assertEquals(LocalDate.parse(startDate), provisionalLicenseHolder?.provisionalLicense?.startValidity)
             assertEquals(LocalDate.parse(endDate), provisionalLicenseHolder?.provisionalLicense?.endValidity)

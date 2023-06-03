@@ -25,7 +25,7 @@ import kotlin.test.assertNotNull
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/dossier/registerAndReadDossier.feature"],
-    plugin = ["pretty", "summary"]
+    plugin = ["pretty", "summary"],
 )
 class DossierTest : En {
     private val client: WebClient = VertxProviderImpl().getDossierServiceClient()
@@ -87,8 +87,8 @@ class DossierTest : En {
                         "birthdate",
                         birthdate,
                         "fiscal_code",
-                        fiscal_code
-                    )
+                        fiscal_code,
+                    ),
                 )
             val response = sleeper.waitResult(request)
 

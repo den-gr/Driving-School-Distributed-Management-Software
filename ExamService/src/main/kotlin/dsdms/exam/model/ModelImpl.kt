@@ -7,8 +7,13 @@ import dsdms.exam.model.domainServices.ExamServiceImpl
 import dsdms.exam.model.domainServices.ProvisionalLicenseService
 import dsdms.exam.model.domainServices.ProvisionalLicenseServiceImpl
 
-class ModelImpl(repository: Repository, channelProvider: ChannelsProvider) : Model {
+/**
+ * Main system model.
+ * @param repository for connection with storage
+ * @param channelsProvider for connection with other domain contexts
+ */
+class ModelImpl(repository: Repository, channelsProvider: ChannelsProvider) : Model {
     override val examService: ExamService = ExamServiceImpl(repository)
-    override val provisionalLicenseService: ProvisionalLicenseService
-        = ProvisionalLicenseServiceImpl(repository, channelProvider)
+    override val provisionalLicenseService: ProvisionalLicenseService =
+        ProvisionalLicenseServiceImpl(repository, channelsProvider)
 }

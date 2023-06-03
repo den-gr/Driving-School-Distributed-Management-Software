@@ -26,7 +26,7 @@ import kotlin.test.assertEquals
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/driving/practicalExam.feature"],
-    plugin = ["pretty", "summary"]
+    plugin = ["pretty", "summary"],
 )
 class PracticalExams : En {
     private val client: WebClient = VertxProviderImpl().getDrivingServiceClient()
@@ -37,8 +37,10 @@ class PracticalExams : En {
     init {
         val sleeper = SmartSleep()
 
-        Given("an attempt to book a new practical exam on {word} for instructor {word}," +
-                " dossier {word} and auto {word}") {
+        Given(
+            "an attempt to book a new practical exam on {word} for instructor {word}," +
+                " dossier {word} and auto {word}",
+        ) {
                 date: String, instructorId: String, dossierId: String, auto: String ->
             val bookingRequest = DrivingSlotBooking(
                 LocalDate.parse(date),
@@ -46,7 +48,8 @@ class PracticalExams : En {
                 instructorId,
                 dossierId,
                 DrivingSlotType.EXAM,
-                LicensePlate(auto))
+                LicensePlate(auto),
+            )
 
             val request = client
                 .post("/drivingSlots")
@@ -72,7 +75,7 @@ class PracticalExams : En {
                     "i1",
                     dossierId,
                     DrivingSlotType.ORDINARY,
-                    LicensePlate("KF037MF")
+                    LicensePlate("KF037MF"),
                 )
                 localRequest = client
                     .post("/drivingSlots")
@@ -110,7 +113,9 @@ class PracticalExams : En {
             checkResponse(response)
             statusCode = response?.statusCode()
             practicalExamDays = Json.decodeFromString(
-                ListSerializer(PracticalExamDay.serializer()), response?.body().toString())
+                ListSerializer(PracticalExamDay.serializer()),
+                response?.body().toString(),
+            )
         }
         Then("finds only one available practical exam day on {word}") { date: String ->
             assertEquals(1, practicalExamDays?.size)

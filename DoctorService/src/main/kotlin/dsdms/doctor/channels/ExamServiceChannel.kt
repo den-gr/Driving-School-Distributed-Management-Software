@@ -25,6 +25,10 @@ interface ExamServiceChannel {
     suspend fun notifyAboutDoctorApproval(doctorApprovalEvent: DoctorApprovalEvent): DomainResponseStatus
 }
 
+/**
+ * Vertx channel implementation.
+ * @param client of ExamService
+ */
 class ExamServiceChannelImpl(private val client: WebClient) : ExamServiceChannel {
     override suspend fun notifyAboutDoctorApproval(doctorApprovalEvent: DoctorApprovalEvent): DomainResponseStatus {
         val statusCode = client.put("/theoreticalExam/pass")

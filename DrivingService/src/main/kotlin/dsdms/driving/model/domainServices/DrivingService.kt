@@ -5,12 +5,12 @@ import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 
 data class DrivingSlotRegistrationResult(
     val domainResponseStatus: DomainResponseStatus,
-    val drivingSlotId: String? = null
+    val drivingSlotId: String? = null,
 )
 
 data class DrivingSlotsRequestResult(
     val domainResponseStatus: DomainResponseStatus,
-    val drivingSlots: String? = null
+    val drivingSlots: String? = null,
 )
 
 interface DrivingService {

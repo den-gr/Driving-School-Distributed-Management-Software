@@ -10,5 +10,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TheoreticalExamAppealUpdate(
     val dossierId: String,
-    val date: String
+    val date: String,
 )

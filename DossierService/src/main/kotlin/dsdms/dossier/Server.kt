@@ -17,6 +17,11 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 import java.net.HttpURLConnection
 import kotlin.system.exitProcess
 
+/**
+ * Vertx server.
+ * @param port server port
+ * @param dbConnection connection to database
+ */
 class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
@@ -39,7 +44,7 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
 
     /**
      * TODO: Insert a route to disable a dossier and delete
-     *      all provisional licenses and theoretical exam passes with that id
+     *      all provisional licenses and theoretical exam passes with that id.
      */
     private fun setRoutes(router: Router) {
         router.get("/api/:id").handler(::handle)

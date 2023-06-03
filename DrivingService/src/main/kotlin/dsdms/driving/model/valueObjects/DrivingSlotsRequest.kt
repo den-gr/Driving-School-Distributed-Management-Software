@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DrivingSlotsRequest(
     val date: LocalDate,
-    val instructorId: String? = null
+    val instructorId: String? = null,
 )

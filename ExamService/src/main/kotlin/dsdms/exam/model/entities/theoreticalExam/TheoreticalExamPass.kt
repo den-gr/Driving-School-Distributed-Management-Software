@@ -14,5 +14,5 @@ data class TheoreticalExamPass(
     val dossierId: String,
     val releaseDate: String,
     val expiryDate: String,
-    val remainingAttempts: Int = 2
+    val remainingAttempts: Int = 2,
 )

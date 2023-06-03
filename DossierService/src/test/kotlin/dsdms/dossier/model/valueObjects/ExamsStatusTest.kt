@@ -28,7 +28,7 @@ class ExamsStatusTest {
             .registerProvisionalLicenceInvalidation()
         assertEquals(
             intermediateState.theoreticalExamState,
-            TO_DO
+            TO_DO,
         )
         assertDoesNotThrow {
             intermediateState.registerTheoreticalExamPassed().registerProvisionalLicenceInvalidation()

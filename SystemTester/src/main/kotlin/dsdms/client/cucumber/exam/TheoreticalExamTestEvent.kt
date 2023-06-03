@@ -19,7 +19,7 @@ import kotlin.test.assertEquals
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/exam/theoreticalExamTest.feature"],
-    plugin = ["pretty", "summary"]
+    plugin = ["pretty", "summary"],
 )
 class TheoreticalExamTestEvent : En {
     private val client: WebClient = VertxProviderImpl().getExamServiceClient()

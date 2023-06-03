@@ -1,5 +1,8 @@
 package dsdms.doctor.model.domainServices
 
+/**
+ * Types of results of domain operations.
+ */
 enum class DomainResponseStatus {
     OK,
     NO_SLOT_OCCUPIED,
@@ -12,5 +15,5 @@ enum class DomainResponseStatus {
     EXAM_PASS_ALREADY_AVAILABLE,
     EXAM_PASS_NOT_CREATED,
     DELETE_ERROR,
-    DOSSIER_NOT_VALID
+    DOSSIER_NOT_VALID,
 }

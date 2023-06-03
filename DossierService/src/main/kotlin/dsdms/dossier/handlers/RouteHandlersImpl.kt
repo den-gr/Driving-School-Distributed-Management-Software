@@ -12,8 +12,11 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
+/**
+ * @param model of the system
+ */
 class RouteHandlersImpl(val model: Model) : RouteHandlers {
-    val cjson = Json {
+    private val cjson = Json {
         encodeDefaults = true
     }
 
@@ -34,8 +37,9 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
         try {
             val result = model.dossierService
                 .readDossierFromId(routingContext.request().getParam("id").toString())
-            val payload = if (result.domainResponseStatus == DomainResponseStatus.OK
-                || result.domainResponseStatus == DomainResponseStatus.DOSSIER_INVALID) {
+            val payload = if (result.domainResponseStatus == DomainResponseStatus.OK ||
+                result.domainResponseStatus == DomainResponseStatus.DOSSIER_INVALID
+            ) {
                 cjson.encodeToString(result.dossier)
             } else {
                 result.domainResponseStatus.name

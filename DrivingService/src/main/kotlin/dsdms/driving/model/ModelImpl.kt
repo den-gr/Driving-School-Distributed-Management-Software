@@ -7,6 +7,11 @@ import dsdms.driving.model.domainServices.DrivingServiceImpl
 import dsdms.driving.model.domainServices.PracticalExamDomainService
 import dsdms.driving.model.domainServices.PracticalExamDomainServiceImpl
 
+/**
+ * Main system model.
+ * @param repository for connection with storage
+ * @param channels for connection with other domain contexts
+ */
 class ModelImpl(repository: Repository, channels: ChannelsProvider) : Model {
     override val drivingService: DrivingService = DrivingServiceImpl(repository, channels)
     override val practicalExamDomainService: PracticalExamDomainService = PracticalExamDomainServiceImpl(repository)

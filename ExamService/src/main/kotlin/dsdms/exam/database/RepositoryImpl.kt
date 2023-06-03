@@ -15,12 +15,12 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 
 class RepositoryImpl(examService: CoroutineDatabase) : Repository {
-    private val theoreticalExamPassDb
-        = examService.getCollection<TheoreticalExamPass>("TheoreticalExamPass")
-    private val theoreticalExamAppeals
-        = examService.getCollection<TheoreticalExamAppeal>("TheoreticalExamAppeal")
-    private val provisionalLicenseHolders
-        = examService.getCollection<ProvisionalLicenseHolder>("ProvisionalLicenseHolders")
+    private val theoreticalExamPassDb =
+        examService.getCollection<TheoreticalExamPass>("TheoreticalExamPass")
+    private val theoreticalExamAppeals =
+        examService.getCollection<TheoreticalExamAppeal>("TheoreticalExamAppeal")
+    private val provisionalLicenseHolders =
+        examService.getCollection<ProvisionalLicenseHolder>("ProvisionalLicenseHolders")
 
     override suspend fun dossierAlreadyHasOnePass(dossierId: String): Boolean {
         return theoreticalExamPassDb.find(TheoreticalExamPass::dossierId eq dossierId).toList().isNotEmpty()
@@ -40,7 +40,8 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
 
     override suspend fun getFutureTheoreticalExamAppeals(): List<TheoreticalExamAppeal> {
         return theoreticalExamAppeals.find().toList().filter {
-                el -> LocalDate.parse(el.date) > LocalDate.parse(java.time.LocalDate.now().toString())
+                el ->
+            LocalDate.parse(el.date) > LocalDate.parse(java.time.LocalDate.now().toString())
         }
     }
 
@@ -53,12 +54,14 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
             theoreticalExamAppeals
                 .updateOne(
                     (TheoreticalExamAppeal::date eq appealDate),
-                    setValue(TheoreticalExamAppeal::registeredDossiers, appealList))
+                    setValue(TheoreticalExamAppeal::registeredDossiers, appealList),
+                ),
         )
     }
 
     override suspend fun saveProvisionalLicenseHolder(
-            provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus {
+        provisionalLicenseHolder: ProvisionalLicenseHolder,
+    ): RepositoryResponseStatus {
         return handleInsertResult(provisionalLicenseHolders.insertOne(provisionalLicenseHolder))
     }
 
@@ -68,17 +71,19 @@ class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     }
 
     override suspend fun deleteProvisionalLicenseHolder(dossierId: String): RepositoryResponseStatus {
-        return handleDeleteResult(provisionalLicenseHolders
-            .deleteOne(ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId))
+        return handleDeleteResult(
+            provisionalLicenseHolders
+                .deleteOne(ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq dossierId),
+        )
     }
 
     override suspend fun updateProvisionalLicenseHolder(holder: ProvisionalLicenseHolder): RepositoryResponseStatus {
         return handleUpdateResult(
             provisionalLicenseHolders.updateOne(
                 ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq
-                        holder.provisionalLicense.dossierId,
-                holder
-            )
+                    holder.provisionalLicense.dossierId,
+                holder,
+            ),
         )
     }
 

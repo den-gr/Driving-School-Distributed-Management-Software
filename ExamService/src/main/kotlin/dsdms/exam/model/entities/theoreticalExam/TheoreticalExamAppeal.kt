@@ -16,5 +16,5 @@ data class TheoreticalExamAppeal(
     val numberOfPlaces: Int,
     val registeredDossiers: List<String> = listOf(),
     val initTime: String = "10:00",
-    val finishTime: String = "13:00"
+    val finishTime: String = "13:00",
 )

@@ -21,6 +21,10 @@ interface DossierServiceChannel {
     suspend fun checkDossierValidity(dossierId: String): DomainResponseStatus
 }
 
+/**
+ * Vertx channel implementation.
+ * @param client of DossierService
+ */
 class DossierServiceChannelImpl(val client: WebClient) : DossierServiceChannel {
 
     override suspend fun checkDossierValidity(dossierId: String): DomainResponseStatus {

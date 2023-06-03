@@ -22,11 +22,12 @@ class DrivingServiceImpl(private val repository: Repository, private val channel
         val verifyResult = verifyDocuments(documents)
         if (verifyResult == DomainResponseStatus.OK) {
             return if (documents.drivingSlotType == DrivingSlotType.EXAM) {
-               saveNewExamDrivingSlot(documents)
+                saveNewExamDrivingSlot(documents)
             } else {
                 DrivingSlotRegistrationResult(
                     verifyResult,
-                    repository.createDrivingSlot(createRegularDrivingSlot(documents)))
+                    repository.createDrivingSlot(createRegularDrivingSlot(documents)),
+                )
             }
         }
         return DrivingSlotRegistrationResult(verifyResult)
@@ -37,11 +38,12 @@ class DrivingServiceImpl(private val repository: Repository, private val channel
         return if (numCompletedDrivingLessons < MIN_NUMBER_OF_DRIVING_LESSONS) {
             DrivingSlotRegistrationResult(DomainResponseStatus.NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM)
         } else if (!repository.getPracticalExamDays().toList().map(PracticalExamDay::date).contains(documents.date)) {
-           DrivingSlotRegistrationResult(DomainResponseStatus.NOT_AN_EXAM_DAY)
+            DrivingSlotRegistrationResult(DomainResponseStatus.NOT_AN_EXAM_DAY)
         } else {
             DrivingSlotRegistrationResult(
                 DomainResponseStatus.OK,
-                repository.createDrivingSlot(createRegularDrivingSlot(documents)))
+                repository.createDrivingSlot(createRegularDrivingSlot(documents)),
+            )
         }
     }
 
@@ -52,7 +54,7 @@ class DrivingServiceImpl(private val repository: Repository, private val channel
             documents.instructorId,
             documents.dossierId,
             documents.licensePlate,
-            documents.drivingSlotType
+            documents.drivingSlotType,
         )
     }
 
@@ -85,13 +87,14 @@ class DrivingServiceImpl(private val repository: Repository, private val channel
 
         val forThisDossier: (DrivingSlot) -> Boolean = { el -> el.dossierId == drivingSlotBooking.dossierId }
 
-        val provisionalLicenseResult: DomainResponseStatus
-        = channels.examServiceChannel.isProvisionalLicenseValid(drivingSlotBooking.dossierId, drivingSlotBooking.date)
+        val provisionalLicenseResult: DomainResponseStatus =
+            channels.examServiceChannel.isProvisionalLicenseValid(drivingSlotBooking.dossierId, drivingSlotBooking.date)
 
         return if (provisionalLicenseResult != DomainResponseStatus.OK) {
             provisionalLicenseResult
-        } else if (vehicleExist(drivingSlotBooking.licensePlate).not()
-                || instructorExist(drivingSlotBooking.instructorId).not()) {
+        } else if (vehicleExist(drivingSlotBooking.licensePlate).not() ||
+            instructorExist(drivingSlotBooking.instructorId).not()
+        ) {
             DomainResponseStatus.BAD_VEHICLE_INSTRUCTOR_INFO
         } else if (futureDrivingSlots.any(forThisDossier)) {
             DomainResponseStatus.OCCUPIED_DRIVING_SLOTS
@@ -111,7 +114,8 @@ class DrivingServiceImpl(private val repository: Repository, private val channel
         } else {
             DrivingSlotsRequestResult(
                 DomainResponseStatus.OK,
-                Json.encodeToString(ListSerializer(DrivingSlot.serializer()), drivingSlots))
+                Json.encodeToString(ListSerializer(DrivingSlot.serializer()), drivingSlots),
+            )
         }
     }
 

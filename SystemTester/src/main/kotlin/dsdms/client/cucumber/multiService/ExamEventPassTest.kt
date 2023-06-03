@@ -4,6 +4,7 @@ import dsdms.client.utils.VertxProviderImpl
 import dsdms.client.utils.checkResponse
 import dsdms.client.utils.createJson
 import dsdms.doctor.model.valueObjects.DoctorResult
+import dsdms.doctor.model.valueObjects.ResultTypes
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
@@ -18,7 +19,7 @@ import kotlin.test.assertEquals
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/multiService/theoreticalExamPassTest.feature"],
-    plugin = ["pretty", "summary"]
+    plugin = ["pretty", "summary"],
 )
 class ExamEventPassTest : En {
     private val doctorService: WebClient = VertxProviderImpl().getDoctorServiceClient()
@@ -33,7 +34,7 @@ class ExamEventPassTest : En {
         When("secretary register {word}, {word}, {word}") { id: String, date: String, result: String ->
             val request = doctorService
                 .put("/doctorSlots")
-                .sendBuffer(createJson(DoctorResult(id, date, result)))
+                .sendBuffer(createJson(DoctorResult(id, date, ResultTypes.valueOf(result))))
             val response = sleeper.waitResult(request)
 
             checkResponse(response)
@@ -58,7 +59,7 @@ class ExamEventPassTest : En {
                 id: String, date: String, result: String ->
             val request = doctorService
                 .put("/doctorSlots")
-                .sendBuffer(createJson(DoctorResult(id, date, result)))
+                .sendBuffer(createJson(DoctorResult(id, date, ResultTypes.valueOf(result))))
             val response = sleeper.waitResult(request)
 
             checkResponse(response)

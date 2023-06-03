@@ -23,5 +23,5 @@ enum class RepositoryResponseStatus {
      * Given dossier id has an invalid provisional license.
      * @see DrivingService
      */
-    INVALID_PROVISIONAL_LICENSE
+    INVALID_PROVISIONAL_LICENSE,
 }

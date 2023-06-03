@@ -24,5 +24,5 @@ enum class RepositoryResponseStatus {
     /**
      * Update for list of dossiers into a theoretical exam appeal finished with some errors.
      */
-    UPDATE_ERROR
+    UPDATE_ERROR,
 }

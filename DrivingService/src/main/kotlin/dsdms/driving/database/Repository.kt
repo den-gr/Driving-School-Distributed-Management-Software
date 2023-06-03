@@ -6,6 +6,9 @@ import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.LicensePlate
 import dsdms.driving.model.valueObjects.PracticalExamDay
 
+/**
+ * Layer between domain and data storage.
+ */
 interface Repository {
 
     /**

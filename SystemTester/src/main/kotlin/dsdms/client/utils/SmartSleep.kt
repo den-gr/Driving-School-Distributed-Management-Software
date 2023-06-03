@@ -5,7 +5,7 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 
 class SmartSleep(private val timeout: Long = 10000) {
-    companion object{
+    companion object {
         private const val DEBAG = false
         private const val INITIAL_DELAY = 50L
     }
@@ -23,14 +23,14 @@ class SmartSleep(private val timeout: Long = 10000) {
             }
         }
         for (i in iterable) {
-            if(DEBAG) print(".")
+            if (DEBAG) print(".")
             if (toWait < i) {
                 Thread.sleep(toWait)
                 return future.result()
             }
             Thread.sleep(i)
             if (future.isComplete) {
-                if(DEBAG) println(" is complete on $i")
+                if (DEBAG) println(" is complete on $i")
                 return future.result()
             }
             toWait -= i

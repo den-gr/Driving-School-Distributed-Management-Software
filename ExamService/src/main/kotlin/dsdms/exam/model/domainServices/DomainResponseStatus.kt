@@ -84,5 +84,5 @@ enum class DomainResponseStatus {
     /**
      * Indicate that operation can not be done because dossier do not exist.
      */
-    DOSSIER_NOT_EXIST
+    DOSSIER_NOT_EXIST,
 }

@@ -2,14 +2,20 @@ package dsdms.doctor.handlers
 
 import dsdms.doctor.model.Model
 import dsdms.doctor.model.domainServices.BookedDoctorSlots
+import dsdms.doctor.model.domainServices.DomainResponseStatus
+import dsdms.doctor.model.entities.DoctorSlot
 import io.vertx.ext.web.RoutingContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
+/**
+ * @param model of the domain
+ */
 class RouteHandlersImpl(private val model: Model) : RouteHandlers {
 
     override suspend fun bookDoctorVisit(routingContext: RoutingContext) {
@@ -18,7 +24,7 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
                 model.doctorService.saveDoctorSlot(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus)).end(
-                    insertResult.visitDate ?: insertResult.domainResponseStatus.toString()
+                    insertResult.visitDate ?: insertResult.domainResponseStatus.toString(),
                 )
         } catch (ex: Exception) {
             handleException(ex, routingContext)
@@ -29,10 +35,14 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
         try {
             val result: BookedDoctorSlots = model.doctorService
                 .getOccupiedDoctorSlots(routingContext.request().getParam("date").toString())
-
+            val payload = if (result.domainResponseStatus == DomainResponseStatus.OK) {
+                Json.encodeToString(ListSerializer(DoctorSlot.serializer()), result.doctorSlots)
+            } else {
+                result.domainResponseStatus.name
+            }
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
-                .end(result.doctorSlots ?: result.domainResponseStatus.toString())
+                .end(payload)
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }

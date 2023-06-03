@@ -22,7 +22,7 @@ import kotlin.test.assertFalse
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/multiService/provisionalLicenseUpdate.feature"],
-    plugin = ["pretty", "summary"]
+    plugin = ["pretty", "summary"],
 )
 class ProvisionalLicenseUpdates : En {
     private val dossierService: WebClient = VertxProviderImpl().getDossierServiceClient()

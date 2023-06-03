@@ -5,7 +5,7 @@ import dsdms.dossier.model.valueObjects.ExamEvent
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
 
 /**
- * Representing dossier service model implementation
+ * Representing dossier service model implementation.
  */
 interface DossierService {
 

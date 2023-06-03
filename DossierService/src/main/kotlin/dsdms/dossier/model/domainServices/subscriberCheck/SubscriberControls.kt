@@ -3,6 +3,9 @@ package dsdms.dossier.model.domainServices.subscriberCheck
 import dsdms.dossier.database.Repository
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
 
+/**
+ * Some dossier constants.
+ */
 object SubscriberConstants {
     /**
      * Min age for a subscriber to be subscribed.
@@ -10,6 +13,9 @@ object SubscriberConstants {
     const val MIN_AGE: Int = 16
 }
 
+/**
+ * Methods for checking constrains of subscriber data.
+ */
 interface SubscriberControls {
     /**
      * @see SubscriberDocuments

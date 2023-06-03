@@ -10,5 +10,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DoctorApprovalEvent(
     val dossierId: String,
-    val date: String
+    val date: String,
 )

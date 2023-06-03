@@ -4,7 +4,7 @@ import dsdms.driving.model.valueObjects.PracticalExamDay
 
 data class PracticalExamDaysResponse(
     val status: DomainResponseStatus,
-    val result: List<PracticalExamDay>? = null
+    val result: List<PracticalExamDay>? = null,
 )
 
 /**

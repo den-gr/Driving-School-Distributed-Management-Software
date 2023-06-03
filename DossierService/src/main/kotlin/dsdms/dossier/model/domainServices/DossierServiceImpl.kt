@@ -9,18 +9,28 @@ import dsdms.dossier.model.valueObjects.ExamEvent
 import dsdms.dossier.model.valueObjects.ExamsStatus
 import dsdms.dossier.model.valueObjects.PracticalExamState
 import dsdms.dossier.model.valueObjects.SubscriberDocuments
-import java.lang.IllegalStateException
 
+/**
+ * @param domainResponseStatus of saving dossier operation
+ * @param dossierId if operation was successful, otherwise null
+ */
 data class SaveDossierResult(
     val domainResponseStatus: DomainResponseStatus,
-    val dossierId: String? = null
+    val dossierId: String? = null,
 )
 
+/**
+ * @param domainResponseStatus of requesting dossier operation
+ * @param dossier if operation was successful, otherwise null
+ */
 data class GetDossierResult(
     val domainResponseStatus: DomainResponseStatus,
-    val dossier: Dossier? = null
+    val dossier: Dossier? = null,
 )
 
+/**
+ * @param repository of dossier data storage
+ */
 class DossierServiceImpl(private val repository: Repository) : DossierService {
     private val subscriberControls: SubscriberControls = SubscriberControlsImpl()
 
@@ -34,11 +44,14 @@ class DossierServiceImpl(private val repository: Repository) : DossierService {
     }
 
     private suspend fun createDossier(givenDocuments: SubscriberDocuments): String? =
-        repository.createDossier(Dossier(
-            givenDocuments.name,
-            givenDocuments.surname,
-            givenDocuments.birthdate.toString(),
-            givenDocuments.fiscal_code))
+        repository.createDossier(
+            Dossier(
+                givenDocuments.name,
+                givenDocuments.surname,
+                givenDocuments.birthdate.toString(),
+                givenDocuments.fiscal_code,
+            ),
+        )
 
     private suspend fun verifyDocuments(documents: SubscriberDocuments): DomainResponseStatus {
         return if (subscriberControls.checkDuplicatedFiscalCode(documents, repository)) {
@@ -74,6 +87,7 @@ class DossierServiceImpl(private val repository: Repository) : DossierService {
                     getDomainCode(repository.updateDossier(dossier.copy(examsStatus = newExamState)))
                 }
             } catch (ex: IllegalStateException) {
+                println(ex.message)
                 DomainResponseStatus.UPDATE_ERROR
             }
         }

@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class PracticalExamDay(
-    val date: LocalDate
+    val date: LocalDate,
 )

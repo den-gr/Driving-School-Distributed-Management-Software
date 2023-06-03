@@ -8,6 +8,9 @@ import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 
+/**
+ * @param dossierServiceDb database connection
+ */
 class RepositoryImpl(dossierServiceDb: CoroutineDatabase) : Repository {
     private val dossiers = dossierServiceDb.getCollection<Dossier>("Dossier")
 
@@ -39,7 +42,7 @@ class RepositoryImpl(dossierServiceDb: CoroutineDatabase) : Repository {
         return handleDeleteResult(
             runBlocking {
                 dossiers.deleteOne(Dossier::_id eq id)
-            }
+            },
         )
     }
 

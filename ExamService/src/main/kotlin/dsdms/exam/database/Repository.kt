@@ -5,6 +5,9 @@ import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamAppeal
 import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
 
+/**
+ * Layer between domain and data storage.
+ */
 interface Repository {
 
     /**
@@ -64,7 +67,8 @@ interface Repository {
      *  - INSERT_ERROR -> insert operation was not acknowledged
      */
     suspend fun saveProvisionalLicenseHolder(
-        provisionalLicenseHolder: ProvisionalLicenseHolder): RepositoryResponseStatus
+        provisionalLicenseHolder: ProvisionalLicenseHolder,
+    ): RepositoryResponseStatus
 
     /**
      * @see ProvisionalLicenseHolder

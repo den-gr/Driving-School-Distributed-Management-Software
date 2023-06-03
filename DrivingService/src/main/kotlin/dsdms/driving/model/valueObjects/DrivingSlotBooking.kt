@@ -11,10 +11,10 @@ data class DrivingSlotBooking(
     val instructorId: String,
     val dossierId: String,
     val drivingSlotType: DrivingSlotType,
-    val licensePlate: LicensePlate
+    val licensePlate: LicensePlate,
 )
 
 enum class DrivingSlotType {
     ORDINARY,
-    EXAM
+    EXAM,
 }

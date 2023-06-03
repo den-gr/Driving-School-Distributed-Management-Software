@@ -3,6 +3,9 @@ package dsdms.dossier.handlers
 import dsdms.dossier.model.domainServices.DossierService
 import io.vertx.ext.web.RoutingContext
 
+/**
+ * Server routes handlers.
+ */
 interface RouteHandlers {
 
     /**
