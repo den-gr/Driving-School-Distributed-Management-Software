@@ -13,6 +13,10 @@ import dsdms.driving.model.valueObjects.PracticalExamDay
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
+/**
+ * @param repository for access to data storage
+ * @param channels for communication with other bounded contexts
+ */
 class DrivingServiceImpl(private val repository: Repository, private val channels: ChannelsProvider) : DrivingService {
     companion object {
         private const val MIN_NUMBER_OF_DRIVING_LESSONS: Int = 10
@@ -66,10 +70,6 @@ class DrivingServiceImpl(private val repository: Repository, private val channel
         return repository.doesInstructorExist(instructorId)
     }
 
-    /**
-     * TODO: make a call to future Exam Service to request
-     *      info for a possible provisional license for this specific dossier id
-     */
     private suspend fun verifyDocuments(drivingSlotBooking: DrivingSlotBooking): DomainResponseStatus {
         val futureDrivingSlots: List<DrivingSlot> = repository.getFutureDrivingSlots()
 

@@ -15,6 +15,9 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import org.litote.kmongo.lt
 
+/**
+ * @param drivingServiceDB connection with database
+ */
 class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
     private val drivingSlots = drivingServiceDB.getCollection<DrivingSlot>("DrivingSlot")
     private val vehicles = drivingServiceDB.getCollection<Vehicle>("Vehicle")

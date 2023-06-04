@@ -3,16 +3,27 @@ package dsdms.driving.model.domainServices
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 
+/**
+ * @param domainResponseStatus of driving slot registration request
+ * @param drivingSlotId or null if there was some error
+ */
 data class DrivingSlotRegistrationResult(
     val domainResponseStatus: DomainResponseStatus,
     val drivingSlotId: String? = null,
 )
 
+/**
+ * @param domainResponseStatus  of driving slots request
+ * @param drivingSlots or null if there was some error
+ */
 data class DrivingSlotsRequestResult(
     val domainResponseStatus: DomainResponseStatus,
     val drivingSlots: String? = null,
 )
 
+/**
+ * Contains logic of driving slots managements.
+ */
 interface DrivingService {
 
     /**

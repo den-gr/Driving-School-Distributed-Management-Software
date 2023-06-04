@@ -2,6 +2,10 @@ package dsdms.driving.model.domainServices
 
 import dsdms.driving.model.valueObjects.PracticalExamDay
 
+/**
+ * @param status response of practical exam days request
+ * @param result if there were no error contains a list of practical exam days
+ */
 data class PracticalExamDaysResponse(
     val status: DomainResponseStatus,
     val result: List<PracticalExamDay>? = null,

@@ -5,12 +5,19 @@ import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 
 /**
- * Provide a channel that allows to communicate with other bounded contexts
+ * Provide a channel that allows to communicate with other bounded contexts.
  */
 interface ChannelsProvider {
+    /**
+     * Allows to communicate with exam context.
+     */
     val examServiceChannel: ExamServiceChannel
 }
 
+/**
+ * Channels provider implementation based on vertx.
+ * @param vertx
+ */
 class ChannelsProviderImpl(private val vertx: Vertx) : ChannelsProvider {
     override val examServiceChannel: ExamServiceChannel
 

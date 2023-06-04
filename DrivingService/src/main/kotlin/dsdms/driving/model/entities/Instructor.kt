@@ -4,7 +4,7 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 /**
- * Represents info about instructors
+ * Represents info about instructors.
  * @param name of instructor
  * @param surname of instructor
  * @param fiscal_code of instructor

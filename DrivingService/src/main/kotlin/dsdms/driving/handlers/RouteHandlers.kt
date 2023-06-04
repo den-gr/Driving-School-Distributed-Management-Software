@@ -2,6 +2,9 @@ package dsdms.driving.handlers
 
 import io.vertx.ext.web.RoutingContext
 
+/**
+ * Set of HTTP routes handlers.
+ */
 interface RouteHandlers {
 
     /**

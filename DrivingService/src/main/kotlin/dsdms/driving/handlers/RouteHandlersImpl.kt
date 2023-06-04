@@ -14,6 +14,9 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
+/**
+ * @param model main system model.
+ */
 class RouteHandlersImpl(val model: Model) : RouteHandlers {
 
     override suspend fun registerNewDrivingSlot(routingContext: RoutingContext) {

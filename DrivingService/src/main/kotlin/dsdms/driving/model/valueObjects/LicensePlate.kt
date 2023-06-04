@@ -3,14 +3,16 @@ package dsdms.driving.model.valueObjects
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * License plate of driving school vehicle.
+ * @param numberPlate of vehicle
+ */
 @Serializable
 @SerialName("licensePlate")
 data class LicensePlate(val numberPlate: String) {
 
     init {
-        if (!checkLicensePlateFormat(numberPlate)) {
-            throw IllegalArgumentException("License plate format not valid")
-        }
+        require(!checkLicensePlateFormat(numberPlate)) {"License plate format not valid"}
     }
 
     private fun checkLicensePlateFormat(numberPlate: String): Boolean {

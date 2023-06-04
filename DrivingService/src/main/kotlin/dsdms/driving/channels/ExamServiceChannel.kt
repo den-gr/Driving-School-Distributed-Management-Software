@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDate
 import java.lang.IllegalStateException
 
 /**
- * Allows communicate with ExamContext
+ * Allows communicate with ExamContext.
  */
 interface ExamServiceChannel {
     /**
@@ -24,6 +24,9 @@ interface ExamServiceChannel {
     suspend fun isProvisionalLicenseValid(dossierId: String, date: LocalDate): DomainResponseStatus
 }
 
+/**
+ * @param client vertx web client.
+ */
 class ExamServiceChannelImpl(private val client: WebClient) : ExamServiceChannel {
     override suspend fun isProvisionalLicenseValid(dossierId: String, date: LocalDate): DomainResponseStatus {
         val result = client

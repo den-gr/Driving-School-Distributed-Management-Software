@@ -2,6 +2,9 @@ package dsdms.driving.database.utils
 
 import dsdms.driving.model.domainServices.DrivingService
 
+/**
+ * Types of response of the repository.
+ */
 enum class RepositoryResponseStatus {
     /**
      * Everything was ok.
