@@ -4,7 +4,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.Serializable
 
-
 /**
  * Information that allows to book a driving slot.
  * @param date when driving slot should be booked
@@ -23,7 +22,6 @@ data class DrivingSlotBooking(
     val drivingSlotType: DrivingSlotType,
     val licensePlate: LicensePlate,
 )
-
 
 /**
  * Types of driving slots.
