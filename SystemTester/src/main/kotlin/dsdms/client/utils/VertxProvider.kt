@@ -4,24 +4,42 @@ import io.vertx.core.Vertx
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 
+/**
+ * Gives connections to each service.
+ */
 interface VertxProvider {
 
+    /**
+     * @return webclient connected to dossier service.
+     */
     fun getDossierServiceClient(): WebClient
 
+    /**
+     * @return webclient connected to driving service.
+     */
     fun getDrivingServiceClient(): WebClient
 
+    /**
+     * @return webclient connected to exam service.
+     */
     fun getExamServiceClient(): WebClient
 
+    /**
+     * @return webclient connected to doctor service.
+     */
     fun getDoctorServiceClient(): WebClient
 }
 
+/**
+ * Implements Vertx Provider.
+ */
 class VertxProviderImpl : VertxProvider {
     companion object {
-        const val LOCALHOST: String = "localhost"
-        const val DEFAULT_DOSSIER_SERVICE_PORT = 8000
-        const val DEFAULT_DRIVING_SERVICE_PORT = 8010
-        const val DEFAULT_EXAM_SERVICE_PORT = 8020
-        const val DEFAULT_DOCTOR_SERVICE_PORT = 8030
+        private const val LOCALHOST: String = "localhost"
+        private const val DEFAULT_DOSSIER_SERVICE_PORT = 8000
+        private const val DEFAULT_DRIVING_SERVICE_PORT = 8010
+        private const val DEFAULT_EXAM_SERVICE_PORT = 8020
+        private const val DEFAULT_DOCTOR_SERVICE_PORT = 8030
     }
     private val vertx: Vertx = Vertx.vertx()
 

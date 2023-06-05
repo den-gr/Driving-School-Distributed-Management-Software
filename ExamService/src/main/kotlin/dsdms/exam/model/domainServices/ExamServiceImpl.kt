@@ -14,16 +14,28 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+/**
+ * @param domainResponseStatus -> given domain response
+ * @param theoreticalExamPass -> created theoretical exam pass
+ */
 data class InsertTheoreticalExamPassResult(
     val domainResponseStatus: DomainResponseStatus,
     val theoreticalExamPass: String? = null,
 )
 
+/**
+ * @param domainResponseStatus -> given domain response
+ * @param examAppeals -> list of exam appeals from repository
+ */
 data class NextTheoreticalExamAppeals(
     val domainResponseStatus: DomainResponseStatus,
     val examAppeals: String? = null,
 )
 
+/**
+ * Implements ExamService.
+ * @param repository -> given repo for domain
+ */
 class ExamServiceImpl(private val repository: Repository) : ExamService {
     private suspend fun verifyExamPass(documents: DoctorApprovalEvent): DomainResponseStatus {
         return if (repository.dossierAlreadyHasOnePass(documents.dossierId)) {

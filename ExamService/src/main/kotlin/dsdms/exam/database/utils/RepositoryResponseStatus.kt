@@ -1,5 +1,8 @@
 package dsdms.exam.database.utils
 
+/**
+ * Response codes from repository.
+ */
 enum class RepositoryResponseStatus {
     /**
      * Everything was ok.

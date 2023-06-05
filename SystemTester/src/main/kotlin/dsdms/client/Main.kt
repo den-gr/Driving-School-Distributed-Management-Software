@@ -6,6 +6,10 @@ import io.cucumber.core.cli.Main
  * Entry point of testing system.
  */
 object Main {
+
+    /**
+     * Main cucumber runner.
+     */
     @JvmStatic
     fun main(args: Array<String>) {
         Main.main(

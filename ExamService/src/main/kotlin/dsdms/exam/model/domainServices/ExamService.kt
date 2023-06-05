@@ -5,6 +5,9 @@ import dsdms.exam.model.entities.theoreticalExam.TheoreticalExamPass
 import dsdms.exam.model.valueObjects.DoctorApprovalEvent
 import dsdms.exam.model.valueObjects.TheoreticalExamAppealUpdate
 
+/**
+ * Implements domain logics to handle server routes.
+ */
 interface ExamService {
 
     /**

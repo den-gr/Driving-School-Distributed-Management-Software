@@ -17,6 +17,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
+/**
+ * Doctor tests implementation.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/doctor/doctorTest.feature"],
@@ -29,7 +32,9 @@ class DoctorTest : En {
 
     init {
         val sleeper = SmartSleep()
-        When("sending {word} for registering doctor visit on {word} and {word}") { id: String, date: String, time: String ->
+        When(
+            "sending {word} for registering doctor visit on {word} and {word}",
+        ) { id: String, date: String, time: String ->
             val request = client
                 .post("/doctorSlots")
                 .sendBuffer(createJson(DoctorSlot(date, time, id)))

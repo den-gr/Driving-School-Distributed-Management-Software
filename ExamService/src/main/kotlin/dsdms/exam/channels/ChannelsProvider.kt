@@ -8,14 +8,30 @@ import io.vertx.ext.web.client.WebClientOptions
  * Provide a channel that allows to communicate with other bounded contexts.
  */
 interface ChannelsProvider {
+
+    /**
+     * Given connection to dossier service.
+     */
     val dossierServiceChannel: DossierServiceChannel
 }
 
+/**
+ * Provides connection to other services.
+ * @param vertx -> Given vertx thread to be used.
+ */
 class ChannelsProviderImpl(private val vertx: Vertx) : ChannelsProvider {
     override val dossierServiceChannel: DossierServiceChannel
 
     companion object {
+
+        /**
+         * localhost string.
+         */
         const val LOCALHOST: String = "localhost"
+
+        /**
+         * Dossier service, server port.
+         */
         const val DEFAULT_DOSSIER_SERVICE_PORT = 8000
     }
 

@@ -23,6 +23,9 @@ import org.junit.runner.RunWith
 import java.net.HttpURLConnection
 import kotlin.test.assertEquals
 
+/**
+ * Practical exam test implementation.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/driving/practicalExam.feature"],

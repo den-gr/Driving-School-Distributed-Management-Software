@@ -4,12 +4,20 @@ import io.vertx.core.Future
 import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 
+/**
+ * Smart timer to wait for server responses.
+ * @param timeout .> time to wait before throwing exception.
+ */
 class SmartSleep(private val timeout: Long = 10000) {
     companion object {
         private const val DEBAG = false
         private const val INITIAL_DELAY = 50L
     }
 
+    /**
+     * @param future result.
+     * @return server response after smart sleep.
+     */
     @Suppress("ReturnCount")
     fun waitResult(future: Future<HttpResponse<Buffer>>): HttpResponse<Buffer>? {
         future.onFailure { println(it.message) }

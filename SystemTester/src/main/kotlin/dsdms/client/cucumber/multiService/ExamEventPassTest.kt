@@ -16,6 +16,9 @@ import org.junit.runner.RunWith
 import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 
+/**
+ * Exam event test implementation.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/multiService/theoreticalExamPassTest.feature"],
