@@ -33,26 +33,8 @@ paths:
     $ref: './examService.yaml#/~1provisionalLicenses'
   "/provisionalLicenses/{id}":
     $ref: './examService.yaml#/~1provisionalLicenses~1%7Bid%7D'
-
-
-  "/api/{id}":
-    get:
-      summary: "Get a user by id"
-      operationId: test
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            example: "10"
-      responses:
-        "200":
-          description: ""
-          content:
-            text/plaintext:
-              schema:
-                type: string
+  "/provisionalLicenses/{id}/validity":
+    $ref: './examService.yaml#/~1provisionalLicenses~1%7Bid%7D~1validity'
 
 
 components:

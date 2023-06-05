@@ -34,6 +34,20 @@
     summary: "get occupied driving slots"
     operationId: getOccupiedDrivingSlots
     tags: [DrivingService]
+    parameters:
+      - name: date
+        in: query
+        required: true
+        description: "Date of requested driving slots"
+        schema:
+          type: string
+          example: "2023-05-01"
+      - name: instructorId
+        in: query
+        description: "Id of an instructor"
+        schema:
+          type: string
+          example: "i2"
     responses:
       "200":
         description: "Always returns this code with also driving slot list if there was some"
@@ -41,10 +55,12 @@
           text/plain:
             schema:
               type: string
-              enum: [ OK, NO_SLOT_OCCUPIED ]
+              enum: [ NO_SLOT_OCCUPIED ]
           application/json:
             schema:
               $ref: "./schemas.yaml#/DrivingSlot"
+      "500":
+        $ref: './responses.yaml#/ServerError'
 
 "/drivingSlots/{drivingSlotId}":
   delete:
@@ -58,6 +74,8 @@
         description: "Ok. Delete was successful"
       "400":
         description: "Bad request. There was some delete error"
+      "500":
+        $ref: './responses.yaml#/ServerError'
 
 "/practicalExamDays":
   get:
@@ -71,6 +89,8 @@
           application/json:
             schema:
               $ref: "./schemas.yaml#/PracticalExamDay"
+      "500":
+        $ref: './responses.yaml#/ServerError'
   post:
     summary: "insert a new practical exam day"
     operationId: postPracticalExamDay

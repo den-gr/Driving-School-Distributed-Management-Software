@@ -29,6 +29,7 @@ interface RouteHandlers {
     suspend fun handleDossierIdReading(routingContext: RoutingContext)
 
     /**
+     * Accepted events: THEORETICAL_EXAM_PASSED, PROVISIONAL_LICENSE_INVALIDATION, PRACTICAL_EXAM_PASSED
      * @param routingContext
      * handles dossier exam status update
      * @see DossierService

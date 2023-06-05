@@ -43,8 +43,9 @@ interface ProvisionalLicenseHandlers : Handlers {
      *      and notify dossier service
      * @see Handlers.handleException
      * @return http code:
-     *  - 200 -> OK or PROVISIONAL_LICENSE_NOT_VALID
+     *  - 200 -> OK
      *  - 202 -> DOSSIER_NOT_VALID
+     *  - 409 -> PROVISIONAL_LICENSE_ALREADY_EXISTS
      *  - 404 -> DOSSIER_NOT_EXIST
      *  - 500 -> Exceptions caught, EXAM_STATUS_ERROR, DELETE_ERROR
      */

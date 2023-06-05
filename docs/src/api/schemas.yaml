@@ -38,16 +38,10 @@ ExamsStatus:
     practicalExamState:
       type: string
       enum: [TO_DO, FIRST_PROVISIONAL_LICENCE_INVALID, SECOND_PROVISIONAL_LICENCE_INVALID, PASSED]
-ExamResult:
-  type: object
-  required: [exam, outcome]
-  properties:
-    exam:
-      type: string
-      enum: [THEORETICAL, PRACTICAL]
-    outcome:
-      type: string
-      enum: [PASSED, FAIL]
+ExamEvent:
+  type: string
+  enum: [THEORETICAL_EXAM_PASSED, PROVISIONAL_LICENSE_INVALIDATION, PRACTICAL_EXAM_PASSED]
+
 DoctorSlot:
   type: object
   required: [date, time, dossierId]

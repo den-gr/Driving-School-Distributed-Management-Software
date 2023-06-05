@@ -42,6 +42,8 @@
             schema:
               type: string
               enum: [ ID_NOT_FOUND ]
+      "500":
+        $ref: './responses.yaml#/ServerError'
   delete:
     summary: "delete theoretical exam pass for a given dossier id"
     operationId: deleteTheoreticalExamPass
@@ -57,7 +59,7 @@
               type: string
               enum: [ OK ]
       "500":
-        description: "Delete error from server"
+        description: "Delete error or internal server error"
         content:
           text/plain:
             schema:
@@ -170,7 +172,7 @@
           text/plain:
             schema:
               type: string
-              enum: [ PROVISIONAL_LICENSE_ALREADY_EXISTS ]
+              enum: [ PROVISIONAL_LICENSE_ALREADY_EXISTS, EXAM_STATUS_UPDATE_ERROR ]
       "500":
         $ref: './responses.yaml#/ServerError'
 
@@ -189,13 +191,57 @@
             schema:
               $ref: "./schemas.yaml#/ProvisionalLicenseHolder"
       "404":
-        description: "Not found any provisional licenses for given dossier id"
-        content:
-          text/plain:
-            schema:
-              type: string
-              enum: [ ID_NOT_FOUND ]
+        $ref: "./responses.yaml#/NotFound"
       "400":
         description: "Bad request, missing field in given json"
       "500":
         $ref: './responses.yaml#/ServerError'
+  put:
+    summary: "Update provisional license state"
+    operationId: updateProvisionalLicense
+    tags: [ExamService]
+    parameters:
+      - $ref: './parameters.yaml#/ProvisionalLicenseUpdateParam'
+    responses:
+      "200":
+        description: "OK or PROVISIONAL_LICENSE_NOT_VALID"
+      "202":
+        description: "Can not update provisional license state because dossier is not valid"
+        content:
+          text/plain:
+            schema:
+              type: String
+              enum: [DOSSIER_NOT_VALID]
+      "404":
+        $ref: "./responses.yaml#/NotFound"
+      "409":
+        description: "Provisional license already exists"
+        content:
+          text/plain:
+            schema:
+              type: String
+              enum: [PROVISIONAL_LICENSE_ALREADY_EXISTS]
+      "500":
+        $ref: './responses.yaml#/ServerError'
+"/provisionalLicenses/{id}/validity":
+  get:
+    summary: "Allows verify if provisional license is valid on a particular day"
+    operationId: isProvisionalLicenseValid
+    tags: [ExamService]
+    parameters:
+      - $ref: './parameters.yaml#/DossierId'
+    responses:
+      "200":
+        description: "Payload contains interrogation result"
+        content:
+          text/plain:
+            schema:
+              type: String
+              enum: [OK, PROVISIONAL_LICENSE_NOT_VALID]
+      "404":
+        $ref: "./responses.yaml#/NotFound"
+      "500":
+        $ref: './responses.yaml#/ServerError'
+
+
+

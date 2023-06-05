@@ -2,9 +2,16 @@ ServerError:
   description: Internal server error that typically happen when there are an error in server source code
   content:
     text/plain:
-      example: "IllegalStateException message"
+      example: "The message of illegal state exception"
 BadRequest:
   description: The request to the server not conform to the requested format
   content:
     text/plain:
       example: "Exception message"
+
+NotFound:
+  description: The element with given id not found
+  text/plain:
+    schema:
+      type: string
+      enum: [ ID_NOT_FOUND, DOSSIER_NOT_EXISTS ]

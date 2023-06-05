@@ -24,3 +24,12 @@ DrivingSlotId:
   schema:
     type: string
     example: "fnodjdsk5bt5ofn"
+
+ProvisionalLicenseUpdateParam:
+  name: "practicalExamUpdate"
+  in: query
+  required: true
+  schema:
+    type: string
+    enum: [PASSED, FAILED]
+    example: [PASSED]

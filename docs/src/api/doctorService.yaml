@@ -18,7 +18,7 @@
               enum: [ OK ]
       "400":
         description: "Bad request. Possible cases:
-              1) Given dossier to book doctor slot not exist
+              1) Given dossier to book doctor slot not exist or it is not valid
               2) Given dossier has already booked a doctor slot in the future
               3) Given time is occupied by another doctor slot
               4) Given time does not respects doctors times
@@ -27,7 +27,7 @@
           text/plain:
             schema:
               type: string
-              enum: [ DOSSIER_NOT_EXIST, DOSSIER_ALREADY_BOOKED, TIME_OCCUPIED, BAD_TIME, NOT_DOCTOR_DAY ]
+              enum: [ DOSSIER_NOT_EXIST, DOSSIER_NOT_VALID, DOSSIER_ALREADY_BOOKED, TIME_OCCUPIED, BAD_TIME, NOT_DOCTOR_DAY ]
   put:
     summary: "Register doctor visit result"
     operationId: saveDoctorResult

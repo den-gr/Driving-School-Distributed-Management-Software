@@ -50,9 +50,9 @@
       - $ref: './parameters.yaml#/DossierId'
     requestBody:
       content:
-        application/json:
+        text/plain:
           schema:
-            $ref: "./schemas.yaml#/ExamResult"
+            $ref: "./schemas.yaml#/ExamEvent"
     responses:
       "200":
         description: "Successful exam state update"

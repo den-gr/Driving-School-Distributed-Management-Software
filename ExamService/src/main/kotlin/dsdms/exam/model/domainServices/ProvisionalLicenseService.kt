@@ -12,6 +12,7 @@ interface ProvisionalLicenseService {
      * @return: DomainResponseStatus
      *  - PROVISIONAL_LICENSE_ALREADY_EXISTS
      *  - OK
+     *  - EXAM_STATUS_UPDATE_ERROR
      */
     suspend fun registerProvisionalLicense(provisionalLicense: ProvisionalLicense): DomainResponseStatus
 

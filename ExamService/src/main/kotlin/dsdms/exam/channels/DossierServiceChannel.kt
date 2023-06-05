@@ -18,7 +18,7 @@ interface DossierServiceChannel {
      * @param examEvent event about exam state change
      * @return DomainResponseStatus
      *  - OK
-     *  - EXAM_STATUS_ERROR
+     *  - EXAM_STATUS_UPDATE_ERROR
      */
     suspend fun updateExamStatus(dossierId: String, examEvent: ExamEvent): DomainResponseStatus
 
@@ -41,7 +41,7 @@ class DossierServiceChannelImpl(val client: WebClient) : DossierServiceChannel {
             .sendBuffer(Buffer.buffer(examEvent.name)).await()
         if (result.statusCode() != HttpURLConnection.HTTP_OK) {
             println(result.body())
-            return DomainResponseStatus.EXAM_STATUS_ERROR
+            return DomainResponseStatus.EXAM_STATUS_UPDATE_ERROR
         }
         return DomainResponseStatus.OK
     }
