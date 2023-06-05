@@ -24,6 +24,9 @@ import java.net.HttpURLConnection.HTTP_CONFLICT
 import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 
+/**
+ * Provisional license creation test implementation.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/multiService/provisionalLicenseRegistration.feature"],

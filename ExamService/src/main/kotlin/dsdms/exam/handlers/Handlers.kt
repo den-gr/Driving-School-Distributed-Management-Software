@@ -7,6 +7,9 @@ import kotlinx.serialization.SerializationException
 import java.lang.IllegalArgumentException
 import java.net.HttpURLConnection
 
+/**
+ * Basic utility functions common to Theoretical and Practical handlers.
+ */
 interface Handlers {
     /**
      * Extract id parameter from uri.

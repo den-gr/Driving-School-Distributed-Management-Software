@@ -19,6 +19,9 @@ import java.net.HttpURLConnection
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
+/**
+ * Provisional license updates test implementation.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/multiService/provisionalLicenseUpdate.feature"],

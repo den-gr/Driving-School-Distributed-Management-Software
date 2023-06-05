@@ -13,7 +13,14 @@ import kotlinx.serialization.json.Json
 import java.lang.IllegalArgumentException
 import java.net.HttpURLConnection
 
+/**
+ * @param model -> model given to class.
+ */
 class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandlers {
+
+    /**
+     * Options for serializations.
+     */
     val cjson = Json {
         encodeDefaults = true
     }

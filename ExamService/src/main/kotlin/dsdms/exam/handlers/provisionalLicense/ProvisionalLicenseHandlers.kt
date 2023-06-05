@@ -3,10 +3,13 @@ package dsdms.exam.handlers.provisionalLicense
 import dsdms.exam.handlers.Handlers
 import io.vertx.ext.web.RoutingContext
 
+/**
+ * Implements logics to handle provisional license routes.
+ */
 interface ProvisionalLicenseHandlers : Handlers {
 
     /**
-     * Handles registration of new provisional licenses
+     * Handles registration of new provisional licenses.
      * @see Handlers.handleException
      * @return http code:
      *  - 200 -> OK
@@ -16,7 +19,7 @@ interface ProvisionalLicenseHandlers : Handlers {
     suspend fun registerProvisionalLicence(routingContext: RoutingContext)
 
     /**
-     * Handles getting of provisional license for given dossier id, if available
+     * Handles getting of provisional license for given dossier id, if available.
      * @see Handlers.handleException
      * @return http code:
      *  - 200 -> OK
@@ -26,7 +29,7 @@ interface ProvisionalLicenseHandlers : Handlers {
     suspend fun getProvisionalLicenseHolder(routingContext: RoutingContext)
 
     /**
-     * Handle requests of checking provisional license validity
+     * Handle requests of checking provisional license validity.
      * @see Handlers.handleException
      * @return http code:
      *  - 200 -> OK or PROVISIONAL_LICENSE_NOT_VALID

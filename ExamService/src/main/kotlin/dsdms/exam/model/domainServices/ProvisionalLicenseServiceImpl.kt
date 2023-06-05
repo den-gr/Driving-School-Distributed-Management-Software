@@ -9,6 +9,9 @@ import dsdms.exam.model.valueObjects.ExamEvent
 import dsdms.exam.model.valueObjects.ProvisionalLicenseHolder
 import kotlinx.datetime.LocalDate
 
+/**
+ * Implements provisional license logics.
+ */
 class ProvisionalLicenseServiceImpl(
     private val repository: Repository,
     private val channelsProvider: ChannelsProvider,

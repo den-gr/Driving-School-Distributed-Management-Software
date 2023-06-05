@@ -3,6 +3,9 @@ package dsdms.exam.handlers.theoreticalExams
 import dsdms.exam.handlers.Handlers
 import io.vertx.ext.web.RoutingContext
 
+/**
+ * Implements logics to handle theoretical exam routes.
+ */
 interface TheoreticalExamHandlers : Handlers {
 
     /**

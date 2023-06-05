@@ -20,6 +20,9 @@ import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+/**
+ * Update dossier test implementation.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/test/resources/features/dossier/updateDossier.feature"],
@@ -48,9 +51,11 @@ class UpdateDossierTest : En {
         When("i read his {word} exam progress state is {word}") { type: String, state: String ->
             assertNotNull(retrievedDossier)
             if (type == ExamEvent.THEORETICAL_EXAM_PASSED.name) {
-                retrievedDossier?.examsStatus?.let { assertEquals(TheoreticalExamState.valueOf(state), it.theoreticalExamState) }
+                retrievedDossier?.examsStatus
+                    ?.let { assertEquals(TheoreticalExamState.valueOf(state), it.theoreticalExamState) }
             } else {
-                retrievedDossier?.examsStatus?.let { assertEquals(PracticalExamState.valueOf(state), it.practicalExamState) }
+                retrievedDossier?.examsStatus
+                    ?.let { assertEquals(PracticalExamState.valueOf(state), it.practicalExamState) }
             }
         }
 
@@ -75,9 +80,11 @@ class UpdateDossierTest : En {
             checkResponse(response)
             retrievedDossier = Json.decodeFromString(response?.body().toString())
             if (type == ExamEvent.THEORETICAL_EXAM_PASSED.name) {
-                retrievedDossier?.examsStatus?.let { assertEquals(TheoreticalExamState.valueOf(newState), it.theoreticalExamState) }
+                retrievedDossier?.examsStatus
+                    ?.let { assertEquals(TheoreticalExamState.valueOf(newState), it.theoreticalExamState) }
             } else {
-                retrievedDossier?.examsStatus?.let { assertEquals(PracticalExamState.valueOf(newState), it.practicalExamState) }
+                retrievedDossier?.examsStatus
+                    ?.let { assertEquals(PracticalExamState.valueOf(newState), it.practicalExamState) }
             }
         }
     }

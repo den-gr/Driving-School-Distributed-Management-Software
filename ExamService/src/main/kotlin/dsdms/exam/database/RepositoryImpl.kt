@@ -14,6 +14,9 @@ import org.litote.kmongo.div
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 
+/**
+ * @param examService: represents the domain service used by repository.
+ */
 class RepositoryImpl(examService: CoroutineDatabase) : Repository {
     private val theoreticalExamPassDb =
         examService.getCollection<TheoreticalExamPass>("TheoreticalExamPass")

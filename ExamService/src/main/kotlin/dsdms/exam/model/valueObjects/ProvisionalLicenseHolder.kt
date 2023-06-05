@@ -37,6 +37,9 @@ data class ProvisionalLicenseHolder(val provisionalLicense: ProvisionalLicense, 
         return date in provisionalLicense.startValidity..provisionalLicense.endValidity
     }
 
+    /**
+     * @return true if a subscriber with given provisional license has reached max practical exam attempts.
+     */
     fun hasMaxAttempts(): Boolean {
         return practicalExamAttempts == MAX_PRACTICAL_EXAM_ATTEMPTS
     }

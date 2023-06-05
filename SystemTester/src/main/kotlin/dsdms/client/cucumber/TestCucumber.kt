@@ -9,9 +9,13 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
 import org.junit.runner.RunWith
+import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+/**
+ * Fake tests.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/test_feature.feature"],
@@ -46,7 +50,7 @@ class TestCucumber : En {
             assertNotNull(response)
         }
         Then("I have an error") {
-            assertEquals(response?.statusCode(), 401)
+            assertEquals(response?.statusCode(), HTTP_UNAUTHORIZED)
         }
     }
 }

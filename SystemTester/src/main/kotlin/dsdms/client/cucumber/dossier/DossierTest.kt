@@ -22,6 +22,9 @@ import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+/**
+ * Dossier tests implementation.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/dossier/registerAndReadDossier.feature"],
@@ -35,7 +38,9 @@ class DossierTest : En {
 
     init {
         val sleeper = SmartSleep()
-        When("I register subscriber's documents information: {word}, {word},{word},{word}") { name: String, surname: String, birthdate: String, fiscal_code: String ->
+        When(
+            "I register subscriber's documents information: {word},{word},{word},{word}",
+        ) { name: String, surname: String, birthdate: String, fiscal_code: String ->
             val request = client
                 .post("/dossiers")
                 .sendBuffer(createJson(SubscriberDocuments(name, surname, LocalDate.parse(birthdate), fiscal_code)))
@@ -62,7 +67,9 @@ class DossierTest : En {
             retrievedDossier = Json.decodeFromString(response?.body().toString())
         }
 
-        Then("I find {word},{word},{word},{word} of registered dossier") { name: String, surname: String, birthdate: String, fiscal_code: String ->
+        Then(
+            "I find {word},{word},{word},{word} of registered dossier",
+        ) { name: String, surname: String, birthdate: String, fiscal_code: String ->
             assertNotNull(retrievedDossier)
             assertEquals(name, retrievedDossier?.name)
             assertEquals(surname, retrievedDossier?.surname)
@@ -75,7 +82,9 @@ class DossierTest : En {
             assertEquals(PracticalExamState.TO_DO, retrievedDossier?.examsStatus?.practicalExamState)
         }
 
-        When("I try to register invalid subscriber information: {word},{word},{word},{word}") { name: String, surname: String, birthdate: String, fiscal_code: String ->
+        When(
+            "I try to register invalid subscriber information: {word},{word},{word},{word}",
+        ) { name: String, surname: String, birthdate: String, fiscal_code: String ->
             val request = client
                 .post("/dossiers")
                 .sendJson(

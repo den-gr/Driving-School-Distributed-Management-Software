@@ -13,7 +13,7 @@ import java.net.HttpURLConnection
  */
 interface DossierServiceChannel {
     /**
-     * Update dossier exam status
+     * Update dossier exam status.
      * @param dossierId
      * @param examEvent event about exam state change
      * @return DomainResponseStatus
@@ -34,6 +34,9 @@ interface DossierServiceChannel {
     suspend fun checkDossierValidity(dossierId: String): DomainResponseStatus
 }
 
+/**
+ * @param client -> given web client for which to open dossier service connection.
+ */
 class DossierServiceChannelImpl(val client: WebClient) : DossierServiceChannel {
 
     override suspend fun updateExamStatus(dossierId: String, examEvent: ExamEvent): DomainResponseStatus {

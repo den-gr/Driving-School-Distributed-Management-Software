@@ -12,6 +12,9 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 
+/**
+ * @param model -> given model to theoretical exam handlers.
+ */
 class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
     override suspend fun createTheoreticalExamPass(routingContext: RoutingContext) {
         try {

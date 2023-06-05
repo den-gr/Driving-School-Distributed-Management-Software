@@ -16,6 +16,9 @@ import org.junit.runner.RunWith
 import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 
+/**
+ * Theoretical exam tests implementation.
+ */
 @RunWith(Cucumber::class)
 @CucumberOptions(
     features = ["src/main/resources/features/exam/theoreticalExamTest.feature"],
