@@ -9,13 +9,13 @@ interface Repository {
 
     /**
      * @param newDossier to be inserted
-     * @return id of the created dossier (could be null)
+     * @return id of the created dossier (could be null in case of errors)
      */
     suspend fun createDossier(newDossier: Dossier): String?
 
     /**
      * @param id of a specific dossier
-     * @return founded dossier (could be null)
+     * @return founded dossier (could be null if dossier not exists)
      */
     suspend fun readDossierFromId(id: String): Dossier?
 

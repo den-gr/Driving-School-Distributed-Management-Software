@@ -11,6 +11,7 @@ import java.net.HttpURLConnection
  */
 interface DossierServiceChannel {
     /**
+     * Verify that dossier is valid.
      * @param dossierId
      * @return DomainResponseStatus
      * - OK

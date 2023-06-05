@@ -37,10 +37,10 @@ data class BookedDoctorSlots(
  * @param repository for connection with storage
  * @param channelsProvider for connection with other domain contexts
  */
-class DoctorServiceImpl(
+class DoctorDomainServiceImpl(
     private val repository: Repository,
     private val channelsProvider: ChannelsProvider,
-) : DoctorService {
+) : DoctorDomainService {
 
     private suspend fun verifyDocuments(documents: DoctorSlot): DomainResponseStatus {
         return if (checkDoctorDay(documents.date)) {
@@ -81,10 +81,10 @@ class DoctorServiceImpl(
     private suspend fun checkTimeAvailability(time: String, date: String): Boolean =
         getOccupiedDoctorSlots(date).doctorSlots.any { el -> el.time == time }
 
-    override suspend fun saveDoctorSlot(documents: DoctorSlot): InsertDoctorVisitResult {
-        val verifyResult = verifyDocuments(documents)
+    override suspend fun saveDoctorSlot(doctorSlot: DoctorSlot): InsertDoctorVisitResult {
+        val verifyResult = verifyDocuments(doctorSlot)
         return if (verifyResult == DomainResponseStatus.OK) {
-            InsertDoctorVisitResult(verifyResult, repository.saveDoctorSlot(documents))
+            InsertDoctorVisitResult(verifyResult, repository.saveDoctorSlot(doctorSlot))
         } else {
             InsertDoctorVisitResult(verifyResult)
         }
@@ -106,11 +106,11 @@ class DoctorServiceImpl(
         return repositoryToDomainConversionTable.getDomainCode(repository.deleteDoctorSlot(dossierId))
     }
 
-    override suspend fun saveDoctorResult(document: DoctorResult): DomainResponseStatus {
-        return if (document.result != ResultTypes.VALID) {
+    override suspend fun saveDoctorResult(doctorResult: DoctorResult): DomainResponseStatus {
+        return if (doctorResult.result != ResultTypes.VALID) {
             DomainResponseStatus.EXAM_PASS_NOT_CREATED
-        } else if (createTheoreticalExamPass(document)) {
-            repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(document))
+        } else if (createTheoreticalExamPass(doctorResult)) {
+            repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(doctorResult))
         } else {
             DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
         }

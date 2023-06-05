@@ -11,14 +11,14 @@ import java.time.LocalDate
 interface Repository {
 
     /**
-     * @param documents: new doctor slot to inserted
+     * @param doctorSlot: new doctor slot to be inserted
      * @return the date for which the new document has been inserted
      */
-    suspend fun saveDoctorSlot(documents: DoctorSlot): String
+    suspend fun saveDoctorSlot(doctorSlot: DoctorSlot): String
 
     /**
-     * @param date: the date from which we want to obtain occupied doctor slots
-     * @return lists (eventually empty) of occupied driving slots in a certain date
+     * @param date: the date when we want to obtain occupied doctor slots
+     * @return lists of occupied driving slots in a certain date
      */
     suspend fun getOccupiedDoctorSlots(date: String): List<DoctorSlot>
 

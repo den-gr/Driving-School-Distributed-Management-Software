@@ -14,7 +14,6 @@ import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.CoroutineDatabase
-import java.net.HttpURLConnection
 import kotlin.system.exitProcess
 
 /**
@@ -26,12 +25,11 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
 
     private val repository: Repository = RepositoryImpl(dbConnection)
 
-    private val handlersImpl: RouteHandlers = RouteHandlersImpl(ModelImpl(repository))
     override suspend fun start() {
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
-        setRoutes(router)
+        setRoutes(router, RouteHandlersImpl(ModelImpl(repository)))
 
         vertx.createHttpServer()
             .requestHandler(router)
@@ -42,12 +40,7 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
             }
     }
 
-    /**
-     * TODO: Insert a route to disable a dossier and delete
-     *      all provisional licenses and theoretical exam passes with that id.
-     */
-    private fun setRoutes(router: Router) {
-        router.get("/api/:id").handler(::handle)
+    private fun setRoutes(router: Router, handlersImpl: RouteHandlers) {
         router.post("/dossiers").coroutineHandler(handlersImpl::handleDossierRegistration)
         router.get("/dossiers/:id").coroutineHandler(handlersImpl::handleDossierIdReading)
         router.put("/dossiers/:id/examStatus").coroutineHandler(handlersImpl::handleDossierExamStatusUpdate)
@@ -62,16 +55,6 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
                     ctx.fail(e)
                 }
             }
-        }
-    }
-
-    private fun handle(routingContext: RoutingContext) {
-        val id = routingContext.request().getParam("id").toIntOrNull()
-        val response = routingContext.response()
-        if (id != null) {
-            response.setStatusCode(HttpURLConnection.HTTP_OK).end((id).toString())
-        } else {
-            response.setStatusCode(HttpURLConnection.HTTP_UNAUTHORIZED).end("wrong input")
         }
     }
 }

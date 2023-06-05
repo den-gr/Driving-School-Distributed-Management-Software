@@ -31,8 +31,6 @@ object Main {
             DEFAULT_MONGO_URI
         }
 
-        println("Port: $port")
-        println("MongoURI: $mongoURI")
         println("Dossier service started")
 
         val dbConnection = KMongo

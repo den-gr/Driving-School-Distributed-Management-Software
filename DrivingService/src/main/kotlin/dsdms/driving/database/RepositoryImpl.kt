@@ -8,7 +8,6 @@ import dsdms.driving.model.entities.Vehicle
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.LicensePlate
 import dsdms.driving.model.valueObjects.PracticalExamDay
-import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import org.litote.kmongo.and
 import org.litote.kmongo.coroutine.CoroutineDatabase
@@ -63,11 +62,7 @@ class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
     }
 
     override suspend fun deleteDrivingSlot(drivingSlotId: String): RepositoryResponseStatus {
-        return handleDeleteResult(
-            runBlocking {
-                drivingSlots.deleteOne(DrivingSlot::_id eq drivingSlotId)
-            },
-        )
+        return handleDeleteResult(drivingSlots.deleteOne(DrivingSlot::_id eq drivingSlotId))
     }
 
     override suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay) {

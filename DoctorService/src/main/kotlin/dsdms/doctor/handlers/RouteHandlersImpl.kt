@@ -21,11 +21,10 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
     override suspend fun bookDoctorVisit(routingContext: RoutingContext) {
         try {
             val insertResult =
-                model.doctorService.saveDoctorSlot(Json.decodeFromString(routingContext.body().asString()))
+                model.doctorDomainService.saveDoctorSlot(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response()
-                .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus)).end(
-                    insertResult.visitDate ?: insertResult.domainResponseStatus.toString(),
-                )
+                .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
+                .end(insertResult.visitDate ?: insertResult.domainResponseStatus.toString())
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
@@ -33,7 +32,7 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
 
     override suspend fun getBookedDoctorSlots(routingContext: RoutingContext) {
         try {
-            val result: BookedDoctorSlots = model.doctorService
+            val result: BookedDoctorSlots = model.doctorDomainService
                 .getOccupiedDoctorSlots(routingContext.request().getParam("date").toString())
             val payload = if (result.domainResponseStatus == DomainResponseStatus.OK) {
                 Json.encodeToString(ListSerializer(DoctorSlot.serializer()), result.doctorSlots)
@@ -50,7 +49,8 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
 
     override suspend fun deleteDoctorSlot(routingContext: RoutingContext) {
         try {
-            val result = model.doctorService.deleteDoctorSlot(routingContext.request().getParam("dossierId").toString())
+            val result = model.doctorDomainService
+                .deleteDoctorSlot(routingContext.request().getParam("dossierId").toString())
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))
                 .end(result.toString())
@@ -61,7 +61,8 @@ class RouteHandlersImpl(private val model: Model) : RouteHandlers {
 
     override suspend fun saveDoctorResult(routingContext: RoutingContext) {
         try {
-            val result = model.doctorService.saveDoctorResult(Json.decodeFromString(routingContext.body().asString()))
+            val result = model.doctorDomainService
+                .saveDoctorResult(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response().setStatusCode(domainConversionTable.getHttpCode(result)).end(result.toString())
         } catch (ex: Exception) {
             handleException(ex, routingContext)

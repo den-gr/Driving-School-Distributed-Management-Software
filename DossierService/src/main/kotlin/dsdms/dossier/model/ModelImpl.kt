@@ -5,7 +5,6 @@ import dsdms.dossier.model.domainServices.DossierService
 import dsdms.dossier.model.domainServices.DossierServiceImpl
 
 /**
- * Main system model.
  * @param repository for connection with storage
  */
 class ModelImpl(repository: Repository) : Model {

@@ -56,7 +56,7 @@ class DossierServiceImpl(private val repository: Repository) : DossierService {
     private suspend fun verifyDocuments(documents: SubscriberDocuments): DomainResponseStatus {
         return if (subscriberControls.checkDuplicatedFiscalCode(documents, repository)) {
             DomainResponseStatus.VALID_DOSSIER_ALREADY_EXISTS
-        } else if (subscriberControls.checkSubscriberBirthdate(documents, repository)) {
+        } else if (subscriberControls.checkSubscriberBirthdate(documents)) {
             DomainResponseStatus.AGE_NOT_SUFFICIENT
         } else if (subscriberControls.isNumeric(documents.name, documents.surname)) {
             DomainResponseStatus.NAME_SURNAME_NOT_STRING

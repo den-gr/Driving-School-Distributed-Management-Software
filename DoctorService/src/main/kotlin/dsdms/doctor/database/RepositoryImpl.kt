@@ -14,8 +14,9 @@ import java.time.LocalDate
 class RepositoryImpl(doctorServiceDB: CoroutineDatabase) : Repository {
     private val doctorSlots = doctorServiceDB.getCollection<DoctorSlot>("DoctorSlot")
     private val doctorResults = doctorServiceDB.getCollection<DoctorResult>("DoctorResult")
-    override suspend fun saveDoctorSlot(documents: DoctorSlot): String {
-        return documents.apply { doctorSlots.insertOne(documents) }.date
+
+    override suspend fun saveDoctorSlot(doctorSlot: DoctorSlot): String {
+        return doctorSlot.apply { doctorSlots.insertOne(doctorSlot) }.date
     }
 
     override suspend fun getOccupiedDoctorSlots(date: String): List<DoctorSlot> {

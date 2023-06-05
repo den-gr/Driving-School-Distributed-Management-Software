@@ -28,10 +28,9 @@ interface SubscriberControls {
 
     /**
      * @param givenDocuments
-     * @param repository
      * @return true if subscriber does not meet minimum age requirement, false otherwise
      */
-    suspend fun checkSubscriberBirthdate(givenDocuments: SubscriberDocuments, repository: Repository): Boolean
+    suspend fun checkSubscriberBirthdate(givenDocuments: SubscriberDocuments): Boolean
 
     /**
      * @param string: one or multiple string to check if they are in reality numeric

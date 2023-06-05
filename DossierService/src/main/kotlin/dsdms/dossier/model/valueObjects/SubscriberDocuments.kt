@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
  * @param name of subscriber
  * @param surname of subscriber
  * @param birthdate of subscriber
- * @param fiscal_code of subscriber. IT is implicitly considered as correct
+ * @param fiscal_code of subscriber. It is implicitly considered as correct
  */
 @Serializable
 data class SubscriberDocuments(

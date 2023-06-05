@@ -8,8 +8,6 @@ plugins {
     alias(libs.plugins.johnrengelman.shadow)
     alias(libs.plugins.dokka)
     id("org.danilopianini.gradle-kotlin-qa") version "0.42.0"
-
-//    id("org.jlleitschuh.gradle.ktlint") version "11.3.2" //TEMPORALLY DISABLE
 }
 
 allprojects {

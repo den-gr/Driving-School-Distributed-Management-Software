@@ -1,6 +1,6 @@
 package dsdms.doctor.handlers
 
-import dsdms.doctor.model.domainServices.DoctorService
+import dsdms.doctor.model.domainServices.DoctorDomainService
 import io.vertx.ext.web.RoutingContext
 
 /**
@@ -10,26 +10,26 @@ interface RouteHandlers {
 
     /**
      * To book a new doctor visit.
-     * @see DoctorService
+     * @see DoctorDomainService
      */
     suspend fun bookDoctorVisit(routingContext: RoutingContext)
 
     /**
-     * To get booked doctor slots for a certain dossier id.
-     * @see DoctorService
+     * To get booked doctor slots for a certain date.
+     * @see DoctorDomainService
      */
     suspend fun getBookedDoctorSlots(routingContext: RoutingContext)
 
     /**
-     * To delete a dossier id's booked doctor slot.
-     * @since each dossierId can book only one doctor slot
-     * @see DoctorService
+     * To delete a dossier's booked doctor slot.
+     * @since for each dossierId can be booked only one doctor slot
+     * @see DoctorDomainService
      */
     suspend fun deleteDoctorSlot(routingContext: RoutingContext)
 
     /**
      * To save a doctor visit result.
-     * @see DoctorService
+     * @see DoctorDomainService
      */
     suspend fun saveDoctorResult(routingContext: RoutingContext)
 }
