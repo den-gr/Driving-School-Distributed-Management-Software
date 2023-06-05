@@ -24,6 +24,11 @@ allprojects {
         kotlinOptions.jvmTarget = "16"
     }
 
+    tasks.withType<JavaCompile> {
+        sourceCompatibility = JavaVersion.VERSION_16.toString()
+        targetCompatibility = JavaVersion.VERSION_16.toString()
+    }
+
     tasks.register<Jar>("createJavadoc") {
         from(tasks.dokkaJavadoc.get().outputDirectory)
         archiveClassifier.set("javadoc")
