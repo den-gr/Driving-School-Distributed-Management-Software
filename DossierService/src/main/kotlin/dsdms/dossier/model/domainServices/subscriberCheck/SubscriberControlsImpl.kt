@@ -12,7 +12,7 @@ import java.time.Period
 class SubscriberControlsImpl : SubscriberControls {
     override suspend fun checkDuplicatedFiscalCode(
         givenDocuments: SubscriberDocuments,
-        repository: Repository
+        repository: Repository,
     ): Boolean {
         val alreadyExistingDossiers: List<Dossier> = repository.readDossierFromCf(givenDocuments.fiscal_code)
         return alreadyExistingDossiers.count { el -> el.validity } != 0
