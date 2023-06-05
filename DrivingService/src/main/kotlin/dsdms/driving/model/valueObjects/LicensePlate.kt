@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 data class LicensePlate(val numberPlate: String) {
 
     init {
-        require(!checkLicensePlateFormat(numberPlate)) {"License plate format not valid"}
+        require(checkLicensePlateFormat(numberPlate)) { "License plate format not valid" }
     }
 
     private fun checkLicensePlateFormat(numberPlate: String): Boolean {
