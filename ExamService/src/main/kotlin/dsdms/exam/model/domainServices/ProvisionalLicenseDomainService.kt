@@ -7,10 +7,10 @@ import kotlinx.datetime.LocalDate
 /**
  * Implements abstract provisional license logics.
  */
-interface ProvisionalLicenseService {
+interface ProvisionalLicenseDomainService {
     /**
      * Registers a new provisional license for a dossier id
-     * Dossier service is being notified to update theoretical exam status to passed.
+     * Dossier service is being notified to update theoretical exam status to PASSED.
      * @param provisionalLicense: info to create the provisional license for a dossier id
      * @return: DomainResponseStatus
      *  - PROVISIONAL_LICENSE_ALREADY_EXISTS

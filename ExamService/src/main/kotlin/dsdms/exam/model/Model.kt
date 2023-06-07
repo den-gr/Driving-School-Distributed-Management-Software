@@ -1,7 +1,7 @@
 package dsdms.exam.model
 
-import dsdms.exam.model.domainServices.ExamService
-import dsdms.exam.model.domainServices.ProvisionalLicenseService
+import dsdms.exam.model.domainServices.ExamDomainService
+import dsdms.exam.model.domainServices.ProvisionalLicenseDomainService
 
 /**
  * Representing different services.
@@ -10,10 +10,10 @@ interface Model {
     /**
      * Exam service domain logics.
      */
-    val examService: ExamService
+    val examDomainService: ExamDomainService
 
     /**
      * Provisional license service domain logics.
      */
-    val provisionalLicenseService: ProvisionalLicenseService
+    val provisionalLicenseDomainService: ProvisionalLicenseDomainService
 }

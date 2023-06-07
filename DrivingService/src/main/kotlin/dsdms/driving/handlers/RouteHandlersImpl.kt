@@ -1,6 +1,7 @@
 package dsdms.driving.handlers
 
 import dsdms.driving.model.Model
+import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.PracticalExamDay
 import io.vertx.core.MultiMap
@@ -22,7 +23,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     override suspend fun registerNewDrivingSlot(routingContext: RoutingContext) {
         try {
             val insertResult =
-                model.drivingService.saveNewDrivingSlot(Json.decodeFromString(routingContext.body().asString()))
+                model.drivingDomainService.saveNewDrivingSlot(Json.decodeFromString(routingContext.body().asString()))
             routingContext
                 .response()
                 .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
@@ -35,12 +36,18 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     override suspend fun getOccupiedDrivingSlots(routingContext: RoutingContext) {
         try {
             val result = model
-                .drivingService
+                .drivingDomainService
                 .getOccupiedDrivingSlots(parseHeaderValues(routingContext.queryParams()))
+
+            val payload = if (result.drivingSlots != null) {
+                Json.encodeToString(ListSerializer(DrivingSlot.serializer()), result.drivingSlots)
+            } else {
+                result.domainResponseStatus.name
+            }
             routingContext
                 .response()
                 .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
-                .end(result.drivingSlots ?: result.domainResponseStatus.name)
+                .end(payload)
         } catch (ex: Exception) {
             handleException(ex, routingContext)
         }
@@ -55,7 +62,8 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
 
     override suspend fun deleteDrivingSlot(routingContext: RoutingContext) {
         try {
-            val result = model.drivingService.deleteDrivingSlot(routingContext.request().getParam("id").toString())
+            val result = model.drivingDomainService
+                .deleteDrivingSlot(routingContext.request().getParam("id").toString())
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))
                 .end(result.name)

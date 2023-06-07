@@ -28,7 +28,7 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
     override suspend fun registerProvisionalLicence(routingContext: RoutingContext) {
         try {
             val provisionalLicense: ProvisionalLicense = cjson.decodeFromString(routingContext.body().asString())
-            val response = model.provisionalLicenseService.registerProvisionalLicense(provisionalLicense)
+            val response = model.provisionalLicenseDomainService.registerProvisionalLicense(provisionalLicense)
             if (response == DomainResponseStatus.OK) {
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK).end(response.name)
             } else {
@@ -43,7 +43,7 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
     override suspend fun getProvisionalLicenseHolder(routingContext: RoutingContext) {
         try {
             val dossierId = getDossierId(routingContext)
-            val provisionalLicenseHolder = model.provisionalLicenseService.getProvisionalLicenseHolder(dossierId)
+            val provisionalLicenseHolder = model.provisionalLicenseDomainService.getProvisionalLicenseHolder(dossierId)
             if (provisionalLicenseHolder == null) {
                 routingContext.response()
                     .setStatusCode(domainConversionTable.getHttpCode(DomainResponseStatus.ID_NOT_FOUND))
@@ -61,7 +61,7 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
         try {
             val dossierId = getDossierId(routingContext)
             val date = LocalDate.parse(routingContext.queryParams().get("date"))
-            val result = model.provisionalLicenseService.isProvisionalLicenseValid(dossierId, date)
+            val result = model.provisionalLicenseDomainService.isProvisionalLicenseValid(dossierId, date)
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result))
                 .end(result.name)
@@ -74,8 +74,8 @@ class ProvisionalLicenseHandlersImpl(val model: Model) : ProvisionalLicenseHandl
         try {
             val dossierId = getDossierId(routingContext)
             val result: DomainResponseStatus = when (routingContext.queryParams().get("practicalExamUpdate")) {
-                "PASSED" -> model.provisionalLicenseService.practicalExamSuccess(dossierId)
-                "FAILED" -> model.provisionalLicenseService.incrementProvisionalLicenseFailures(dossierId)
+                "PASSED" -> model.provisionalLicenseDomainService.practicalExamSuccess(dossierId)
+                "FAILED" -> model.provisionalLicenseDomainService.incrementProvisionalLicenseFailures(dossierId)
                 else -> throw IllegalArgumentException(
                     "Query parameter is not recognized. " +
                         "It should be (practicalExamUpdate -> PASSED/FAILED",

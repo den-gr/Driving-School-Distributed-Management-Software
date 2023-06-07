@@ -35,7 +35,7 @@ interface DossierServiceChannel {
 }
 
 /**
- * @param client -> given web client for which to open dossier service connection.
+ * @param client -> vertx web client of dossier service.
  */
 class DossierServiceChannelImpl(val client: WebClient) : DossierServiceChannel {
 

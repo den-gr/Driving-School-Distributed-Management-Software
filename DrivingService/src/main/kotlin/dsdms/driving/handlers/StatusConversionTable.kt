@@ -12,8 +12,6 @@ import java.net.HttpURLConnection
 val repositoryToDomainConversionTable: Map<RepositoryResponseStatus, DomainResponseStatus> = mapOf(
     RepositoryResponseStatus.OK to DomainResponseStatus.OK,
     RepositoryResponseStatus.DELETE_ERROR to DomainResponseStatus.DELETE_ERROR,
-    RepositoryResponseStatus.NO_PROVISIONAL_LICENSE to DomainResponseStatus.NO_PROVISIONAL_LICENSE,
-    RepositoryResponseStatus.INVALID_PROVISIONAL_LICENSE to DomainResponseStatus.INVALID_PROVISIONAL_LICENSE,
 )
 
 /**

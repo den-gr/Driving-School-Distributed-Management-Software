@@ -33,7 +33,7 @@ interface TheoreticalExamHandlers : Handlers {
      * @see Handlers.handleException
      * @return http code:
      *  - 500 -> DELETE_ERROR, exceptions caught
-     *  - 404 -> ID_NOT_FOUND, exceptions caught
+     *  - 404 -> ID_NOT_FOUND
      *  - 200 -> OK
      */
     suspend fun deleteTheoreticalExamPass(routingContext: RoutingContext)

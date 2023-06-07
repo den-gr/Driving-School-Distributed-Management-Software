@@ -25,14 +25,14 @@ class ProvisionalLicenseTest {
     @Test
     fun checkProvisionalLicenseValidity() {
         val date = LocalDate.parse("2023-10-12")
-        val provisionalLicenseHolder = ProvisionalLicenseHolder(ProvisionalLicense("d1", date))
-        assertEquals(provisionalLicenseHolder.provisionalLicense.endValidity, LocalDate.parse("2024-10-12"))
-        assertTrue(provisionalLicenseHolder.isValidOn(LocalDate.parse("2023-10-12")))
-        assertTrue(provisionalLicenseHolder.isValidOn(LocalDate.parse("2023-11-12")))
-        assertTrue(provisionalLicenseHolder.isValidOn(LocalDate.parse("2023-11-13")))
-        assertTrue(provisionalLicenseHolder.isValidOn(LocalDate.parse("2024-10-12")))
-        assertFalse(provisionalLicenseHolder.isValidOn(LocalDate.parse("2024-10-13")))
-        assertFalse(provisionalLicenseHolder.isValidOn(LocalDate.parse("2023-10-11")))
+        val provisionalLicenseHolderImpl = ProvisionalLicenseHolder(ProvisionalLicense("d1", date))
+        assertEquals(provisionalLicenseHolderImpl.provisionalLicense.endValidity, LocalDate.parse("2024-10-12"))
+        assertTrue(provisionalLicenseHolderImpl.isValidOn(LocalDate.parse("2023-10-12")))
+        assertTrue(provisionalLicenseHolderImpl.isValidOn(LocalDate.parse("2023-11-12")))
+        assertTrue(provisionalLicenseHolderImpl.isValidOn(LocalDate.parse("2023-11-13")))
+        assertTrue(provisionalLicenseHolderImpl.isValidOn(LocalDate.parse("2024-10-12")))
+        assertFalse(provisionalLicenseHolderImpl.isValidOn(LocalDate.parse("2024-10-13")))
+        assertFalse(provisionalLicenseHolderImpl.isValidOn(LocalDate.parse("2023-10-11")))
     }
 
     @Test

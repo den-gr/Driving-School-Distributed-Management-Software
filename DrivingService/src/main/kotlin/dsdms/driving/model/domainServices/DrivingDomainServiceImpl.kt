@@ -10,14 +10,15 @@ import dsdms.driving.model.valueObjects.DrivingSlotType
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 import dsdms.driving.model.valueObjects.LicensePlate
 import dsdms.driving.model.valueObjects.PracticalExamDay
-import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.json.Json
 
 /**
  * @param repository for access to data storage
  * @param channels for communication with other bounded contexts
  */
-class DrivingServiceImpl(private val repository: Repository, private val channels: ChannelsProvider) : DrivingService {
+class DrivingDomainServiceImpl(
+    private val repository: Repository,
+    private val channels: ChannelsProvider,
+) : DrivingDomainService {
     companion object {
         private const val MIN_NUMBER_OF_DRIVING_LESSONS: Int = 10
     }
@@ -114,7 +115,7 @@ class DrivingServiceImpl(private val repository: Repository, private val channel
         } else {
             DrivingSlotsRequestResult(
                 DomainResponseStatus.OK,
-                Json.encodeToString(ListSerializer(DrivingSlot.serializer()), drivingSlots),
+                drivingSlots,
             )
         }
     }

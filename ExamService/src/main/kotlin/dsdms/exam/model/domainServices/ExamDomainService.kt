@@ -8,7 +8,7 @@ import dsdms.exam.model.valueObjects.TheoreticalExamAppealUpdate
 /**
  * Implements domain logics to handle server routes.
  */
-interface ExamService {
+interface ExamDomainService {
 
     /**
      * Saves new theoretical exam pass, starting from given documents.

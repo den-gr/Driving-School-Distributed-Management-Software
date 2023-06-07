@@ -31,7 +31,7 @@ data class GetDossierResult(
 /**
  * @param repository of dossier data storage
  */
-class DossierServiceImpl(private val repository: Repository) : DossierService {
+class DossierDomainServiceImpl(private val repository: Repository) : DossierDomainService {
     private val subscriberControls: SubscriberControls = SubscriberControlsImpl()
 
     override suspend fun saveNewDossier(givenDocuments: SubscriberDocuments): SaveDossierResult {

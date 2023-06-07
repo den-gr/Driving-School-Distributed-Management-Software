@@ -3,7 +3,8 @@ package dsdms.exam.model.domainServices
 import dsdms.exam.handlers.domainConversionTable
 
 /**
- * @see domainConversionTable to identify HTTP codes, referred to enum values
+ * Types of domain responses.
+ * @see domainConversionTable
  */
 enum class DomainResponseStatus {
     /**

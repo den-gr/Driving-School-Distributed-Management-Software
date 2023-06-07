@@ -36,7 +36,7 @@ data class NextTheoreticalExamAppeals(
  * Implements ExamService.
  * @param repository -> given repo for domain
  */
-class ExamServiceImpl(private val repository: Repository) : ExamService {
+class ExamDomainServiceImpl(private val repository: Repository) : ExamDomainService {
     private suspend fun verifyExamPass(documents: DoctorApprovalEvent): DomainResponseStatus {
         return if (repository.dossierAlreadyHasOnePass(documents.dossierId)) {
             DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE

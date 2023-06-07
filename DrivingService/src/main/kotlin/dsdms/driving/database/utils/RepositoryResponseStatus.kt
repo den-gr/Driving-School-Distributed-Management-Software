@@ -1,6 +1,6 @@
 package dsdms.driving.database.utils
 
-import dsdms.driving.model.domainServices.DrivingService
+import dsdms.driving.model.domainServices.DrivingDomainService
 
 /**
  * Types of response of the repository.
@@ -18,13 +18,13 @@ enum class RepositoryResponseStatus {
 
     /**
      * Given dossier id does not have a provisional license.
-     * @see DrivingService
+     * @see DrivingDomainService
      */
     NO_PROVISIONAL_LICENSE,
 
     /**
      * Given dossier id has an invalid provisional license.
-     * @see DrivingService
+     * @see DrivingDomainService
      */
     INVALID_PROVISIONAL_LICENSE,
 }

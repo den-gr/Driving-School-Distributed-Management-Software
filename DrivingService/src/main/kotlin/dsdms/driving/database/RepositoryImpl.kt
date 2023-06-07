@@ -27,14 +27,14 @@ class RepositoryImpl(drivingServiceDB: CoroutineDatabase) : Repository {
         return newDrivingSlot.apply { drivingSlots.insertOne(newDrivingSlot) }._id
     }
 
-    override suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): List<DrivingSlot> {
-        return if (docs.instructorId == null) {
-            drivingSlots.find(DrivingSlot::date eq docs.date.toString()).toList()
+    override suspend fun getOccupiedDrivingSlots(drivingSlotsRequest: DrivingSlotsRequest): List<DrivingSlot> {
+        return if (drivingSlotsRequest.instructorId == null) {
+            drivingSlots.find(DrivingSlot::date eq drivingSlotsRequest.date.toString()).toList()
         } else {
             drivingSlots.find(
                 and(
-                    DrivingSlot::date eq docs.date.toString(),
-                    DrivingSlot::instructorId eq docs.instructorId,
+                    DrivingSlot::date eq drivingSlotsRequest.date.toString(),
+                    DrivingSlot::instructorId eq drivingSlotsRequest.instructorId,
                 ),
             ).toList()
         }

@@ -13,16 +13,16 @@ interface Repository {
 
     /**
      * @param newDrivingSlot to be put into db
-     * @return id (could be null) of inserted driving slot
+     * @return id (could be null in case of errors) of inserted driving slot
      */
     suspend fun createDrivingSlot(newDrivingSlot: DrivingSlot): String?
 
     /**
-     * @param docs: documents necessary to get occupied driving slots
+     * @param drivingSlotsRequest: documents necessary to get occupied driving slots
      * @see DrivingSlotsRequest
-     * @return list of booked driving slot (could be empty)
+     * @return list of booked driving slot (could be empty in case of errors)
      */
-    suspend fun getOccupiedDrivingSlots(docs: DrivingSlotsRequest): List<DrivingSlot>
+    suspend fun getOccupiedDrivingSlots(drivingSlotsRequest: DrivingSlotsRequest): List<DrivingSlot>
 
     /**
      * @return all future booked driving slots, for each dossier id, instructor id and vehicle
@@ -30,7 +30,7 @@ interface Repository {
     suspend fun getFutureDrivingSlots(): List<DrivingSlot>
 
     /**
-     * @param licensePlate representing a single vehicle
+     * @param licensePlate representing id of a vehicle
      * @return:
      *  - true -> that license plate is valid and has been found
      *  - false -> otherwise
@@ -54,7 +54,7 @@ interface Repository {
     suspend fun deleteDrivingSlot(drivingSlotId: String): RepositoryResponseStatus
 
     /**
-     * Registers a new practical exam day into db.
+     * Registers a new practical exam day.
      */
     suspend fun registerPracticalExamDay(practicalExamDay: PracticalExamDay)
 

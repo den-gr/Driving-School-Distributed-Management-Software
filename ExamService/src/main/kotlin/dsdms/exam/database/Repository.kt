@@ -12,7 +12,7 @@ interface Repository {
 
     /**
      * @param dossierId
-     * @return if given dossier id, already has one theoretical exam pass
+     * @return true if given dossier id already has one theoretical exam pass
      */
     suspend fun dossierAlreadyHasOnePass(dossierId: String): Boolean
 

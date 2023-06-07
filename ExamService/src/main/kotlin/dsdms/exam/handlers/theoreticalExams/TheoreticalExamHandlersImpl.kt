@@ -18,7 +18,7 @@ import java.net.HttpURLConnection
 class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
     override suspend fun createTheoreticalExamPass(routingContext: RoutingContext) {
         try {
-            val insertResult = model.examService
+            val insertResult = model.examDomainService
                 .saveNewTheoreticalExamPass(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(insertResult.domainResponseStatus))
@@ -30,7 +30,7 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
 
     override suspend fun getTheoreticalExamPass(routingContext: RoutingContext) {
         try {
-            val retrievedTheoreticalExamPass: TheoreticalExamPass? = model.examService
+            val retrievedTheoreticalExamPass: TheoreticalExamPass? = model.examDomainService
                 .readTheoreticalExamPass(getDossierId(routingContext))
             if (retrievedTheoreticalExamPass == null) {
                 routingContext.response()
@@ -48,7 +48,7 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
 
     override suspend fun deleteTheoreticalExamPass(routingContext: RoutingContext) {
         try {
-            val deleteResult: DomainResponseStatus = model.examService
+            val deleteResult: DomainResponseStatus = model.examDomainService
                 .deleteTheoreticalExamPass(getDossierId(routingContext))
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(deleteResult)).end(deleteResult.name)
@@ -59,7 +59,7 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
 
     override suspend fun createNewTheoreticalExamAppeal(routingContext: RoutingContext) {
         try {
-            val insertResult: DomainResponseStatus = model.examService
+            val insertResult: DomainResponseStatus = model.examDomainService
                 .insertNewExamAppeal(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(insertResult))
@@ -71,7 +71,7 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
 
     override suspend fun getNextTheoreticalExamAppeals(routingContext: RoutingContext) {
         try {
-            val result: NextTheoreticalExamAppeals = model.examService.getNextExamAppeals()
+            val result: NextTheoreticalExamAppeals = model.examDomainService.getNextExamAppeals()
             routingContext.response()
                 .setStatusCode(domainConversionTable.getHttpCode(result.domainResponseStatus))
                 .end(result.examAppeals ?: result.domainResponseStatus.name)
@@ -82,7 +82,7 @@ class TheoreticalExamHandlersImpl(val model: Model) : TheoreticalExamHandlers {
 
     override suspend fun putDossierInExamAppeal(routingContext: RoutingContext) {
         try {
-            val result: DomainResponseStatus = model.examService
+            val result: DomainResponseStatus = model.examDomainService
                 .putDossierInExamAppeal(Json.decodeFromString(routingContext.body().asString()))
             routingContext.response().setStatusCode(domainConversionTable.getHttpCode(result)).end(result.name)
         } catch (ex: Exception) {

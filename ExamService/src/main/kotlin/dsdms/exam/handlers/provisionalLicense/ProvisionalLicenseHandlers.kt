@@ -19,7 +19,7 @@ interface ProvisionalLicenseHandlers : Handlers {
     suspend fun registerProvisionalLicence(routingContext: RoutingContext)
 
     /**
-     * Handles getting of provisional license for given dossier id, if available.
+     * Handles getting requests of provisional license for a given dossier id.
      * @see Handlers.handleException
      * @return http code:
      *  - 200 -> OK

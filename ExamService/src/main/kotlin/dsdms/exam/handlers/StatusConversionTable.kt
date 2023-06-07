@@ -28,7 +28,7 @@ val domainConversionTable: Map<DomainResponseStatus, Int> = mapOf(
     DomainResponseStatus.INSERT_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
     DomainResponseStatus.DATE_ALREADY_IN to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.NO_EXAM_APPEALS to HttpURLConnection.HTTP_OK,
-    DomainResponseStatus.APPEAL_NOT_FOUND to HttpURLConnection.HTTP_BAD_REQUEST,
+    DomainResponseStatus.APPEAL_NOT_FOUND to HttpURLConnection.HTTP_NOT_FOUND,
     DomainResponseStatus.PLACES_FINISHED to HttpURLConnection.HTTP_BAD_REQUEST,
     DomainResponseStatus.UPDATE_ERROR to HttpURLConnection.HTTP_INTERNAL_ERROR,
     DomainResponseStatus.DOSSIER_ALREADY_PUT to HttpURLConnection.HTTP_BAD_REQUEST,

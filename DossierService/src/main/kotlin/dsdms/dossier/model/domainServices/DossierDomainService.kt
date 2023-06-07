@@ -7,7 +7,7 @@ import dsdms.dossier.model.valueObjects.SubscriberDocuments
 /**
  * Representing dossier service model implementation.
  */
-interface DossierService {
+interface DossierDomainService {
 
     /**
      * @see SubscriberDocuments

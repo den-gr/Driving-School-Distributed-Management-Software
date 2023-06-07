@@ -1,5 +1,6 @@
 package dsdms.driving.model.domainServices
 
+import dsdms.driving.model.entities.DrivingSlot
 import dsdms.driving.model.valueObjects.DrivingSlotBooking
 import dsdms.driving.model.valueObjects.DrivingSlotsRequest
 
@@ -18,20 +19,20 @@ data class DrivingSlotRegistrationResult(
  */
 data class DrivingSlotsRequestResult(
     val domainResponseStatus: DomainResponseStatus,
-    val drivingSlots: String? = null,
+    val drivingSlots: List<DrivingSlot>? = null,
 )
 
 /**
  * Contains logic of driving slots managements.
  */
-interface DrivingService {
+interface DrivingDomainService {
 
     /**
      * @param documents identifying the wanted driving slot to be booked
      * @return the ID of the created driving slot (could be null) and Domain Response Status:
      *  - OK -> all was fine
      *  - INSTRUCTOR_NOT_FREE -> wanted instructor in specific wanted day and time is not free
-     *  - OCCUPIED_DRIVING_SLOTS ->that specific dossier has already booked one driving slot
+     *  - OCCUPIED_DRIVING_SLOTS -> that specific dossier has already booked one driving slot
      *  - VEHICLE_NOT_FREE -> wanted instructor in specific wanted day and time is not free
      *  - BAD_VEHICLE_INSTRUCTOR_INFO -> given vehicle or instructor does not exist
      *      If Driving slot is a practical exam:

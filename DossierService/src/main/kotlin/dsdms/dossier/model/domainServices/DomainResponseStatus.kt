@@ -13,13 +13,13 @@ enum class DomainResponseStatus {
 
     /**
      * While registering a new dossier, one is already present for a specific Fiscal code.
-     * @see DossierService
+     * @see DossierDomainService
      */
     VALID_DOSSIER_ALREADY_EXISTS,
 
     /**
      * Given id to read a Dossier does not exist.
-     * @see DossierService
+     * @see DossierDomainService
      */
     ID_NOT_FOUND,
 

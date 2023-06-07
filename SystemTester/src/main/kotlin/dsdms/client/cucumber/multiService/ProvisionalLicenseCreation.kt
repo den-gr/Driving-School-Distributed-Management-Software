@@ -40,7 +40,7 @@ class ProvisionalLicenseCreation : En {
     private var statusCode: Int? = null
     private var dossierId: String = "d99"
     private var examDate: LocalDate? = null
-    private var provisionalLicenseHolder: ProvisionalLicenseHolder? = null
+    private var provisionalLicenseHolderImpl: ProvisionalLicenseHolder? = null
     private var examStatus: ExamsStatus? = null
 
     init {
@@ -78,15 +78,15 @@ class ProvisionalLicenseCreation : En {
             checkResponse(response)
             println(response?.body())
             assertEquals(HTTP_OK, response?.statusCode())
-            provisionalLicenseHolder = Json.decodeFromString(response?.body().toString())
+            provisionalLicenseHolderImpl = Json.decodeFromString(response?.body().toString())
         }
         Then(
             "receiving info that there are {int} failing attempts " +
                 "and validity range is from {word} to {word}",
         ) { attempts: Int, startDate: String, endDate: String ->
-            assertEquals(attempts, provisionalLicenseHolder?.practicalExamAttempts)
-            assertEquals(LocalDate.parse(startDate), provisionalLicenseHolder?.provisionalLicense?.startValidity)
-            assertEquals(LocalDate.parse(endDate), provisionalLicenseHolder?.provisionalLicense?.endValidity)
+            assertEquals(attempts, provisionalLicenseHolderImpl?.practicalExamAttempts)
+            assertEquals(LocalDate.parse(startDate), provisionalLicenseHolderImpl?.provisionalLicense?.startValidity)
+            assertEquals(LocalDate.parse(endDate), provisionalLicenseHolderImpl?.provisionalLicense?.endValidity)
         }
         When("secretary requests dossier exam status information") {
             val request = dossierService.get("/dossiers/$dossierId").send()

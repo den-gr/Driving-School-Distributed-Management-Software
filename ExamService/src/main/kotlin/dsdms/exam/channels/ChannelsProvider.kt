@@ -23,16 +23,8 @@ class ChannelsProviderImpl(private val vertx: Vertx) : ChannelsProvider {
     override val dossierServiceChannel: DossierServiceChannel
 
     companion object {
-
-        /**
-         * localhost string.
-         */
-        const val LOCALHOST: String = "localhost"
-
-        /**
-         * Dossier service, server port.
-         */
-        const val DEFAULT_DOSSIER_SERVICE_PORT = 8000
+        private const val LOCALHOST: String = "localhost"
+        private const val DEFAULT_DOSSIER_SERVICE_PORT = 8000
     }
 
     init {

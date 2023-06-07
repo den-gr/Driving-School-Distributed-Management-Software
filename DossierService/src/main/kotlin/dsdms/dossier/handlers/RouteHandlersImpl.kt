@@ -23,7 +23,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
     override suspend fun handleDossierRegistration(routingContext: RoutingContext) {
         try {
             val insertResult =
-                model.dossierService.saveNewDossier(Json.decodeFromString(routingContext.body().asString()))
+                model.dossierDomainService.saveNewDossier(Json.decodeFromString(routingContext.body().asString()))
             routingContext
                 .response()
                 .setStatusCode(getHttpCode(insertResult.domainResponseStatus))
@@ -35,7 +35,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
 
     override suspend fun handleDossierIdReading(routingContext: RoutingContext) {
         try {
-            val result = model.dossierService
+            val result = model.dossierDomainService
                 .readDossierFromId(routingContext.request().getParam("id").toString())
             val payload = if (result.domainResponseStatus == DomainResponseStatus.OK ||
                 result.domainResponseStatus == DomainResponseStatus.DOSSIER_INVALID
@@ -57,7 +57,7 @@ class RouteHandlersImpl(val model: Model) : RouteHandlers {
         try {
             val event: ExamEvent = ExamEvent.valueOf(routingContext.body().asString())
             val updateResult: DomainResponseStatus =
-                model.dossierService
+                model.dossierDomainService
                     .updateExamStatus(event, routingContext.request().getParam("id").toString())
             routingContext.response()
                 .setStatusCode(getHttpCode(updateResult))

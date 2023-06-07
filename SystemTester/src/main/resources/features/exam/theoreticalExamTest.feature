@@ -21,6 +21,6 @@ Feature: booking and reading info about theoretical exams
       | date | dossierId | code | message |
       | 2023-10-12 | D1  | 200  | OK      |
       | 2023-10-12 | D2 | 200 | OK |
-      | 2023-10-13 | D1  | 400  | APPEAL_NOT_FOUND |
+      | 2023-10-13 | D1  | 404  | APPEAL_NOT_FOUND |
       | 2023-10-12 | D1 | 400 | DOSSIER_ALREADY_PUT |
       | 2023-10-12 | D3 | 400 | PLACES_FINISHED |

@@ -12,10 +12,10 @@ import kotlinx.datetime.LocalDate
 /**
  * Implements provisional license logics.
  */
-class ProvisionalLicenseServiceImpl(
+class ProvisionalLicenseDomainServiceImpl(
     private val repository: Repository,
     private val channelsProvider: ChannelsProvider,
-) : ProvisionalLicenseService {
+) : ProvisionalLicenseDomainService {
     override suspend fun registerProvisionalLicense(provisionalLicense: ProvisionalLicense): DomainResponseStatus {
         if (areThereAnotherProvisionalLicense(provisionalLicense.dossierId)) {
             return DomainResponseStatus.PROVISIONAL_LICENSE_ALREADY_EXISTS
