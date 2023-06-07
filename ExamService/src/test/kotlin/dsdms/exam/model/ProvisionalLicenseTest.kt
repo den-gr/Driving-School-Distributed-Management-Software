@@ -7,13 +7,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.litote.kmongo.KMongo
-import org.litote.kmongo.div
-import org.litote.kmongo.eq
-import org.litote.kmongo.findOne
-import org.litote.kmongo.getCollection
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -43,17 +37,5 @@ class ProvisionalLicenseTest {
         val holder: ProvisionalLicenseHolder? = mjson.decodeFromString(jsonString)
         println(holder)
         assertEquals(jsonString, mjson.encodeToString(holder))
-    }
-
-    @Disabled
-    @Test
-    fun dbtest() {
-        val client = KMongo.createClient("mongodb://admin:admin@localhost:27017")
-        val database = client.getDatabase("exam_service")
-        val coll = database.getCollection<ProvisionalLicenseHolder>("ProvisionalLicenseHolders")
-        val ris = coll.findOne(ProvisionalLicenseHolder::provisionalLicense / ProvisionalLicense::dossierId eq "d1")
-        println(ris)
-
-        assertTrue(true)
     }
 }

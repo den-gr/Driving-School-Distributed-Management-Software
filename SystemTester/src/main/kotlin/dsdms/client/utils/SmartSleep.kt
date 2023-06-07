@@ -5,7 +5,7 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.HttpResponse
 
 /**
- * Smart timer to wait for server responses.
+ * Smart timer that wait for server responses.
  * @param timeout .> time to wait before throwing exception.
  */
 class SmartSleep(private val timeout: Long = 10000) {

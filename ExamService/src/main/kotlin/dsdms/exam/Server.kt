@@ -27,19 +27,15 @@ import kotlin.system.exitProcess
 class Server(private val port: Int, dbConnection: CoroutineDatabase) : CoroutineVerticle() {
 
     private val repository: Repository = RepositoryImpl(dbConnection)
-    private lateinit var provisionalLicenseHandlersImpl: ProvisionalLicenseHandlers
-    private lateinit var theoreticalExamHandlersImpl: TheoreticalExamHandlers
 
     override suspend fun start() {
         val channelsProvider = ChannelsProviderImpl(vertx)
         val model = ModelImpl(repository, channelsProvider)
-        provisionalLicenseHandlersImpl = ProvisionalLicenseHandlersImpl(model)
-        theoreticalExamHandlersImpl = TheoreticalExamHandlersImpl(model)
 
         val router: Router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
 
-        setRoutes(router)
+        setRoutes(router, ProvisionalLicenseHandlersImpl(model), TheoreticalExamHandlersImpl(model))
 
         vertx.createHttpServer()
             .requestHandler(router)
@@ -50,29 +46,33 @@ class Server(private val port: Int, dbConnection: CoroutineDatabase) : Coroutine
             }
     }
 
-    private fun setRoutes(router: Router) {
+    private fun setRoutes(
+        router: Router,
+        provisionalLicenseHandlers: ProvisionalLicenseHandlers,
+        theoreticalExamHandlers: TheoreticalExamHandlers,
+    ) {
         router.put("/theoreticalExam/pass")
-            .coroutineHandler(theoreticalExamHandlersImpl::createTheoreticalExamPass)
+            .coroutineHandler(theoreticalExamHandlers::createTheoreticalExamPass)
         router.get("/theoreticalExam/:id/pass")
-            .coroutineHandler(theoreticalExamHandlersImpl::getTheoreticalExamPass)
+            .coroutineHandler(theoreticalExamHandlers::getTheoreticalExamPass)
         router.delete("/theoreticalExam/:id/pass")
-            .coroutineHandler(theoreticalExamHandlersImpl::deleteTheoreticalExamPass)
+            .coroutineHandler(theoreticalExamHandlers::deleteTheoreticalExamPass)
 
         router.post("/theoreticalExam/examAppeal")
-            .coroutineHandler(theoreticalExamHandlersImpl::createNewTheoreticalExamAppeal)
+            .coroutineHandler(theoreticalExamHandlers::createNewTheoreticalExamAppeal)
         router.get("/theoreticalExam/examAppeal")
-            .coroutineHandler(theoreticalExamHandlersImpl::getNextTheoreticalExamAppeals)
+            .coroutineHandler(theoreticalExamHandlers::getNextTheoreticalExamAppeals)
         router.put("/theoreticalExam/examAppeal")
-            .coroutineHandler(theoreticalExamHandlersImpl::putDossierInExamAppeal)
+            .coroutineHandler(theoreticalExamHandlers::putDossierInExamAppeal)
 
         router.post("/provisionalLicences")
-            .coroutineHandler(provisionalLicenseHandlersImpl::registerProvisionalLicence)
+            .coroutineHandler(provisionalLicenseHandlers::registerProvisionalLicence)
         router.get("/provisionalLicences/:id")
-            .coroutineHandler(provisionalLicenseHandlersImpl::getProvisionalLicenseHolder)
+            .coroutineHandler(provisionalLicenseHandlers::getProvisionalLicenseHolder)
         router.put("/provisionalLicences/:id")
-            .coroutineHandler(provisionalLicenseHandlersImpl::updateProvisionalLicenseHolder)
+            .coroutineHandler(provisionalLicenseHandlers::updateProvisionalLicenseHolder)
         router.get("/provisionalLicences/:id/validity")
-            .coroutineHandler(provisionalLicenseHandlersImpl::isProvisionalLicenseValidHandler)
+            .coroutineHandler(provisionalLicenseHandlers::isProvisionalLicenseValidHandler)
     }
 
     private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {

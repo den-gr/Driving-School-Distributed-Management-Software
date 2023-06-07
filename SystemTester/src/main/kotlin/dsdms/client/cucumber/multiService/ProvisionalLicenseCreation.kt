@@ -81,8 +81,7 @@ class ProvisionalLicenseCreation : En {
             provisionalLicenseHolderImpl = Json.decodeFromString(response?.body().toString())
         }
         Then(
-            "receiving info that there are {int} failing attempts " +
-                "and validity range is from {word} to {word}",
+            "receiving info that there are {int} failing attempts and validity range is from {word} to {word}",
         ) { attempts: Int, startDate: String, endDate: String ->
             assertEquals(attempts, provisionalLicenseHolderImpl?.practicalExamAttempts)
             assertEquals(LocalDate.parse(startDate), provisionalLicenseHolderImpl?.provisionalLicense?.startValidity)

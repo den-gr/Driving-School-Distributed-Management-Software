@@ -11,6 +11,8 @@ import dsdms.driving.model.valueObjects.LicensePlate
 import io.cucumber.java8.En
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
+import io.vertx.core.buffer.Buffer
+import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
@@ -35,8 +37,9 @@ class RegularDrivingSlotTest : En {
     private var statusMessage: String? = null
     private var registeredSlot: String? = null
 
+    private val sleeper = SmartSleep()
+
     init {
-        val sleeper = SmartSleep()
 
         When("i send {word}, {word}, {word}, {word}, {word} to book the driving slot") {
                 date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
@@ -81,8 +84,7 @@ class RegularDrivingSlotTest : En {
             value = Json.decodeFromString(ListSerializer(DrivingSlot.serializer()), response?.body().toString())
         }
         Then(
-            "the first driving slot is: {word}, time {word}, instructor id {word}," +
-                " dossier id {word}, vehicle {word}",
+            "the first driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}",
         ) {
                 date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(0)?.date.toString())
@@ -92,8 +94,7 @@ class RegularDrivingSlotTest : En {
             assertEquals(vehicle, value?.get(0)?.licensePlate?.numberPlate)
         }
         Then(
-            "the second driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}," +
-                " vehicle {word}",
+            "the second driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}",
         ) {
                 date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(1)?.date.toString())
@@ -103,8 +104,7 @@ class RegularDrivingSlotTest : En {
             assertEquals(vehicle, value?.get(1)?.licensePlate?.numberPlate)
         }
         Then(
-            "the third driving slot is: {word}, time {word}, instructor id {word}," +
-                " dossier id {word}, vehicle {word}",
+            "the third driving slot is: {word}, time {word}, instructor id {word}, dossier id {word}, vehicle {word}",
         ) {
                 date: String, time: String, instructorId: String, dossierId: String, vehicle: String ->
             assertEquals(date, value?.get(2)?.date.toString())
@@ -139,26 +139,28 @@ class RegularDrivingSlotTest : En {
             assertEquals(HTTP_OK, statusCode)
         }
         When("attempting to remove it, i receive code {int}") { code: Int ->
-            val request = client
-                .delete("/drivingSlots/$registeredSlot").send()
-            val response = sleeper.waitResult(request)
-            checkResponse(response)
-            statusMessage = response?.body().toString()
-            statusCode = response?.statusCode()
+            val response = deleteSlot()
+            statusMessage = response.body().toString()
+            statusCode = response.statusCode()
 
             assertEquals(code, statusCode)
         }
         Then("when attempting to remove it another time \\(wrongly), i receive code {int} with {word}") {
                 code: Int, message: String ->
-            val request = client
-                .delete("/drivingSlots/$registeredSlot").send()
-            val response = sleeper.waitResult(request)
-            checkResponse(response)
-            statusMessage = response?.body().toString()
-            statusCode = response?.statusCode()
+            val response = deleteSlot()
+            statusMessage = response.body().toString()
+            statusCode = response.statusCode()
 
             assertEquals(message, statusMessage)
             assertEquals(code, statusCode)
         }
+    }
+
+    private fun deleteSlot(): HttpResponse<Buffer> {
+        val request = client
+            .delete("/drivingSlots/$registeredSlot").send()
+        val response = sleeper.waitResult(request)
+        checkResponse(response)
+        return response!!
     }
 }

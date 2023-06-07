@@ -33,19 +33,13 @@ class UpdateDossierTest : En {
     private var dossier: String = ""
     private var retrievedDossier: Dossier? = null
     private var result: HttpResponse<Buffer>? = null
+    private val sleeper = SmartSleep()
 
     init {
-        val sleeper = SmartSleep()
 
         Given("an already registered dossier with id {word}") { dossierId: String ->
             dossier = dossierId
-            val request = client
-                .get("/dossiers/$dossierId")
-                .send()
-            val response = sleeper.waitResult(request)
-            checkResponse(response)
-
-            retrievedDossier = Json.decodeFromString(response?.body().toString())
+            retrievedDossier = getDossier()
         }
 
         When("i read his {word} exam progress state is {word}") { type: String, state: String ->
@@ -73,12 +67,7 @@ class UpdateDossierTest : En {
             assertNotNull(result)
             assertEquals(HTTP_OK, result?.statusCode())
 
-            val request = client
-                .get("/dossiers/$dossier")
-                .send()
-            val response = sleeper.waitResult(request)
-            checkResponse(response)
-            retrievedDossier = Json.decodeFromString(response?.body().toString())
+            retrievedDossier = getDossier()
             if (type == ExamEvent.THEORETICAL_EXAM_PASSED.name) {
                 retrievedDossier?.examsStatus
                     ?.let { assertEquals(TheoreticalExamState.valueOf(newState), it.theoreticalExamState) }
@@ -87,5 +76,12 @@ class UpdateDossierTest : En {
                     ?.let { assertEquals(PracticalExamState.valueOf(newState), it.practicalExamState) }
             }
         }
+    }
+
+    private fun getDossier(): Dossier {
+        val request = client.get("/dossiers/$dossier").send()
+        val response = sleeper.waitResult(request)
+        checkResponse(response)
+        return Json.decodeFromString(response?.body().toString())
     }
 }

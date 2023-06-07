@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "it.unibo.dsdms.client"
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
     alias(libs.plugins.dokka)
-    id("org.danilopianini.gradle-kotlin-qa") version "0.42.0"
+    alias(libs.plugins.qa)
 }
+
+val javaVersion = JavaVersion.VERSION_16.toString()
 
 allprojects {
     apply(plugin = "org.jetbrains.dokka")
@@ -19,12 +19,12 @@ allprojects {
     }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "16"
+        kotlinOptions.jvmTarget = javaVersion
     }
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_16.toString()
-        targetCompatibility = JavaVersion.VERSION_16.toString()
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
 
     tasks.register<Jar>("createJavadoc") {

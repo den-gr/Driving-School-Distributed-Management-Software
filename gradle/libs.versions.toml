@@ -21,8 +21,6 @@ netty = "io.netty:netty-all:4.1.90.Final" # remove vertx warning on MacOS
 kmongo-coroutine = {module = "org.litote.kmongo:kmongo-coroutine", version.ref="kmongo"}
 kmongo-base = {module = "org.litote.kmongo:kmongo", version.ref="kmongo"}
 
-
-
 [bundles]
 kotlinx = ["kotlinx-ser-core", "kotlinx-ser-json", "kotlinx-datetime"]
 cucumber = ["cucumber-java", "cucumber-junit", "cucumber-java8"]
@@ -35,6 +33,7 @@ kotlin-jvm = {id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 johnrengelman-shadow = "com.github.johnrengelman.shadow:8.1.1" #allow execute shadowJar task
 dokka = {id ="org.jetbrains.dokka", version.ref="kotlin"}
+qa = "org.danilopianini.gradle-kotlin-qa:0.42.0"
 
 #not used
 kotest-multiplatform = {id = "io.kotest.multiplatform", version.ref="kotest"}

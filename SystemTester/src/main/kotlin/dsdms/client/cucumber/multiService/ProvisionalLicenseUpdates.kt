@@ -65,7 +65,6 @@ class ProvisionalLicenseUpdates : En {
             assertEquals(attempts, getHolder(id).practicalExamAttempts)
         }
         When("register a practical exam fail, the number of failed attempts become {int}") { attempts: Int ->
-            println("dossier is $dossierId")
             registerFailedPracticalExam(dossierId!!)
             assertEquals(attempts, getHolder(dossierId!!).practicalExamAttempts)
         }

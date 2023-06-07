@@ -41,8 +41,7 @@ class PracticalExams : En {
         val sleeper = SmartSleep()
 
         Given(
-            "an attempt to book a new practical exam on {word} for instructor {word}," +
-                " dossier {word} and auto {word}",
+            "an attempt to book a new practical exam on {word} for instructor {word}, dossier {word} and auto {word}",
         ) {
                 date: String, instructorId: String, dossierId: String, auto: String ->
             val bookingRequest = DrivingSlotBooking(
