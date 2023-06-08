@@ -4,11 +4,10 @@ has_children: false
 nav_order: 5
 ---
 
----
-mermaid
+```mermaid
     graph TD;
         A-->B;
         A-->C;
         B-->D;
         C-->D;
----
+```
