@@ -4,11 +4,10 @@ has_children: false
 nav_order: 5
 ---
 
+
+
 ```mermaid
 classDiagram
-class Server{
-    start()
-}
 Server --> RouteHandlers
 RouteHandlers --> Model
 Model --> DomainServiceA
@@ -16,50 +15,12 @@ Model --> DomainServiceB
 DomainServiceA --> Repository
 DomainServiceA --> ChannelsProvider
 DomainServiceB --> Repository
-```
-
-## Yes
-
-```mermaid
- %%{init: { 'theme':'light', 'fontFamily': '"trebuchet ms", verdana, arial, sans-serif;', 'class':{'defaultRenderer': 'dagre-d3'}} }%%
-classDiagram
-class Server{
-    start()
-}
-class RouteHandler{
-    <<interface>>
-    handleRegistration(RoutingContext)
-    handleReading(RoutingContext)
-    handleUpdate(RoutingContext)
-}
-Server --> RouteHandler
-
-RouteHandlerImpl --> Model
-class Model{
-    <<interface>>
-    FirstDomainService ds1
-    SecondDomainService ds2
-}
-
-class ModelImpl{
-    FirstDomainService ds1
-    SecondDomainService ds2
-}
-
-RouteHandlerImpl --|> RouteHandler
-ModelImpl --|> Model
-ModelImpl --> Repository
-ModelImpl --> ChannelsProvider
-
-
-
-
 
 ```
 
 
-# Boom
 
+## ChannelsProvider
 ```mermaid
 classDiagram
 
@@ -85,5 +46,138 @@ ChannelsProvider --> ExamServiceChannel
 
 ```
 
-# Bam
+## Dossier Service
 
+```mermaid
+classDiagram
+
+
+class DossierDomainService {
+    <<Interface>>
+    saveNewDossier(SubscriberDocuments docs): SaveDossierResult
+    readDossierFromId(String id): GetDossierResult
+    updateExamStatus(ExamEvent event, String id): DomainResponseStatus
+}
+
+class Repository 
+<<Interface>> Repository 
+
+class SubscriberControls 
+<<Interface>> SubscriberControls 
+
+DossierDomainService --> Repository
+DossierDomainService --> Dossier
+DossierDomainService --> ExamEvent
+DossierDomainService --> SubscriberDocuments
+DossierDomainService --> SubscriberControls 
+
+SubscriberControls --> SubscriberDocuments : verify
+
+class SubscriberDocuments{
+    String name
+    String surname
+    String birthdate
+    String fiscal_code
+
+}
+
+class Dossier{
+    String name
+    String surname
+    String birthdate
+    String fiscal_code
+    Boolen validity
+    String id
+    ExamStatus: exStatus
+}
+class ExamEvent{
+    <<Enumeration>>
+    THEORETICAL_EXAM_PASSED
+    PROVISIONAL_LICENSE_INVALIDATION
+    PRACTICAL_EXAM_PASSED
+}
+
+
+Dossier --> ExamStatus
+class ExamStatus{
+    TheoreticalExamState  thState
+    PracticalExamState  prState
+    registerProvisionalLicenceInvalidation() ExamStatus
+    registerPracticalExamPassed() ExamStatus
+    registerTheoreticalExamPassed() ExamsStatus
+}
+
+ExamStatus --> PracticalExamState
+ExamStatus --> TheoreticalExamState
+
+
+
+class PracticalExamState {
+    <<Enumeration>>
+    TO_DO
+    FIRST_PROVISIONAL_LICENCE_INVALID
+    SECOND_PROVISIONAL_LICENCE_INVALID
+    PASSED
+}
+
+
+class TheoreticalExamState {
+    <<Enumeration>>
+    TO_DO
+    PASSED
+}
+
+```
+
+## Doctor Service
+
+```mermaid
+classDiagram
+
+class DoctorDomainService{
+    <<Interface>>
+    saveDoctorSlot(DoctorSlot doctorSlot) InsertDoctorVisitResult
+    getOccupiedDoctorSlots(String date) BookedDoctorSlots
+    deleteDoctorSlot(String dossierId) DomainResponseStatus
+    saveDoctorResult(DoctorResult doctorResult) DomainResponseStatus
+
+}
+
+DoctorDomainService --> DoctorSlot
+DoctorDomainService --> DoctorResult
+DoctorDomainService --> DoctorApprovalEvent
+DoctorDomainService --> DossierServiceChannel
+
+class DoctorSlot {
+    String date
+    String time
+    String dossierId
+}
+
+class DoctorResult {
+    String dossierId
+    String date
+    ResultTypes result
+}
+
+DoctorResult --> ResultTypes
+
+class ResultTypes {
+    <<Enumeration>>
+    VALID
+    NEED_ONE_MORE_VISIT
+    NOT_VALID
+}
+
+class DoctorApprovalEvent {
+    String dossierId
+    String date
+}
+
+class DossierServiceChannel {
+    <<Interface>>
+    checkDossierValidity(String dossierId) DomainResponseStatus
+}
+
+
+```
