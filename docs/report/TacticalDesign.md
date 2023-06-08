@@ -6,16 +6,18 @@ nav_order: 5
 
 ```mermaid
 classDiagram
-
+class Server{
+    start()
+}
+Server --> RouteHandlers
 RouteHandlers --> Model
 Model --> DomainServiceA
 Model --> DomainServiceB
 DomainServiceA --> Repository
 DomainServiceA --> ChannelsProvider
 DomainServiceB --> Repository
-
-
 ```
+
 ## Yes
 
 ```mermaid
@@ -53,6 +55,8 @@ ModelImpl --> ChannelsProvider
 
 
 ```
+
+
 # Boom
 
 ```mermaid
