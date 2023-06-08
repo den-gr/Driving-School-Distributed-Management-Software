@@ -21,6 +21,7 @@ DomainServiceB --> Repository
 ## Yes
 
 ```mermaid
+ %%{init: { 'theme':'light', 'fontFamily': '"trebuchet ms", verdana, arial, sans-serif;', 'class':{'defaultRenderer': 'dagre-d3'}} }%%
 classDiagram
 class Server{
     start()
