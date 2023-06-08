@@ -19,6 +19,7 @@ DomainServiceB --> Repository
 ## Yes
 
 ```mermaid
+ %%{init: { "fontFamily": "Arial"  } }%%
 classDiagram
 class Server{
     start()
