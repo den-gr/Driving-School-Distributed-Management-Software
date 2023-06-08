@@ -57,7 +57,7 @@ Nel primo scenario, vengono fornite informazioni corrette, la creazione viene co
 Verificando l'Id fornito, otteniamo nel Body il Dossier completo in formato Json, dal quale possiamo visualizziamo che exam status è stato correttamente inizializzato.
 Nel secondo scenario, forniamo a DossierService dei dati invalidi, viene quindi restituito per ogni set di valori, una differente tipologia di errore.
 
-```gherkin
+```
 Feature: Registration subscriber documents and reading dossier information
   Scenario Outline: subscriber information's are correct
     When I register subscriber's documents information: <name>,<surname>,<birthdate>,<fiscal_code>
