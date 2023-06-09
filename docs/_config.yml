@@ -5,6 +5,7 @@ color_scheme: "dark"
 show_downloads: false
 
 mermaid:
+  theme: "dark"
   # Version of mermaid library
   # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
   version: "10.2.2"
