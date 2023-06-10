@@ -5,12 +5,14 @@ parent: Tactical Design
 nav_order: 1
 ---
 
-# Dossier Service tactical design
+# DossierService tactical design
 
 - **Entities**: Dossier
 - **Value objects**:  ExamsStatus, SubscriberDocuments
 - **Events**: ExamEvent
 
+
+## Dossier domain sevice
 
 ```mermaid
 classDiagram
@@ -31,7 +33,7 @@ class SubscriberControls
 
 DossierDomainService --> Repository
 DossierDomainService --> Dossier
-DossierDomainService --> ExamEvent
+DossierDomainService --> ExamEvent : receive
 DossierDomainService --> SubscriberDocuments
 DossierDomainService --> SubscriberControls 
 
@@ -62,7 +64,15 @@ class ExamEvent{
 }
 
 
-Dossier --> ExamStatus
+
+```
+
+## Dossier
+```mermaid
+classDiagram
+
+Dossier o-- "1" ExamStatus
+
 class ExamStatus{
     TheoreticalExamState  thState
     PracticalExamState  prState

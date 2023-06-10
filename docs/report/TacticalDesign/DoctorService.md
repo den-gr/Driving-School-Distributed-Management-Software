@@ -6,13 +6,14 @@ nav_order: 2
 ---
 
 
-# Doctor Service
+# DoctorService tactical design
 
 - **Entities**: DoctorSlot
 - **Value objects**: DoctorResutl
 - **Events**: DoctorApprovalEvent
 
 
+## Doctor domain service
 
 ```mermaid
 classDiagram
@@ -28,8 +29,9 @@ class DoctorDomainService{
 
 DoctorDomainService --> DoctorSlot
 DoctorDomainService --> DoctorResult
-DoctorDomainService --> DoctorApprovalEvent
-DoctorDomainService --> DossierServiceChannel
+DoctorDomainService --> Repository
+
+
 
 class DoctorSlot {
     String date
@@ -43,6 +45,7 @@ class DoctorResult {
     ResultTypes result
 }
 
+
 DoctorResult --> ResultTypes
 
 class ResultTypes {
@@ -52,15 +55,44 @@ class ResultTypes {
     NOT_VALID
 }
 
-class DoctorApprovalEvent {
-    String dossierId
-    String date
+
+
+
+
+```
+
+## Doctor bounded context communicaiton
+
+```mermaid
+classDiagram
+direction TB
+class DoctorDomainService{
+    <<Interface>>
 }
+
+DoctorDomainService <|-- DoctorDomainServiceImpl
+DoctorDomainServiceImpl --> DossierServiceChannel
+DoctorDomainServiceImpl --> ExamServiceChannel 
+
+
 
 class DossierServiceChannel {
     <<Interface>>
     checkDossierValidity(String dossierId) DomainResponseStatus
 }
 
+class ExamServiceChannel {
+    <<Interface>>
+    notifyAboutDoctorApproval(DoctorApprovalEvent event) DomainResponseStatus
+}
+
+
+DoctorDomainServiceImpl --> DoctorApprovalEvent : produce
+DoctorApprovalEvent <-- ExamServiceChannel
+
+class DoctorApprovalEvent {
+    String dossierId
+    String date
+}
 
 ```
