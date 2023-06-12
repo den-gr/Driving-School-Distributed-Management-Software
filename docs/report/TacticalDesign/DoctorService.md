@@ -17,6 +17,8 @@ nav_order: 2
 
 ## Doctor domain service
 
+<div class="tip" markdown="1">Have **fun!**</div>
+
 ```mermaid {#class_context, align="center"}
 classDiagram 
 
@@ -63,40 +65,43 @@ class ResultTypes {
 ## Doctor bounded context communicaiton
 
 
-```mermaid {#class_communication}
-classDiagram
-direction TB
-class DoctorDomainService{
-    <<Interface>>
-}
 
-DoctorDomainService <|-- DoctorDomainServiceImpl
-DoctorDomainServiceImpl --> DossierServiceChannel
-DoctorDomainServiceImpl --> ExamServiceChannel 
+<div align="center">
+<div id="class_communication" class="mermaid">
+    classDiagram
 
+    class DoctorDomainService{
+        <<Interface>>
+    }
 
-
-class DossierServiceChannel {
-    <<Interface>>
-    checkDossierValidity(String dossierId) DomainResponseStatus
-}
-
-class ExamServiceChannel {
-    <<Interface>>
-    notifyAboutDoctorApproval(DoctorApprovalEvent event) DomainResponseStatus
-}
+    DoctorDomainService <|-- DoctorDomainServiceImpl
+    DoctorDomainServiceImpl --> DossierServiceChannel
+    DoctorDomainServiceImpl --> ExamServiceChannel 
 
 
-DoctorDomainServiceImpl --> DoctorApprovalEvent : produce
-DoctorApprovalEvent <-- ExamServiceChannel
 
-class DoctorApprovalEvent {
-    String dossierId
-    String date
-}
+    class DossierServiceChannel {
+        <<Interface>>
+        checkDossierValidity(String dossierId) DomainResponseStatus
+    }
 
-```
-<div align="center">[Fig 2] Diagramma che mostra come Doctor bounded context comunica con DossierContext e </div>
+    class ExamServiceChannel {
+        <<Interface>>
+        notifyAboutDoctorApproval(DoctorApprovalEvent event) DomainResponseStatus
+    }
+
+
+    DoctorDomainServiceImpl --> DoctorApprovalEvent : produce
+    DoctorApprovalEvent <-- ExamServiceChannel
+
+    class DoctorApprovalEvent {
+        String dossierId
+        String date
+    }
+</div>
+<p>[Fig 2] Diagramma che mostra come Doctor bounded context comunica con DossierContext e </p>
+</div>
+
 
 ## Sequence diagramm
 
@@ -146,8 +151,6 @@ sequenceDiagram
     E--)-Doc : OK
 
     Doc--)-C : OK
-
-
 
 ```
 <div align="center">[Fig 4] Diagramma di sequenza dove dopo registrazione di un risultato positivo della visita dal dottore viene avviata la creazione di registro esame teorico </div>
