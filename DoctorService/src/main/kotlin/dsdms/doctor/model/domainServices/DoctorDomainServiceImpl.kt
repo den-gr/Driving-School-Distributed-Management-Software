@@ -107,18 +107,21 @@ class DoctorDomainServiceImpl(
     }
 
     override suspend fun saveDoctorResult(doctorResult: DoctorResult): DomainResponseStatus {
-        return if (doctorResult.result != ResultTypes.VALID) {
-            DomainResponseStatus.EXAM_PASS_NOT_CREATED
-        } else if (createTheoreticalExamPass(doctorResult)) {
-            repositoryToDomainConversionTable.getDomainCode(repository.registerDoctorResult(doctorResult))
+        if (doctorResult.result != ResultTypes.VALID) {
+            return DomainResponseStatus.EXAM_PASS_NOT_CREATED
+        }
+        val storingResult = repositoryToDomainConversionTable
+            .getDomainCode(repository.registerDoctorResult(doctorResult))
+
+        return if (storingResult == DomainResponseStatus.OK) {
+            createTheoreticalExamPass(doctorResult)
         } else {
-            DomainResponseStatus.EXAM_PASS_ALREADY_AVAILABLE
+            storingResult
         }
     }
 
-    private suspend fun createTheoreticalExamPass(document: DoctorResult): Boolean {
+    private suspend fun createTheoreticalExamPass(document: DoctorResult): DomainResponseStatus {
         val doctorApprovalEvent = DoctorApprovalEvent(document.dossierId, document.date)
-        return channelsProvider.examServiceChannel
-            .notifyAboutDoctorApproval(doctorApprovalEvent) == DomainResponseStatus.OK
+        return channelsProvider.examServiceChannel.notifyAboutDoctorApproval(doctorApprovalEvent)
     }
 }
