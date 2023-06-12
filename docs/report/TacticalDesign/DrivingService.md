@@ -105,3 +105,5 @@ class ExamServiceChannel {
 }
 
 ```
+
+## Sequence diagramm

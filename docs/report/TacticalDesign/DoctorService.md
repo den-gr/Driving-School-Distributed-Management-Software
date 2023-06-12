@@ -11,12 +11,14 @@ nav_order: 2
 - **Entities**: DoctorSlot
 - **Value objects**: DoctorResutl
 - **Events**: DoctorApprovalEvent
-
+  
+<a href="#class_context">figura</a>
+<a href="#class_communication">figura2</a>
 
 ## Doctor domain service
 
-```mermaid
-classDiagram
+```mermaid {#class_context, align="center"}
+classDiagram 
 
 class DoctorDomainService{
     <<Interface>>
@@ -55,12 +57,13 @@ class ResultTypes {
 }
 
 ```
-<div id="class_context" align="center">[Fig 1] Diagramma della struttura del Doctor bounded contex</div>
+<div align="center">[Fig 1] Diagramma della struttura del Doctor bounded contex</div>
 
 
 ## Doctor bounded context communicaiton
 
-```mermaid
+
+```mermaid {#class_communication}
 classDiagram
 direction TB
 class DoctorDomainService{
@@ -93,12 +96,13 @@ class DoctorApprovalEvent {
 }
 
 ```
-<div id="class_communication" align="center">[Fig 2] Diagramma che mostra come Doctor bounded context comunica con DossierContext e </div>
+<div align="center">[Fig 2] Diagramma che mostra come Doctor bounded context comunica con DossierContext e </div>
 
 ## Sequence diagramm
 
 
-```mermaid
+
+```mermaid {#sequence_dossier}
 sequenceDiagram 
 
     participant C as Client
@@ -118,12 +122,32 @@ sequenceDiagram
 
     Doc--)-C : OK
 ```
-<div id="sequence_dossier" align="center">[Fig 3] Diagramma di sequenza che mostra un scenario di successo della prenotazione di una visita dal dotore</div>
+<div align="center">[Fig 3] Diagramma di sequenza che mostra un scenario di successo della prenotazione di una visita dal dotore</div>
 
 
 ### Registrazione dei risultati 
-```mermaid
+
+```mermaid {#sequence_exam}
 sequenceDiagram
+    participant C as Client
+    participant Doc as DoctorService
+    participant E as ExamService
+    participant DocDB as DoctorServiceDB
+
+    C->>+Doc : saveDoctorResult(doctorResutl)
+
+    Doc->>Doc : checkResutl(doctorResult)
+
+    Doc-)+DocDB : <<create>>DoctorResult
+    DocDB--)-Doc : OK
+
+    Doc-)+E : notifyAboutDoctorApproval(event)
+    Note right of E : create and store <br/> theoretical exam pass
+    E--)-Doc : OK
+
+    Doc--)-C : OK
+
 
 
 ```
+<div align="center">[Fig 4] Diagramma di sequenza dove dopo registrazione di un risultato positivo della visita dal dottore viene avviata la creazione di registro esame teorico </div>
