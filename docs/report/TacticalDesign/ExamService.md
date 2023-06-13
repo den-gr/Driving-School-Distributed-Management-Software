@@ -5,6 +5,8 @@ parent: Tactical Design
 nav_order: 4
 ---
 
+
+
 # ExamService tactical design
 - **Entities**: TheoreticalExamAppeal, TheoreticalExamPass, ProvisionalLicense
 - **Value objects**: ProvisionalLicenseHolder, TheoreticalExamAppealUpdate
@@ -59,6 +61,7 @@ class DossierServiceChannel {
 }
 
 ```
+<p align="center">[Fig 1] Diagramma di domain service che gestisce le operazioni che riguardano il foglio rossa </p>
 
 ## Theoretical exam domain service
 
@@ -109,3 +112,28 @@ class TheoreticalExamPass {
 }
 
 ```
+<p align="center">[Fig 2] Diagramma di domain service che copre gli aspetti che riguardano l'esame teorico</p>
+
+
+## Sequence diagram
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant E as ExamService
+    participant Dos as DossierService
+    participant EDB as ExamServiceDB
+
+    C ->>+ E : updateProvisionalLicense("PASSED")
+
+    E -)+ Dos : isDossierValid(dossierId)
+    Dos -) Dos : checkValidity(dossierId)
+    Dos --)- E : OK
+
+    E -)+ EDB : <<delete>>ProvisionalLicense
+    EDB --)- E : OK
+
+    E --)- C : OK
+
+```
+<p align="center">[Fig 3] Diagramma di sequenza che descrive l'operazione di registrazione del risultato possitivo del esame pratico</p>

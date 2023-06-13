@@ -8,6 +8,7 @@ nav_order: 5
 
 ```mermaid
 classDiagram
+direction LR
 Server --> RouteHandlers
 RouteHandlers --> Model
 Model --> DomainServiceA
@@ -17,11 +18,14 @@ DomainServiceA --> ChannelsProvider
 DomainServiceB --> Repository
 
 ```
+<p align="center">[Fig 1] Diagramma che mostra la struttura generale dei microservizi </p>
+
 
 
 ## ChannelsProvider
 ```mermaid
 classDiagram
+direction TB
 
 class ChannelsProvider{
     <<Interfae>>
@@ -44,3 +48,4 @@ ChannelsProvider --> DossierServiceChannel
 ChannelsProvider --> ExamServiceChannel
 
 ```
+<p align="center">[Fig 2] Diagramma che mostra un esempio come microservizi comunicano tra loro. In particolare sono mostrete i cannali di communicazione disponibili per DoctorService </p>

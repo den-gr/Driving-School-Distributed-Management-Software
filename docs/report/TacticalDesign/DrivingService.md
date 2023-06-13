@@ -5,6 +5,8 @@ parent: Tactical Design
 nav_order: 3
 ---
 
+
+
 # DrivingService tactical design
 - **Entities**: DrivingSlot, Instructor, Vechicle
 - **Value objects**: DrivingSlotBooking, DrivingSlotsRequst, LicensePlate, PracticalExamDay
@@ -39,7 +41,7 @@ DrivingDomainService --> Repository
 PracticalExamDomainService --> Repository
 
 ```
-
+<p align="center">[Fig 1] Diagramma di domain services del Driving bounded context</p>
 ### Uno
 
 ```mermaid
@@ -106,4 +108,30 @@ class ExamServiceChannel {
 
 ```
 
+<p align="center">[Fig 2] Diagramma della struttura del Driving bounded contex</p>
+
 ## Sequence diagramm
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant Dr as DrivingService
+    participant E as ExamService
+    participant DrDB as DrivingServiceDB
+
+    C ->>+Dr : registerNewDrivingSlot(drivingSlot)
+
+    Dr ->> Dr : verifyConstraints(drivingSlot)
+
+    Dr -)+ E : isProvisionalLicenseValid(dossierId, date)
+    Note right of E : Get and verify validity <br/> of provisional license
+    E --) Dr : OK
+
+    Dr -)+ DrDB : <<create>>DrivingSlot
+    DrDB --)- Dr : OK
+
+    Dr --)-C : OK
+
+```
+
+
+<p align="center">[Fig 3] Diagramma di sequenza dell'operazione di registrazione di una nuova guida pratica</p>

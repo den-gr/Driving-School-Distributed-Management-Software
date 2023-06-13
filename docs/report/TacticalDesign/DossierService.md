@@ -16,6 +16,7 @@ nav_order: 1
 
 ```mermaid
 classDiagram
+direction TB
 
 
 class DossierDomainService {
@@ -63,13 +64,16 @@ class ExamEvent{
     PRACTICAL_EXAM_PASSED
 }
 
-
-
 ```
 
+<p align="center">[Fig 1] Diagramma dell'organizzaizone del Dossier bounded contex</p>
+
 ## Dossier
+
 ```mermaid
+
 classDiagram
+direction LR
 
 Dossier o-- "1" ExamStatus
 
@@ -102,3 +106,4 @@ class TheoreticalExamState {
 }
 
 ```
+<p align="center">[Fig 2] Diagramma che descrive la classe ExamStatus che appartiene alla classe Dossier </p>
