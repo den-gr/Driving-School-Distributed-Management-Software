@@ -20,12 +20,18 @@ nav_order: 2
 
 
 <div id="domain" align="center">
-<div class="mermaid">
+ ```mermaid
+    classDiagram
+    class A
+    class B
+    A --> B
+ ```
+</div>
 
+```mermaid
 classDiagram 
 
 class DoctorDomainService{
-
     <<Interface>>
     saveDoctorSlot(DoctorSlot doctorSlot) InsertDoctorVisitResult
     getOccupiedDoctorSlots(String date) BookedDoctorSlots
@@ -55,15 +61,13 @@ class DoctorResult {
 DoctorResult --> ResultTypes
 
 class ResultTypes {
-
     <<Enumeration>>
     VALID
     NEED_ONE_MORE_VISIT
     NOT_VALID
 }
-</div>
-<p>[Fig 1] Diagramma della struttura del Doctor bounded contex</p>
-</div>
+```
+<p align="center">[Fig 1] Diagramma della struttura del Doctor bounded contex</p>
 
 ## Doctor bounded context communicaiton
 
