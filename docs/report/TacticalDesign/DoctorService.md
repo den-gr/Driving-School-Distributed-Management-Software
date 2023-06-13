@@ -12,19 +12,20 @@ nav_order: 2
 - **Value objects**: DoctorResutl
 - **Events**: DoctorApprovalEvent
   
-<a href="#class_context">figura</a>
+<a href="#domain">figura</a>
 <a href="#l0">figura2</a>
 
 ## Doctor domain service
 
 
 
-<div id="l0"></div>
+<div id="domain" align="center">
+<div class="mermaid">
 
-```mermaid
 classDiagram 
 
 class DoctorDomainService{
+
     <<Interface>>
     saveDoctorSlot(DoctorSlot doctorSlot) InsertDoctorVisitResult
     getOccupiedDoctorSlots(String date) BookedDoctorSlots
@@ -54,14 +55,15 @@ class DoctorResult {
 DoctorResult --> ResultTypes
 
 class ResultTypes {
+
     <<Enumeration>>
     VALID
     NEED_ONE_MORE_VISIT
     NOT_VALID
 }
-```
-<div align="center">[Fig 1] Diagramma della struttura del Doctor bounded contex</div>
-
+</div>
+<p>[Fig 1] Diagramma della struttura del Doctor bounded contex</p>
+</div>
 
 ## Doctor bounded context communicaiton
 
