@@ -13,13 +13,15 @@ nav_order: 2
 - **Events**: DoctorApprovalEvent
   
 <a href="#class_context">figura</a>
-<a href="#class_communication">figura2</a>
+<a href="#l0">figura2</a>
 
 ## Doctor domain service
 
-<div class="tip" markdown="1">Have **fun!**</div>
 
-```mermaid {#class_context, align="center"}
+
+<div id="l0"></div>
+
+```mermaid
 classDiagram 
 
 class DoctorDomainService{
@@ -57,7 +59,6 @@ class ResultTypes {
     NEED_ONE_MORE_VISIT
     NOT_VALID
 }
-
 ```
 <div align="center">[Fig 1] Diagramma della struttura del Doctor bounded contex</div>
 
@@ -66,8 +67,9 @@ class ResultTypes {
 
 
 
-<div align="center">
-<div id="class_communication" class="mermaid">
+<div id="l1"></div>
+
+```mermaid
     classDiagram
 
     class DoctorDomainService{
@@ -98,9 +100,11 @@ class ResultTypes {
         String dossierId
         String date
     }
-</div>
-<p>[Fig 2] Diagramma che mostra come Doctor bounded context comunica con DossierContext e </p>
-</div>
+
+```
+
+<p align="center">[Fig 2] Diagramma che mostra come Doctor bounded context comunica con DossierContext e </p>
+
 
 
 ## Sequence diagramm
