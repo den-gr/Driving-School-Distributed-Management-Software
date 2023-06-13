@@ -1,11 +1,11 @@
 title: "DSDMS"
 remote_theme: pmarsceill/just-the-docs
-color_scheme: "dark"
+color_scheme: "light"
 
 show_downloads: false
 
 mermaid:
-  theme: "dark"
+  theme: "default"
   # Version of mermaid library
   # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
   version: "10.2.2"

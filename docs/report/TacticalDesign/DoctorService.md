@@ -12,21 +12,14 @@ nav_order: 2
 - **Value objects**: DoctorResutl
 - **Events**: DoctorApprovalEvent
   
-<a href="#domain">figura</a>
-<a href="#l0">figura2</a>
+<!-- <a href="#domain">figura</a> -->
+
 
 ## Doctor domain service
 
 
 
-<div id="domain" align="center">
- ```mermaid
-    classDiagram
-    class A
-    class B
-    A --> B
- ```
-</div>
+<div id="class-domain" align="center"></div>
 
 ```mermaid
 classDiagram 
@@ -42,8 +35,6 @@ class DoctorDomainService{
 DoctorDomainService --> DoctorSlot
 DoctorDomainService --> DoctorResult
 DoctorDomainService --> Repository
-
-
 
 class DoctorSlot {
     String date
@@ -73,7 +64,7 @@ class ResultTypes {
 
 
 
-<div id="l1"></div>
+<div id="class-communication"></div>
 
 ```mermaid
     classDiagram
@@ -115,9 +106,9 @@ class ResultTypes {
 
 ## Sequence diagramm
 
+<div id="sequence_dossier"></div>
 
-
-```mermaid {#sequence_dossier}
+```mermaid
 sequenceDiagram 
 
     participant C as Client
@@ -137,12 +128,14 @@ sequenceDiagram
 
     Doc--)-C : OK
 ```
-<div align="center">[Fig 3] Diagramma di sequenza che mostra un scenario di successo della prenotazione di una visita dal dotore</div>
+<p align="center">[Fig 3] Diagramma di sequenza che mostra un scenario di successo della prenotazione di una visita dal dotore</p>
 
 
 ### Registrazione dei risultati 
 
-```mermaid {#sequence_exam}
+<div id="sequence_exam"></div>
+
+```mermaid
 sequenceDiagram
     participant C as Client
     participant Doc as DoctorService
@@ -163,4 +156,4 @@ sequenceDiagram
     Doc--)-C : OK
 
 ```
-<div align="center">[Fig 4] Diagramma di sequenza dove dopo registrazione di un risultato positivo della visita dal dottore viene avviata la creazione di registro esame teorico </div>
+<p align="center">[Fig 4] Diagramma di sequenza dove dopo registrazione di un risultato positivo della visita dal dottore viene avviata la creazione di registro esame teorico </p>
