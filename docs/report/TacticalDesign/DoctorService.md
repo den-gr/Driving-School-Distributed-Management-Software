@@ -25,7 +25,7 @@ Ciascun Doctor Slot, rappresenta la visita con il dottore per un Iscritto, in un
 
 I metodi che il microservizio mette quindi a disposizione, riguardando nel dettaglio le seguenti funzionalità:
 - inserimento di un nuovo doctor slot;
-- get dei doctor slot occupati in una certa data;
+- richiesta dei doctor slot occupati in una certa data;
 - eliminazione di un doctor slot;
 - salvataggio del risultato di una visita, per un certo iscritto.
 Le informazioni manipolate dal servizio, sono tutte inserite e storicizzate nel db, dai doctor slot ai doctor results.
@@ -76,7 +76,7 @@ class ResultTypes {
 
 ## Doctor bounded context communication
 
-Per completare, alcune delle attività di cui sopra, è stato necessario inserire la comunicazione di questo servizio, con altri servizi esterni. Ad esempio per verificare la validità di un dossier o notificare il termine di una visita, a Exam Service.
+Per completare, alcune delle attività di cui sopra, è stato necessario inserire la comunicazione di questo servizio, con altri servizi esterni. Ad esempio per verificare la validità di un dossier o notificare il termine di una visita a Exam Service.
 
 In particolar modo, la comunicazione con Exam Service è necessaria per poter permettere all'iscritto di conseguire l'esame teorico ed eventualmente successivamente l'esame pratico.
 
