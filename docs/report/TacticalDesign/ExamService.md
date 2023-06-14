@@ -136,4 +136,4 @@ sequenceDiagram
     E --)- C : OK
 
 ```
-<p align="center">[Fig 3] Diagramma di sequenza che descrive l'operazione di registrazione del risultato possitivo del esame pratico</p>
+<p align="center">[Fig 3] Diagramma di sequenza che descrive l'operazione di registrazione del risultato positivo del esame pratico</p>

@@ -9,12 +9,12 @@ nav_order: 7
 Per verificare il corretto funzionamento del sistema e l'efficienza dei servizi forniti al cliente,
 si è proceduto a testare le diverse componenti del sistema, mediante Acceptance Testing Driven Development.
 Il testing avviene su due fronti:
-- test locali, all'interno di ciascun microservizio;
+- test locali, all'interno di ciascun microservice;
 - black-box test (a scatola chiusa), che rappresentano una porzione per la verifica del progetto.
   
 Nelle successive sezioni verranno descritti in maggiore dettaglio i test realizzati e le motivazioni che vanno a supportare le scelte implementative effettuate.
 
-Non verranno invece riportate, verifiche sul coverage del progetto fornito, in quanto solo una piccola porzione del codice dei microservizi viene testata mediante test locali. Un client "dummy", viene utilizzato per eseguire acceptance test "a scatola chiusa", forniti al committente, verificando il soddisfacimento dei requisiti funzionali e non funzionali imposti.
+Non verranno invece riportate, verifiche sul coverage del progetto fornito, in quanto solo una piccola porzione del codice dei microservice viene testata mediante test locali. Un client "dummy", viene utilizzato per eseguire acceptance test "a scatola chiusa", forniti al committente, verificando il soddisfacimento dei requisiti funzionali e non funzionali imposti.
 
 ## Test locali
 Per verificare determinate logiche o comportamenti del sistema, parte integrante del dominio affrontato, sono stati sviluppati
@@ -28,17 +28,17 @@ All'interno di ExamService, nel rispettivo modulo di test, si è andati a verifi
 di serializzazione e deserializzazione dei dati e inoltre si è verificata che l'implementazione eseguita, soddisfi le logiche e i rispettivi constraints sul dominio affrontato.
 
 ## Black-Box Test
-Come anticipato, questa tipologia di test nasce dalla necessità di verificare le API messe a disposizione dai singoli microservizi
+Come anticipato, questa tipologia di test nasce dalla necessità di verificare le API messe a disposizione dai singoli microservice
 a "scatola-chiusa", senza quindi tener conto delle logiche interne.
-Per eseguire questi test, si è deciso di implementare un client "dummy": System Tester, sul quale
+Per eseguire questi test, si è deciso d'implementare un client "dummy": System Tester, sul quale
 come framework di Testing viene adottato Cucumber.
 
 ### System Tester
 System Tester rappresenta un client "dummy", inserito nel progetto per verificare il funzionamento
-delle API dei singoli microservizi, a "Scatola chiusa".
-Ciascuna API e ciascun microservizio viene testata con l'utilizzo del framework Cucumber, mediante scenari e step espressi in un linguaggio facilmente comprensibile anche per l'utente finale.
+delle API dei singoli microservice, a "Scatola chiusa".
+Ciascuna API e ciascun microservice viene testata con l'utilizzo del framework Cucumber, mediante scenari e step espressi in un linguaggio facilmente comprensibile anche per l'utente finale.
 Questo consente di verificare il soddisfacimento dei requisiti imposti dal committente del software, verificando
-ciascuna risposta ottenuta successivamente ad ogni interrogazione.
+ciascuna risposta ottenuta successivamente a ogni interrogazione.
 
 Per ciascuna risposta, si verificano alcuni parametri fondamentali:
 - status code: rappresenta il codice HTTP che viene restituito (codice 200 per OK, codice 400 per BAD REQUEST sono spesso utilizzati);
@@ -51,7 +51,7 @@ L'utilizzo di questa metodologia di test, ha anche consentito di creare una conn
 I test di accettazione, eseguiti mediante cucumber, consentono di verificare il soddisfacimento di requisiti funzionali e non funzionali, specificati dal cliente o dagli utenti finali. Essi rappresentano infatti, l'ultima fase del ciclo di vita del software, eseguiti solo successivamente ai test locali precedentemente descritti.
 
 Di seguito un esempio dell'utilizzo di Cucumber e del linguaggio Gherkin per l'esecuzione di Acceptance Testing.
-In particolare viene verificata l'API per la registrazione di un Iscritto su DossierService, con differenti set di informazioni, senza tener conto del codice "di basso livello", ma solamente verificando le risposte ottenute.
+In particolare viene verificata l'API per la registrazione di un Iscritto su DossierService, con differenti set d'informazioni, senza tener conto del codice "di basso livello", ma solamente verificando le risposte ottenute.
 
 Nel primo scenario, vengono fornite informazioni corrette, la creazione viene correttamente eseguita, restituendo l'Id del dossier creato.
 Verificando l'Id fornito, otteniamo nel Body il Dossier completo in formato Json, dal quale possiamo visualizziamo che exam status è stato correttamente inizializzato.

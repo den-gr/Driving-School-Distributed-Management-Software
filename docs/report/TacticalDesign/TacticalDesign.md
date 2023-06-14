@@ -48,4 +48,4 @@ ChannelsProvider --> DossierServiceChannel
 ChannelsProvider --> ExamServiceChannel
 
 ```
-<p align="center">[Fig 2] Diagramma che mostra un esempio come microservizi comunicano tra loro. In particolare sono mostrete i cannali di communicazione disponibili per DoctorService </p>
+<p align="center">[Fig 2] Diagramma che mostra un esempio come microservizi comunicano tra loro. In particolare sono mostrati i canali di comunicazione disponibili per DoctorService </p>

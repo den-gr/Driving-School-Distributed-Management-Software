@@ -18,12 +18,12 @@ I sotto domini sopra elencati, sono stati inoltre classificati come:
 - Core domain: rappresenta una o più funzioni primarie, all'interno del dominio principale
 - Supporting domain: raggruppa determinate funzioni necessarie ma non fondamentali per il dominio principale
 
-Avendo chiaro le informazioni di cui sopra, i sotto domini precedentemente individuati sono stati classificati come segue: Dossier di tipo Genreric, Exam di tipo Core e Driving di tipo Support.
+Avendo chiaro le informazioni di cui sopra, i sotto domini precedentemente individuati sono stati classificati come segue: Dossier di tipo Generic, Exam di tipo Core e Driving di tipo Support.
 
-### Bounded contex
+### Bounded context
 
-Per tre sotto domini rilevati sono stati progettaiti quatro bounded context:
-- *Dossier context* che appartieniene a Dossier subdomain
+Per tre sotto domini rilevati sono stati progettati quattro bounded context:
+- *Dossier context* che appartiene a Dossier subdomain
 - *Driving context* che appartiene a Driving subdomain
 - *Exam context* e *Doctor context* che appartengono a Exam subdomain 
 
@@ -35,9 +35,9 @@ Per tre sotto domini rilevati sono stati progettaiti quatro bounded context:
 ## Bounded context canvas
 
 Il successivo passaggio di progettazione, dettato dal DDD, è stata la progettazione dei Bounded Contexts all'interno dei domini in esame.
-Ciascun Bounded Context modella una porzione del dominio, definendone i confini in modo chiaro e non ambiguo, con l'obiettivo di gestirne le relative entrate ed uscite in termini di informazioni ed azioni eseguibili.
+Ciascun Bounded Context modella una porzione del dominio, definendone i confini in modo chiaro e non ambiguo, con l'obiettivo di gestirne le relative entrate e uscite in termini d'informazioni e azioni eseguibili.
 
-Per ciascun contesto individuato, di seguito si propone una rappresentazine testuale dei Bounded Context Canvas.
+Per ciascun contesto individuato, di seguito si propone una rappresentazione testuale dei Bounded Context Canvas.
 
 
 ### Dossier context
@@ -65,7 +65,7 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazine test
 - Read Dossier (Client, Exam context → a query)
 
 ### Driving context
-**Description**: Consente la gestione degli slot di guida, acquisendo l’informazione relative a veicoli, istruttori e utilizzando l’informazione del foglio rosa relativo ad una pratica.
+**Description**: Consente la gestione degli slot di guida, acquisendo l’informazione relative a veicoli, istruttori e utilizzando l’informazione del foglio rosa relativo a una pratica.
 
 **Strategic classification**:
 - Domain: Core
@@ -75,9 +75,9 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazine test
 **Business Decisions**:
 - In un certo giorno e orario, uno slot di guida è univocamente collegato a:
     - Un istruttore
-    - Un Id relativo ad una pratica
+    - Un Id relativo a una pratica
     - Un veicolo
-- La durata di ciascun slot di guida è 30 minuti, iniziando ad intervalli regolari di tempo
+- La durata di ciascun slot di guida è 30 minuti, iniziando a intervalli regolari di tempo
 - Un iscritto può prenotare uno slot di guida alla volta. Dopo il completamento, può prenotarne uno nuovo.
 - All’inserimento di uno slot di guida, verificare la validità del provisional license
 - Un veicolo dopo X slot di guida deve effettuare un controllo (opzionale)
@@ -99,24 +99,24 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazine test
 - Evolution: custom built
 
 **Business Decisions**: 
-- Ciascun foglio rosa deve essere associato univocamente ad una pratica e viceversa
+- Ciascun foglio rosa deve essere associato univocamente a una pratica e viceversa
 - Se una pratica è invalida, non deve essere possibile utilizzarla relativamente alla gestione degli esami
 - Esame teorico:
     - Necessario un registro d'esame teorico valido, con le seguenti caratteristiche:
-        - consente 2 tentativi d'esame entro 6 mesi
+        - consente due tentativi d'esame entro sei mesi
         - viene fornito dopo la visita medica
         - Dopo la scadenza, necessaria una nuova visita medica (Pratica rimane valida)
 - Esame pratico:
     - Necessario un foglio rosa valido, con le seguenti caratteristiche:
-        - consente 3 tentativi d'esame entro 12 mesi
+        - consente tre tentativi d'esame entro 12 mesi
         - viene fornito dopo il superamento dell'esame teorico insieme alla notifica a Dossier Context
-        - Dopo la prima scadenza, è necessario riconseguire l'esame teorico e notificare Dossier Context
+        - Dopo la prima scadenza, è necessario conseguire l'esame teorico e notificare Dossier Context
         - Dopo la seconda scadenza, Dossier context viene notificato
 
 **Inbound Communications**:
-- Regiser theoretical exam appeal day (Client → A command)
+- Register theoretical exam appeal day (Client → A command)
 - Read list of future theoretical exam appeals (Client -> A query)
-- Read theoretical exam appeal information (Clent -> A query)
+- Read theoretical exam appeal information (Client -> A query)
 - Register a dossier in Exam Appeal (Client → A command)
 - Creation of a Theoretical Exam pass (Doctor context → A command)
 - Create Provisional License (Client -> a command)
@@ -128,7 +128,7 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazine test
 
 ### Doctor context
 
-**Description**: consente la gestione di tutto ciò che concerne la visita, necessaria agli iscritti per poter coneguire l'esame teorico.
+**Description**: consente la gestione di tutto ciò che concerne la visita, necessaria agli iscritti per poter conseguire l'esame teorico.
 
 **Strategic classification**: 
 - Domain: Support
@@ -138,7 +138,7 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazine test
 **Business Decisions**: 
 - Se una pratica è invalida, non deve essere possibile utilizzarla per la prenotazione delle visite
 - Il giorno in cui le visite sono effettuabili è stabilito da entità esterne al sistema e non può essere modificato (ogni Giovedì dalle 18 alle 19:30)
-- Ciascuna visita ha una durata di 15 minuti (max 6 iscritti)
+- Ciascuna visita ha una durata di 15 minuti (max sei iscritti)
 
 **Inbound Communications**:
 - Read Doctor slots (Client → A Query)

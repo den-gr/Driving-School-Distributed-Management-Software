@@ -9,7 +9,7 @@ nav_order: 2
 # DoctorService tactical design
 
 - **Entities**: DoctorSlot
-- **Value objects**: DoctorResutl
+- **Value objects**: DoctorResult
 - **Events**: DoctorApprovalEvent
   
 <!-- <a href="#domain">figura</a> -->
@@ -58,9 +58,9 @@ class ResultTypes {
     NOT_VALID
 }
 ```
-<p align="center">[Fig 1] Diagramma della struttura del Doctor bounded contex</p>
+<p align="center">[Fig 1] Diagramma della struttura del Doctor bounded context</p>
 
-## Doctor bounded context communicaiton
+## Doctor bounded context communication
 
 
 
@@ -104,7 +104,7 @@ class ResultTypes {
 
 
 
-## Sequence diagramm
+## Sequence diagrams
 
 <div id="sequence_dossier"></div>
 
@@ -128,7 +128,7 @@ sequenceDiagram
 
     Doc--)-C : OK
 ```
-<p align="center">[Fig 3] Diagramma di sequenza che mostra un scenario di successo della prenotazione di una visita dal dotore</p>
+<p align="center">[Fig 3] Diagramma di sequenza che mostra un scenario di successo della prenotazione di una visita dal dottore</p>
 
 
 ### Registrazione dei risultati 

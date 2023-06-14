@@ -9,7 +9,7 @@ nav_order: 4
 
 A partire da ciò che emerso dalle precedenti fasi di analisi del dominio, sono stati dedotti quattro casi d'uso principali, in base alle necessità richieste dal cliente e dagli esperti del dominio.
 
-Per favorire le successive fasi di razionalizzazione e progettazione, i termini inseriti corrispono all'[Ubiquitous Language](UbiquitousLanguage.md) discusso precedentemente.
+Per favorire le successive fasi di razionalizzazione e progettazione, i termini inseriti corrispondo all'[Ubiquitous Language](UbiquitousLanguage.md) discusso precedentemente.
 
 <div align="center">
       <img id="fig1" src="img/use_general.png">
@@ -27,11 +27,11 @@ In particolare la procedura di **Update dossier** generalizza alcune operazioni 
 </div>
 
 Il secondo diagramma mostrato in <a href="#fig2"> Figura 2 </a>, invece, mostra l'ipotetica gestione delle guide.
-Ciascuna guida è univocamente collegata ad un Iscritto, un Istruttore, un Veicolo ed una fascia oraria.
-L'attore in questione è l'Istruttore: con l'utilizzo del software messo a disposizione, l'obiettivo è infatti quello di velocizzare le operazioni di inserimento degli slot di guida, evitando processi maggiormente prolungati e costosi.
+Ciascuna guida è univocamente collegata a un Iscritto, un Istruttore, un Veicolo e una fascia oraria.
+L'attore in questione è l'Istruttore: con l'utilizzo del software messo a disposizione, l'obiettivo è infatti quello di velocizzare le operazioni d'inserimento degli slot di guida, evitando processi maggiormente prolungati e costosi.
 Come evidenziato dal diagramma l'inserimento di uno slot, comporta alcuni *include* (determinate operazioni richieste per l'esistenza del caso d'uso principale):
 - verificare la validità del foglio rosa
-- verificare la disponibilità di Istruttore, Veicolo e Dossier
+- verificare la disponibilità d'Istruttore, Veicolo e Dossier
 - ricercare un giorno e fascia oraria che soddisfi i vincoli imposti dal concetto di slot
 
 <div align="center">
@@ -41,7 +41,7 @@ Come evidenziato dal diagramma l'inserimento di uno slot, comporta alcuni *inclu
 
 Il diagramma visibile in <a href="#fig3"> Figura 3 </a> evidenzia la gestione degli esami teorici: anche in questo caso l'attore presente è il Segretario, che esegue le operazioni visibili:
 - legge gli slot disponibili per la visita, inserendo l'iscritto nel primo slot libero
-- completata la visita ed avendo quindi a disposizione un registro per l'esame teorico, l'iscritto sarà registrato in un appello d'esame
+- completata la visita e avendo quindi a disposizione un registro per l'esame teorico, l'iscritto sarà registrato in un appello d'esame
   
 Anche in questo caso, la registrazione all'appello d'esame necessita di un controllo sulla validità del registro d'esame dell'iscritto (come evidenziato dall'*include*)
 
@@ -51,6 +51,6 @@ Anche in questo caso, la registrazione all'appello d'esame necessita di un contr
 </div>
 
 L'ultimo diagramma presente, <a href="#fig4"> Figura 4 </a>, mette in risalto la gestione degli esami pratici, da parte del Segretario:
-- registra uno slot di guida, relativo ad un esame pratico. L'*include* evidenzia alcune operazioni necessarie per l'esistenza di questo caso d'uso: verifica sul giorno d'esame, sulla validità del foglio rosa e sul minimo numero di guide effettuate necessarie
+- registra uno slot di guida, relativo a un esame pratico. L'*include* evidenzia alcune operazioni necessarie per l'esistenza di questo caso d'uso: verifica sul giorno d'esame, sulla validità del foglio rosa e sul minimo numero di guide effettuate necessarie
 - aggiorna il foglio rosa dell'iscritto, successivamente alla lettura del dossier
 - seleziona il giorno d'esame tra quelli disponibili

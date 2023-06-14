@@ -20,11 +20,11 @@ Dopo aver analizzato la richiesta che è stata effettuata e prodotto l’impact 
 
 <span style="color: #0077b6">**Analista**</span>: Nell'archivio cartaceo, quali tipi di documenti vengono mantenuti per ogni studente ?
 
-<span style="color: #79a355">**Cliente**</span>: Innanzitutto, identifichiamo gli utenti dell'autoscuola come Iscritti e non come studenti. Per ciascun iscritto manteniamo una pratica ed un fascicolo.
+<span style="color: #79a355">**Cliente**</span>: Innanzitutto, identifichiamo gli utenti dell'autoscuola come Iscritti e non come studenti. Per ciascun iscritto manteniamo una pratica e un fascicolo.
 
 <span style="color: #0077b6">**Analista**</span>: Cosa intendi con fascicolo ?
 
-<span style="color: #79a355">**Cliente**</span>: Il fascicolo include la pratica ed altri documenti ad essa collegati, ad esempio il foglio rosa o il registro dell'esame teorico.
+<span style="color: #79a355">**Cliente**</span>: Il fascicolo include la pratica e altri documenti a essa collegati, ad esempio il foglio rosa o il registro dell'esame teorico.
 
 <span style="color: #0077b6">**Analista**</span>: E la pratica invece che cosa contiene ?
 
@@ -38,18 +38,18 @@ Dopo aver analizzato la richiesta che è stata effettuata e prodotto l’impact 
 
 <span style="color: #79a355">**Cliente**</span>: Principalmente, vorrei digitalizzare e velocizzare le operazioni relative a:
 - gestione delle guide
-- gestione degli esami pratici, in termini di iscrizioni, gestione dei tentativi
+- gestione degli esami pratici, in termini d'iscrizioni, gestione dei tentativi
 - gestione degli esami teorici, mantenendo se possibile un registro dell'esame teorico per ciascun iscritto
 - gestione dei veicoli e degli istruttori, con i quali ciascuna guida è effettuata
-- gestione maggiormente digitalizzata di pratiche e fascicoli, in modo da avere meno errori di consistenza e duplicazioni dei dati, ad oggi purtroppo presenti
+- gestione maggiormente digitalizzata di pratiche e fascicoli, in modo da avere meno errori di consistenza e duplicazioni dei dati, a oggi purtroppo presenti
 
 
 ## Domain story telling
 Per approfondire maggiormente la conoscenza del dominio, dei processi aziendali e di eventuali problemi riscontrati alla situazione attuale all'interno della azienda, si sono effettuati ulteriori colloqui con il cliente e gli esperti del dominio, maggiormente focalizzati sui processi precedentemente indicati.
 
-Come strumento per la gestione e la rappresentazione grafica dei colloqui, si è deciso di utilizzare la strategia del Domain Storytelling, la quale prevede di lasciare raccontare agli esperti del dominio, come venogno svolte le differenti operazioni all'interno della Scuola Guida e cosa si vorrebbe ottenere come risultato, mentre i developers si occupano di catturare il racconto effettuato dall'esperto del diminio, tramite l'utilizzo del seguente linguaggio pittografico.
+Come strumento per la gestione e la rappresentazione grafica dei colloqui, si è deciso di utilizzare la strategia del Domain Storytelling, la quale prevede di lasciare raccontare agli esperti del dominio, come vengono svolte le differenti operazioni all'interno della Scuola Guida e cosa si vorrebbe ottenere come risultato, mentre i developers si occupano di catturare il racconto effettuato dall'esperto del dominio, tramite l'utilizzo del seguente linguaggio pittografico.
 
-Per favorire le successive fasi di razionalizzazione e progettazione, i termini inseriti corrispono all'[Ubiquitous Language](UbiquitousLanguage.md) discusso con gli esperti del dominio.
+Per favorire le successive fasi di razionalizzazione e progettazione, i termini inseriti corrispondono all'[Ubiquitous Language](UbiquitousLanguage.md) discusso con gli esperti del dominio.
 
 I risultati emersi da tali analisi, sono mostrati di seguito.
 
@@ -67,13 +67,13 @@ I risultati emersi da tali analisi, sono mostrati di seguito.
 
 **User Story: inserimento di una guida**
 
-<span style="color: #0077b6">**Analista**</span>: Attualmente, una nuova guida come viene registrata ? chi la può registrare ?
+<span style="color: #0077b6">**Analista**</span>: Attualmente, una nuova guida come viene registrata ? Chi la può registrare ?
 
 <span style="color: #79a355">**Esperto del dominio**</span>: Quando un iscritto richiede una successiva guida all'istruttore, quest'ultimo controlla la programmazione delle guide e comunica all'iscritto le possibili date. Lui potrà quindi confermare una data tra quelle proposte e sarà l'istruttore che provvederà alla registrazione manuale di un nuovo slot di guida, presso l'ufficio.
 
-<span style="color: #0077b6">**Analista**</span>: A parte giorno e orario, quali altre informazioni vengono associate ad uno slot di guida ?
+<span style="color: #0077b6">**Analista**</span>: A parte giorno e orario, quali altre informazioni vengono associate a uno slot di guida ?
 
-<span style="color: #79a355">**Esperto del dominio**</span>: Ciascuna guida, è univocamente collegata ad un singolo Iscritto, un Istruttore ed un Veicolo (oltre alle informazioni da voi elencate).
+<span style="color: #79a355">**Esperto del dominio**</span>: Ciascuna guida, è univocamente collegata a un singolo Iscritto, un Istruttore e un Veicolo (oltre alle informazioni da voi elencate).
 
 <div align="center">
       <img src="img/RegisterDrivingSlot.png" alt="
@@ -111,9 +111,9 @@ I risultati emersi da tali analisi, sono mostrati di seguito.
 
 Verificati questi fattori, si ricerca il primo slot di guida disponibile per effettuare l'esame pratico, e lo si propone all'iscritto.
 
-<span style="color: #0077b6">**Analista**</span>: In precedenza hai parlato di slot di guida in riferimento a guide pratiche "standard". Qual'è la differenza tra i due ?
+<span style="color: #0077b6">**Analista**</span>: In precedenza hai parlato di slot di guida in riferimento a guide pratiche "standard". Qual è la differenza tra i due ?
 
-<span style="color: #79a355">**Esperto del dominio**</span>: La principale differenza riguarda il fatto che gli slot relativi ad esami pratici devono essere etichettati come tali e possono essere inseriti solo in determinati giorni da noi impostati. In tali giornate si hanno a disposizione uno o più esaminatori, che conducano gli esami.
+<span style="color: #79a355">**Esperto del dominio**</span>: La principale differenza riguarda il fatto che gli slot relativi a esami pratici devono essere etichettati come tali e possono essere inseriti solo in determinati giorni da noi impostati. In tali giornate si hanno a disposizione uno o più esaminatori, che conducano gli esami.
 
 <span style="color: #0077b6">**Analista**</span>: Se l'iscritto accetta le date a lui precedentemente proposte, come si procede ?
 

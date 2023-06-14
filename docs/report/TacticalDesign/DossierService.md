@@ -12,7 +12,7 @@ nav_order: 1
 - **Events**: ExamEvent
 
 
-## Dossier domain sevice
+## Dossier domain service
 
 ```mermaid
 classDiagram
@@ -66,7 +66,7 @@ class ExamEvent{
 
 ```
 
-<p align="center">[Fig 1] Diagramma dell'organizzaizone del Dossier bounded contex</p>
+<p align="center">[Fig 1] Diagramma dell'organizzazione del Dossier bounded context</p>
 
 ## Dossier
 

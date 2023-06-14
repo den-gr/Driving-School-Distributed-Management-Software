@@ -8,8 +8,8 @@ nav_order: 3
 
 
 # DrivingService tactical design
-- **Entities**: DrivingSlot, Instructor, Vechicle
-- **Value objects**: DrivingSlotBooking, DrivingSlotsRequst, LicensePlate, PracticalExamDay
+- **Entities**: DrivingSlot, Instructor, Vehicle
+- **Value objects**: DrivingSlotBooking, DrivingSlotsRequest, LicensePlate, PracticalExamDay
 
 ## Domain services of driving bounded context
 
@@ -108,9 +108,9 @@ class ExamServiceChannel {
 
 ```
 
-<p align="center">[Fig 2] Diagramma della struttura del Driving bounded contex</p>
+<p align="center">[Fig 2] Diagramma della struttura del Driving bounded context</p>
 
-## Sequence diagramm
+## Sequence diagrams
 ```mermaid
 sequenceDiagram
     participant C as Client
