@@ -55,7 +55,9 @@ Tutte queste funzionalità sono risultate particolarmente utili nel progetto in 
 
 ## Semantic Release per Automatic Versioning e Release
 
+Semantic Release è un framework che gestisce la versione del software e la sua pubblicazione in modo automatico, seguendo le linee guida del semantic release. Utilizza il concetto di Conventional Commits per standardizzare le descrizioni dei commit e sfrutta gli strumenti di continuous integration per automatizzare il rilascio di nuove versioni in base ai cambiamenti effettuati nel codice sorgente. In questo modo, Semantic Release garantisce un processo di rilascio del software più sicuro e affidabile.
 
+Nel progetto questo tool è stato utilizzato per effettuare le release del software sulla piattaforma GitHub.
 
 ## Swagger e OpenAPI
 
