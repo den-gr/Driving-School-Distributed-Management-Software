@@ -11,7 +11,8 @@ BadRequest:
 
 NotFound:
   description: The element with given id not found
-  text/plain:
-    schema:
-      type: string
-      enum: [ ID_NOT_FOUND, DOSSIER_NOT_EXISTS ]
+  content:
+    text/plain:
+      schema:
+        type: string
+        enum: [ ID_NOT_FOUND, DOSSIER_NOT_EXISTS ]

@@ -204,13 +204,18 @@
       - $ref: './parameters.yaml#/ProvisionalLicenseUpdateParam'
     responses:
       "200":
-        description: "OK or PROVISIONAL_LICENSE_NOT_VALID"
+        description: "OK"
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: [ OK, PROVISIONAL_LICENSE_NOT_VALID ]
       "202":
         description: "Can not update provisional license state because dossier is not valid"
         content:
           text/plain:
             schema:
-              type: String
+              type: string
               enum: [DOSSIER_NOT_VALID]
       "404":
         $ref: "./responses.yaml#/NotFound"
@@ -219,7 +224,7 @@
         content:
           text/plain:
             schema:
-              type: String
+              type: string
               enum: [PROVISIONAL_LICENSE_ALREADY_EXISTS]
       "500":
         $ref: './responses.yaml#/ServerError'
@@ -236,7 +241,7 @@
         content:
           text/plain:
             schema:
-              type: String
+              type: string
               enum: [OK, PROVISIONAL_LICENSE_NOT_VALID]
       "404":
         $ref: "./responses.yaml#/NotFound"
