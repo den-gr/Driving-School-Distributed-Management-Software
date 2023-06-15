@@ -137,8 +137,8 @@ sequenceDiagram
     participant DocDB as DoctorServiceDB
 
     C->>+Doc : bookDoctorVisit(doctorSlot)
-    Doc->>Doc : CheckDoctorSlotAvailability(doctorSlot)
-    Note left of Doc : assume check is passed
+    Doc->>Doc : checkDoctorSlotAvailability(doctorSlot)
+    Note left of Doc : assume the check is passed
     Doc-)+Dos : isDossierValid()
     Dos--)-Doc : OK
 
