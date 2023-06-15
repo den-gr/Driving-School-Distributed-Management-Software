@@ -201,6 +201,7 @@
     operationId: updateProvisionalLicense
     tags: [ExamService]
     parameters:
+      - $ref: './parameters.yaml#/DossierId'
       - $ref: './parameters.yaml#/ProvisionalLicenseUpdateParam'
     responses:
       "200":
