@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: 0.0.1
   title: Driving School Distributed Management System
-  description: 'The project for the courses "Laboratory of software systems" and "Distributed Systems"'
+  description: 'The project for the courses "Laboratory of software systems" and "Distributed Systems" '
 servers:
   - description: Base URL that should be replaced with the gateway URL
     url: "http://localhost:8000/"

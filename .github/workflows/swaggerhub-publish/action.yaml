@@ -1,0 +1,36 @@
+name: "Publish documentation on SwaggerHub"
+description: "Generate single openapi file documentation, validate it and then publish it on SwaggerHub"
+inputs:
+  source-file:
+    description: 'main source file'
+    default: './docs/src/api/openapi.yaml'
+  output-file:
+    description: "output file"
+    default: "./build/openapi/openapi.yaml"
+  version:
+    description: "version of the api"
+    default: "latest"
+  token:
+    description: "swagger token"
+    required: true
+  type:
+    description: "create or update documentation"
+    default: "create"
+runs:
+  using: "composite"
+  steps:
+    - name: Generate single openapi File
+      shell: bash
+      run: |
+        npm install -g swagger-cli 
+        swagger-cli bundle  ${{ inputs.source-file }} --outfile  ${{ inputs.output-file }} --type yaml
+    - name: Validate OpenAPI definition
+      uses: char0n/swagger-editor-validate@v1
+      with:
+        definition-file: ${{ inputs.output-file }}
+    - name: Upload Swagger File
+      shell: bash
+      run: |
+        npm install -g swaggerhub-cli 
+        export SWAGGERHUB_API_KEY=${{ inputs.token }}
+        swaggerhub api:${{ inputs.type }} DenGuzawr22/DSDMS/${{ inputs.version }} --file ${{ inputs.output-file }} --visibility public
