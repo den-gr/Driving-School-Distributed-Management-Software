@@ -11,14 +11,14 @@ Per evolvere il dominio a questo punto si è pensato di procedere tramite Strate
 Abbiamo quindi individuato, quattro sotto domini all'interno del dominio in esame:
 - Dossier: sotto dominio che mantiene le informazioni di base degli utenti e le procedure per la relativa gestione
 - Exam: sotto dominio per la gestione degli esami pratici e teorici e tutto ciò che ne concerne (es. registro d'esame teorico e foglio rosa)
-- Driving: sotto dominio per la gestione delle guide pratiche effettuate da ciascun iscritto
+- Driving: sotto dominio per la gestione delle guide e gli esami pratici effettuate da ciascun iscritto
 
 I sotto domini sopra elencati, sono stati inoltre classificati come:
 - Generic domain: rappresenta alcune funzioni comuni a più sotto domini
 - Core domain: rappresenta una o più funzioni primarie, all'interno del dominio principale
 - Supporting domain: raggruppa determinate funzioni necessarie ma non fondamentali per il dominio principale
 
-Avendo chiaro le informazioni di cui sopra, i sotto domini precedentemente individuati sono stati classificati come segue: Dossier di tipo Generic, Exam di tipo Core e Driving di tipo Support.
+Avendo chiaro le informazioni di cui sopra, i sotto domini precedentemente individuati sono stati classificati come segue: Dossier di tipo Generic, Driving di tipo Core e Exam di tipo Support.
 
 ### Bounded context
 
@@ -54,18 +54,16 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazione tes
 - La pratica deve poter essere annullata dopo la scadenza del secondo foglio rosa
 - Una pratica invalida, non può essere modificata ma solo visualizzata a fini di storicizzazione
 - Non può essere registrato un iscritto con meno di 16 anni
-- Invalidazione manuale della pratica (opzionale)
   
 **Inbound Communications**:
 - Register a new dossier (Client → a command)
 - Update Practical Exam Status (Client → a command)
-- Aggiornamento di Exam Attempts per ciascuna pratica ( Exam context -> an event )
 - Notification that Provisional license is not valid anymore ( Exam context → an event)
-- Notification that Theoretical or Practical exam has been  ( Exam context → an event)
+- Notification that Theoretical or Practical exam has been passed ( Exam context → an event)
 - Read Dossier (Client, Exam context → a query)
 
 ### Driving context
-**Description**: Consente la gestione degli slot di guida, acquisendo l’informazione relative a veicoli, istruttori e utilizzando l’informazione del foglio rosa relativo a una pratica.
+**Description**: Consente la gestione delle guide, acquisendo l’informazione relative a veicoli, istruttori 
 
 **Strategic classification**:
 - Domain: Core
@@ -75,17 +73,21 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazione tes
 **Business Decisions**:
 - In un certo giorno e orario, uno slot di guida è univocamente collegato a:
     - Un istruttore
-    - Un Id relativo a una pratica
+    - Una pratica
     - Un veicolo
 - La durata di ciascun slot di guida è 30 minuti, iniziando a intervalli regolari di tempo
 - Un iscritto può prenotare uno slot di guida alla volta. Dopo il completamento, può prenotarne uno nuovo.
 - All’inserimento di uno slot di guida, verificare la validità del provisional license
-- Un veicolo dopo X slot di guida deve effettuare un controllo (opzionale)
-
+- Esame pratico è uno slot di guida che ha prerequisiti aggiuntivi:
+  - Può essere registrato solo in Practical exam day
+  - L'iscritto deve aver effettuato 12 o più lezioni pratici
+  
 **Inbound Communications**:
 - Register a new Practical Driving lesson or exam (Client → a command)
 - Delete Practical Driving Lessons (Client → a command)
 - Read Practical Driving slots (Exam context, Client → a query)
+- Register a practical exam day (Client → a command)
+- Visualize pracrtical exam days (Client → a command)
     
 **Outbound Communications**:
 - Check provisional license validity (Exam context → A query)
@@ -105,26 +107,26 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazione tes
     - Necessario un registro d'esame teorico valido, con le seguenti caratteristiche:
         - consente due tentativi d'esame entro sei mesi
         - viene fornito dopo la visita medica
-        - Dopo la scadenza, necessaria una nuova visita medica (Pratica rimane valida)
-- Esame pratico:
-    - Necessario un foglio rosa valido, con le seguenti caratteristiche:
+        - dopo la scadenza, necessaria una nuova visita medica (Pratica rimane valida)
+- Un foglio rosa valido, con le seguenti caratteristiche:
         - consente tre tentativi d'esame entro 12 mesi
         - viene fornito dopo il superamento dell'esame teorico insieme alla notifica a Dossier Context
         - Dopo la prima scadenza, è necessario conseguire l'esame teorico e notificare Dossier Context
-        - Dopo la seconda scadenza, Dossier context viene notificato
+        - Dopo la seconda scadenza, Dossier context viene notificato. Il foglio rossa deve essere cancellato
 
 **Inbound Communications**:
 - Register theoretical exam appeal day (Client → A command)
 - Read list of future theoretical exam appeals (Client -> A query)
 - Read theoretical exam appeal information (Client -> A query)
 - Register a dossier in Exam Appeal (Client → A command)
-- Creation of a Theoretical Exam pass (Doctor context → A command)
+- Creation of a Theoretical Exam pass (Doctor context → an event)
 - Create Provisional License (Client -> a command)
 - Read Provisional License info (Client -> a query)
 - Check validity of Provisional License (Driving context → A query)
 
 **Outbound Communications**:
 - Notify start validity or invalidity of the Provisional license (Dossier context → an event)
+- Check validity of dossier (Dossier context →  a query)
 
 ### Doctor context
 
@@ -143,8 +145,8 @@ Per ciascun contesto individuato, di seguito si propone una rappresentazione tes
 **Inbound Communications**:
 - Read Doctor slots (Client → A Query)
 - Add Doctor slots (Client → A command)
-- Register visit result for a dossier id (Client -> A command)
+- Register doctor visit result (Client -> A command)
   
 **Outbound Communications**:
 - Comunicate that visit has been done (Exam context -> A command)
-- Read dossier to verify validity (Dossier context -> A query)
+- Check validity of dossier (Dossier context →  a query)

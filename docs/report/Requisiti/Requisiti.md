@@ -68,7 +68,7 @@ Optional: un dossier può essere invalidato manualmente, tramite una chiamata ad
 I requisiti non funzionali riguardano le funzionalità che il sistema non deve necessariamente possedere per fare in modo che sia funzionante e corretto.
 
 I requisiti non funzionali che sono stati individuati sono i seguenti:
-- il software deve essere cross-platform, cioè eseguibile sia su sistemi operativi Windows che su MacOS e Linux, o comunque su qualsiasi sistema operativo capace di supportare Java Runtime Environment versione 16 e successive;
+- il software deve essere eseguibile sul sistema operativo Linux, e supportare  Java Runtime Environment versione 16, 17 e 18;
 - il sistema deve essere integrabile con front-end esterni, utilizzando le API messe a disposizione;
 
 ## Requisiti implementativi

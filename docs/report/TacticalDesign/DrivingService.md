@@ -144,7 +144,7 @@ class ExamServiceChannel {
 Il diagramma di sequenza in figura, consente di descrivere nel dettaglio la procedura necessaria alla registrazione di una nuova Guida Pratica, che non rappresenta perciò un esame pratico.
 La prima operazione effettuata successivamente alla richiesta di prenotazione, è la verifica dei requisiti necessari, quali ad esempio la validità degli orari/giorni forniti, dei dati forniti per l'istruttore.
 Se questo viene validato, si procede con il controllo del foglio rosa. Questa verifica avviene mediante Exam Service, verso il quale otteniamo collegamento mediante Exam Service Channel, precedentemente introdotto.
-Se anche la seconda verifica, si procede con successo all'inserimento del Driving Slot nel Db.
+Se anche la seconda verifica, si procede con successo all'inserimento del Driving Slot nel DB.
 
 Ipotizzando la prenotazione di una guida d'esame, si aggiungerebbero alcuni constraints e conseguentemente ulteriori verifiche da completare con successo(ad esempio sulla corretta selezione di un giorno d'esame), prima di poter inserire il driving slot sul database.
 

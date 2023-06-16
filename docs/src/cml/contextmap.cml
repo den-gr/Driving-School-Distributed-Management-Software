@@ -7,9 +7,9 @@ ContextMap {
   contains ExamContext
   contains DoctorContext
   
-  DrivingContext [P]<->[P] ExamContext 
+  DrivingContext [D]<-[U] ExamContext 
   DossierContext [P]<->[P] ExamContext
-  ExamContext [D] <- [U] DoctorContext
+  ExamContext [P] <-> [P] DoctorContext
   DoctorContext [D] <- [U] DossierContext
 }
 
