@@ -15,8 +15,8 @@ jobs:
     BuildAndTest:
         strategy:
             matrix:
-                os: [ ubuntu-latest, macos-latest ]
-                java-version: [ 16, 17]
+                os: [ ubuntu-latest ]
+                java-version: [ 16, 17, 18]
         runs-on: ${{ matrix.os }}
         steps:
           - run: echo "Hello World"
