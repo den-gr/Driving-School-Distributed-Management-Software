@@ -14,18 +14,18 @@ Vi sono alcune complessità che il dominio di mia competenza, porta con se, rigu
 Lo scopo sarebbe quello di ottenere un software che possa consentire l'utilizzo distribuito nello spazio di determinate funzioni, un esempio fra tutti: uno dei requisiti sarebbe la prenotazione delle guide mediante ambiente esterno agli uffici.
 
 Allo stato attuale, ogni processo è svolto in modo cartaceo o ultimamente con l'utilizzo di applicativi offline, che non ne consentono l'utilizzo efficace ed efficiente, anche in mobilità.
-L'utilizzo di applicativi non unici ed offline porta con se ulteriori limitazioni, riguardanti la correttezza e la consistenza dei dati tra i diversi uffici."
+L'utilizzo di applicativi non unici e offline porta con se ulteriori limitazioni, riguardanti la correttezza e la consistenza dei dati tra i diversi uffici."
 
 ## Impact Map
 
-A seguito della richiesta precedentemente illustrata, il team di sviluppo ha deciso di produrre le seguenti impact map, per riuscire a comprendere maggiormente il problema e formulare domande significative nelle successive interviste.
+Successivamente alla richiesta precedentemente illustrata, il team di sviluppo ha deciso di produrre le seguenti impact map, per riuscire a comprendere maggiormente il problema e formulare domande significative nelle successive interviste.
 
 Nelle impact map fornite, il primo livello indica l'obiettivo che vogliamo ottenere con la messa in atto del progetto concluso.
 Ad esempio: miglior gestione (in termini di velocità e minor inconsistenza dei dati) per le guide.
 
 Il secondo livello mostra gli attori coinvolti per il raggiungimento degli obiettivi preposti. Questi possono essere categorizzati in: utenti che interagiscono direttamente sul sistema (Istruttore o Segretario) e Iscritti (attori esterni che interagiscono con utenti del sistema).
 
-Il livello successivo descrive l'impatto del progetto sulle azioni che gli attori andranno ad effettuare.
+Il livello successivo descrive l'impatto del progetto sulle azioni che gli attori andranno a effettuare.
 L'ultimo livello individua il *business value* atteso dal raggiungimento degli obiettivi inizialmente individuati.
 
 <div align="center">

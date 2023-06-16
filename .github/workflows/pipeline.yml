@@ -9,7 +9,6 @@ on:
             - 'README.md'
             - 'CHANGELOG.md'
             - 'LICENSE'
-            - 'docs/'
 
 jobs: 
     BuildAndTest:
