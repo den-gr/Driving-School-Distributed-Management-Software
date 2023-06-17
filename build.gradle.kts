@@ -11,7 +11,6 @@ plugins {
 val javaVersion = JavaVersion.VERSION_16.toString()
 
 allprojects {
-    apply(plugin = "org.jetbrains.dokka")
     apply(plugin = "org.danilopianini.gradle-kotlin-qa")
 
     detekt {
@@ -25,11 +24,6 @@ allprojects {
     tasks.withType<JavaCompile> {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
-    }
-
-    tasks.register<Jar>("createJavadoc") {
-        from(tasks.dokkaJavadoc.get().outputDirectory)
-        archiveClassifier.set("javadoc")
     }
 
     repositories {

@@ -1,11 +1,14 @@
+
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.johnrengelman.shadow)
     application
+    alias(libs.plugins.dokka)
 
     id("java-library")
 }
+
 application.mainClass.set("dsdms.exam.Main")
 
 dependencies {
@@ -22,4 +25,10 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     val projectVersion = project.properties["version"] as String
     archiveFileName.set("${project.name}-$projectVersion.jar")
     destinationDirectory.set(file("$buildDir/output"))
+}
+
+tasks.register<Jar>("createJavadoc") {
+    dependsOn(tasks.dokkaJavadoc)
+    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
+    archiveClassifier.set("javadoc")
 }
