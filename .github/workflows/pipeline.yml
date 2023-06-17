@@ -1,4 +1,4 @@
-name: main workflow
+name: Main project workflow
 
 on: 
     push:
@@ -64,7 +64,7 @@ jobs:
             id: ver
         outputs:
           newVersion: ${{ steps.ver.outputs.nextVer }}
-    swagger:
+    SwaggerHubPublish:
       needs: release
       runs-on: ubuntu-latest
       steps:
