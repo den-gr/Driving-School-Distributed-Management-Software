@@ -1,4 +1,4 @@
-name: publish openapi latest version on swaggerhub
+name: publish openapi latest version on SwaggerHub
 
 on:
   push:
