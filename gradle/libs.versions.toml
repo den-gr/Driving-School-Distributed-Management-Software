@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.7.20"
+kotlin = "1.8.20"
 kotlinx = "1.5.0"
 cucumber = "7.11.2"
 vertxImpl = "4.4.1"
