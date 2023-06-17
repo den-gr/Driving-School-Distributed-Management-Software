@@ -4,7 +4,7 @@ Feature: Registration of practical exams
     Then receive the NOT_ENOUGH_DRIVING_LESSONS_FOR_EXAM response
 
   Scenario: Try to book a practical exam in not the practical exam day
-    Given dossier d5 has already 10 driving lessons in the past
+    Given dossier d5 has already 12 driving lessons in the past
     When an attempt to book a new practical exam on 2023-10-12 for instructor i1, dossier d5 and auto KF037MF
     Then receive the NOT_AN_EXAM_DAY response for this day
 

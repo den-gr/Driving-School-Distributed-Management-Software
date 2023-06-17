@@ -92,12 +92,14 @@ class PracticalExams : En {
 
         /* Check NOT_AN_EXAM_DAY*/
         Given("dossier {word} has already {int} driving lessons in the past") {
-                dossierId: String, numLessions: Int ->
+                dossierId: String, numLessons: Int ->
             var localRequest: Future<HttpResponse<Buffer>>? = null
-            for (i in 0 until numLessions) {
+            for (i in 0 until numLessons) {
+                val hour = i % 10
+                val minutes = if (i / 10 == 1) "30" else "00"
                 val bookingRequest = DrivingSlotBooking(
                     LocalDate.parse("2023-01-01"),
-                    LocalTime.parse("0$i:00"),
+                    LocalTime.parse("0$hour:$minutes"),
                     "i1",
                     dossierId,
                     DrivingSlotType.ORDINARY,

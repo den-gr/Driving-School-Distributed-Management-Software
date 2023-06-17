@@ -44,7 +44,7 @@ class DrivingDomainServiceImpl(
     private val channels: ChannelsProvider,
 ) : DrivingDomainService {
     companion object {
-        private const val MIN_NUMBER_OF_DRIVING_LESSONS: Int = 10
+        private const val MIN_NUMBER_OF_DRIVING_LESSONS: Int = 12
     }
 
     override suspend fun saveNewDrivingSlot(documents: DrivingSlotBooking): DrivingSlotRegistrationResult {
