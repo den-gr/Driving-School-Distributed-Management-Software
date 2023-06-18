@@ -25,7 +25,7 @@ In particolare per ciascuno sono stati configurati o creati vari task, tra cui:
   - Assegna un nome personalizzato che può includere la versione del sistema;
   - Specifica la cartella di destinazione.
 - `createJavadoc` permette la generazione degli artefatti assieme alla documentazione Javadoc.
-- 
+
 ## Continuous Integration
 Particolare attenzione è stata posta nell’individuazione di misure per assicurare la qualità del codice. Grazie alle GitHub Actions sono stati predisposti dei workflow per garantire la Continuous Integration e la Quality Assurance.
 
