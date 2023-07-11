@@ -32,7 +32,8 @@ plugins {
     alias(libs.plugins.qa)
 }
 
-val javaVersion = JavaVersion.VERSION_16.toString()
+val javaSourceVersion = JavaVersion.VERSION_17.toString()
+val javaTargetVersion = JavaVersion.VERSION_11.toString()
 
 allprojects {
     apply(plugin = "org.danilopianini.gradle-kotlin-qa")
@@ -42,12 +43,12 @@ allprojects {
     }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = javaVersion
+        kotlinOptions.jvmTarget = javaTargetVersion
     }
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility = javaSourceVersion
+        targetCompatibility = javaTargetVersion
     }
 
     repositories {
