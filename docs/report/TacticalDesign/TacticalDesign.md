@@ -105,7 +105,7 @@ I microservizi sono composti da quattro package principali:
 Seguendo l'architettura generale:
 - il client comunica con uno o più microservizi tramite le API REST;
 - Alcuni microservizi comunicano con altri microservizi tramite le API REST;
-- Ogni microservizio, condivide un unico database, ma su schemi e tabelle separati e indipendenti tra loro.
+- Ogni microservizi ha il suo proprio database.
 
 
 ![Alt text](<img/componentsDiagram.png>)
